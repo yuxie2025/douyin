@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.b3ad.yuxie.myapplication.controlpc.RemoteControlActivity">
+
+    <EditText
+        android:id="@+id/et_ip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/et_socket"
+        android:text="192.168.2.5" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/et_ip"
+        android:layout_alignBottom="@+id/et_ip"
+        android:layout_alignParentLeft="true"
+        android:text="IP地址:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/et_socket"
+        android:layout_width="102dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_ip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:inputType="number"
+        android:hint="端口号"
+        android:text="8888">
+
+        <requestFocus />
+    </EditText>
+
+
+    <Button
+        android:id="@+id/btn_connect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_socket"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="27dp"
+        android:text="连接电脑" />
+
+</RelativeLayout>

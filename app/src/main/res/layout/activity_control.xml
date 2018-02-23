@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:id="@+id/rl_keyboard"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="←"/>
+        <Button
+            android:id="@+id/btn_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/btn_left"
+            android:text="→"/>
+    </RelativeLayout>
+
+
+
+    <FrameLayout
+        android:id="@+id/panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_keyboard"
+        android:layout_centerHorizontal="true"
+        android:maxHeight="96dp" >
+
+        <LinearLayout
+            android:id="@+id/llAdvancedGroup"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scrollbarAlwaysDrawHorizontalTrack="true"
+            android:scrollbarStyle="insideOverlay"
+            android:orientation="horizontal"
+            android:scrollbars="horizontal" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/middleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/wheel"
+        android:maxHeight="120dp"
+        android:maxWidth="60dp"
+        android:minHeight="120dp"
+        android:minWidth="60dp" />
+
+    <FrameLayout
+        android:id="@+id/leftButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/middleButton"
+        android:background="@drawable/zuo"
+        android:maxHeight="120dp"
+        android:minHeight="120dp" />
+
+    <FrameLayout
+        android:id="@+id/rightButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/middleButton"
+        android:background="@drawable/you"
+        android:maxHeight="120dp"
+        android:minHeight="120dp" />
+
+    <FrameLayout
+        android:id="@+id/touch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/middleButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/panel"
+        android:background="@drawable/dragon1" />
+
+</RelativeLayout>

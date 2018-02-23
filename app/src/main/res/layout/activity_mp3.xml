@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.b3ad.yuxie.myapplication.music.MusicActivity">
+
+    <EditText
+        android:id="@+id/et_music_name"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_width="match_parent"
+        android:layout_toLeftOf="@+id/btn_serach"
+        android:layout_height="50dp" />
+
+    <Button
+        android:id="@+id/btn_serach"
+        android:text="搜索"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="60dp"
+        android:layout_height="50dp" />
+
+    <ListView
+        android:id="@+id/lv_musics"
+        android:layout_below="@+id/et_music_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
+
+</RelativeLayout>
