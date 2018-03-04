@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-
     android:orientation="vertical">
+
+    <include layout="@layout/navigation_bar" />
+
+    <include layout="@layout/line_view" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/phone_number"

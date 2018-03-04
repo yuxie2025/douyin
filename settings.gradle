@@ -1,1 +1,1 @@
-include ':app', ':baselib'
+include ':app', ':baselib', ':okhttp3'

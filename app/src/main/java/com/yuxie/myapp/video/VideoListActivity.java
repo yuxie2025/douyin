@@ -2,13 +2,14 @@ package com.yuxie.myapp.video;
 
 import android.content.ComponentName;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
+import com.baselib.base.BaseActivity;
 import com.yuxie.myapp.R;
 
 import java.util.ArrayList;
@@ -16,42 +17,46 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VideoListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-    private ListView videolv;
+public class VideoListActivity extends BaseActivity {
+
+    @Bind(R.id.title)
+    TextView title;
+    @Bind(R.id.lv_video)
+    ListView lvVideo;
     private List<String> alist;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_video_list);
+    public int getLayoutId() {
+        return R.layout.activity_video_list;
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState) {
+        title.setText("Vip视频");
         init();
     }
 
     private void init() {
-        videolv = new ListView(this);
         final List<Map<String, Object>> data1 = getMovieList();
         SimpleAdapter adp2 = new SimpleAdapter(this, data1, R.layout.tab2, new String[]{"img", "name", "content"},
                 new int[]{R.id.imageview2, R.id.laji_a2, R.id.tab_showContent2});
-        videolv.setAdapter(adp2);
-        videolv.setOnItemClickListener(this);
-        //new出来的控件需要setContentView,否则看不到
-        setContentView(videolv);
-    }
+        lvVideo.setAdapter(adp2);
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Intent intenl = new Intent();
-        // 设定组件
-        ComponentName componentName = new ComponentName(this, PlayActivity.class);
-        intenl.setComponent(componentName);
-        String url = "";
-        if (alist.size() > 5) {
-            url = alist.get(i);
-        }
-        // 设定参数
-        intenl.putExtra("what_web", url);
-        startActivity(intenl);
+        lvVideo.setOnItemClickListener((adapterView, view, i, l) -> {
+            Intent intenl = new Intent();
+            // 设定组件
+            ComponentName componentName = new ComponentName(this, PlayActivity.class);
+            intenl.setComponent(componentName);
+            String url = alist.get(i);
+            // 设定参数
+            intenl.putExtra("what_web", url);
+            startActivity(intenl);
+        });
+
     }
 
     // 返回电影列表信息
@@ -104,4 +109,8 @@ public class VideoListActivity extends AppCompatActivity implements AdapterView.
     }
 
 
+    @OnClick(R.id.rl_left)
+    public void onViewClicked() {
+        finish();
+    }
 }

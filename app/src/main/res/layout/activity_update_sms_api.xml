@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/navigation_bar" />
+
+    <include layout="@layout/line_view" />
+
     <android.support.v7.widget.AppCompatEditText
         android:id="@+id/type"
         android:layout_width="match_parent"

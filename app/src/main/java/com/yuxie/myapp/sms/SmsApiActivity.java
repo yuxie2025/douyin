@@ -6,24 +6,26 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
+import com.baselib.base.BaseActivity;
+import com.baselib.commonutils.LogUtils;
+import com.baselib.uitls.CRequest;
+import com.baselib.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yuxie.myapp.R;
 import com.yuxie.myapp.adapter.SmsApiAdapter;
 import com.yuxie.myapp.api.ApiService;
 import com.yuxie.myapp.entity.SmsApi;
 import com.yuxie.myapp.greendao.SmsApiDao;
 import com.yuxie.myapp.utils.db.EntityManager;
-import com.baselib.base.BaseActivity;
-import com.baselib.commonutils.LogUtils;
-import com.baselib.uitls.CRequest;
-import com.baselib.utilcode.util.ToastUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -49,6 +51,8 @@ public class SmsApiActivity extends BaseActivity {
     int successTotol = 0;
 
     boolean isStop = false;
+    @Bind(R.id.title)
+    TextView title;
 
     @Override
     public int getLayoutId() {
@@ -57,6 +61,8 @@ public class SmsApiActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
+        title.setText("短信");
 
         smsApiDao = EntityManager.getInstance().getSmsApiDao();
 
@@ -100,7 +106,7 @@ public class SmsApiActivity extends BaseActivity {
         adapter.setNewData(data);
     }
 
-    @OnClick({R.id.start, R.id.stop, R.id.add_sms_api})
+    @OnClick({R.id.start, R.id.stop, R.id.add_sms_api, R.id.rl_left})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.start:
@@ -116,6 +122,9 @@ public class SmsApiActivity extends BaseActivity {
                 break;
             case R.id.add_sms_api:
                 startActivity(UpdateSmsApiActivity.class);
+                break;
+            case R.id.rl_left:
+                finish();
                 break;
         }
     }
@@ -433,6 +442,5 @@ public class SmsApiActivity extends BaseActivity {
         return data;
 
     }
-
 
 }

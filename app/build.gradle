@@ -10,6 +10,7 @@ greendao {
 }
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:+'
+    compile project(path: ':okhttp3')
 }
 android {
     compileSdkVersion 25
@@ -17,7 +18,7 @@ android {
     defaultConfig {
         applicationId androidCf.applicationId
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -78,11 +79,6 @@ android {
 //        compile 'com.android.support.constraint:constraint-layout:1.0.2'
 //        compile 'com.android.support:design:25.3.1'
         testCompile 'junit:junit:4.12'
-        /*okhttp3封装*/
-//        compile 'com.squareup.okhttp3:okhttp:3.3.0'
-//        compile 'com.squareup.okio:okio:1.6.0'
-        /*okhttp3使用架包 https://github.com/MrZhousf/OkHttp3 */
-//        compile 'com.zhousf.lib:okhttp3:2.8.6'
         /*picasso图片缓存架包*/
         compile 'com.squareup.picasso:picasso:2.5.1'
 

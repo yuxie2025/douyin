@@ -3,9 +3,9 @@ package com.yuxie.myapp.sms;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.baselib.base.BaseActivity;
 import com.baselib.utilcode.util.ToastUtils;
@@ -31,6 +31,8 @@ public class UpdateSmsApiActivity extends BaseActivity {
     AppCompatEditText after;
     @Bind(R.id.result)
     AppCompatEditText result;
+    @Bind(R.id.title)
+    TextView title;
 
     public static void start(Context context, SmsApi smsApi) {
         Intent intent = new Intent(context, UpdateSmsApiActivity.class);
@@ -48,6 +50,7 @@ public class UpdateSmsApiActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        title.setText("短信接口");
         smsApiDao = EntityManager.getInstance().getSmsApiDao();
         smsApi = (SmsApi) getIntent().getSerializableExtra(SMS_API);
 
@@ -88,5 +91,10 @@ public class UpdateSmsApiActivity extends BaseActivity {
         ToastUtils.showShort("成功!");
         finish();
 
+    }
+
+    @OnClick(R.id.rl_left)
+    public void back() {
+        finish();
     }
 }

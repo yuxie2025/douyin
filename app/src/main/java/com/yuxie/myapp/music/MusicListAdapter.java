@@ -7,6 +7,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.okhttplib.HttpInfo;
+import com.okhttplib.OkHttpUtil;
+import com.okhttplib.bean.DownloadFileInfo;
+import com.okhttplib.callback.ProgressCallback;
 import com.yuxie.myapp.R;
 import com.yuxie.myapp.base.CommonAdapter;
 import com.yuxie.myapp.base.ViewHolder;
@@ -83,21 +87,21 @@ public class MusicListAdapter extends CommonAdapter<Musics.ResultBean.SongsBean>
     }
 
     private void download(String url, final String musicName) {
-//        DownloadFileInfo fileInfo = new DownloadFileInfo(url, musicName, new ProgressCallback() {
-//            @Override
-//            public void onProgressMain(int percent, long bytesWritten, long contentLength, boolean done) {
-//                Log.i("TAG", percent + "%");
-//            }
-//            @Override
-//            public void onResponseMain(String filePath, HttpInfo info) {
-//                if (info.isSuccessful()) {
-//                    Toast.makeText(mContext, musicName + ",下载成功!", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Toast.makeText(mContext, "下载失败,"+info.getRetDetail(), Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//        HttpInfo info = HttpInfo.Builder().addDownloadFile(fileInfo).build();
-//        OkHttpUtil.Builder().setReadTimeout(120).build(this).doDownloadFileAsync(info);
+        DownloadFileInfo fileInfo = new DownloadFileInfo(url, musicName, new ProgressCallback() {
+            @Override
+            public void onProgressMain(int percent, long bytesWritten, long contentLength, boolean done) {
+                Log.i("TAG", percent + "%");
+            }
+            @Override
+            public void onResponseMain(String filePath, HttpInfo info) {
+                if (info.isSuccessful()) {
+                    Toast.makeText(mContext, musicName + ",下载成功!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "下载失败,"+info.getRetDetail(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        HttpInfo info = HttpInfo.Builder().addDownloadFile(fileInfo).build();
+        OkHttpUtil.Builder().setReadTimeout(120).build(this).doDownloadFileAsync(info);
     }
 }

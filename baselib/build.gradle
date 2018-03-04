@@ -85,7 +85,9 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+
     //高德定位功能
     //定位
     compile 'com.amap.api:location:latest.integration'
@@ -96,9 +98,6 @@ dependencies {
     //搜索功能
 //    compile 'com.amap.api:search:latest.integration'
 
-    //okhttp3
-    //    compile 'com.squareup.okhttp3:okhttp:3.8.1'
-    compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
     //json 解析
 //    compile 'com.google.code.gson:gson:2.7'
     //开源框架查看日志

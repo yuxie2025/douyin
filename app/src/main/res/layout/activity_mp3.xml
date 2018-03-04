@@ -1,31 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yuxie.myapp.music.MusicActivity">
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_music_name"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
+    <include layout="@layout/navigation_bar" />
+
+    <include layout="@layout/line_view" />
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_toLeftOf="@+id/btn_serach"
-        android:layout_height="50dp" />
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/btn_serach"
-        android:text="搜索"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="60dp"
-        android:layout_height="50dp" />
+        <EditText
+            android:id="@+id/et_music_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/btn_serach" />
+
+        <Button
+            android:id="@+id/btn_serach"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="搜索" />
+    </RelativeLayout>
+
 
     <ListView
         android:id="@+id/lv_musics"
-        android:layout_below="@+id/et_music_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></ListView>
 
-</RelativeLayout>
+</LinearLayout>
