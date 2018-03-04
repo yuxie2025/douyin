@@ -4,23 +4,25 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
+import com.baselib.base.BaseActivity;
 import com.yuxie.myapp.R;
 import com.yuxie.myapp.controlpc.RemoteControlActivity;
-import com.yuxie.myapp.greendao.UserDao;
-import com.yuxie.myapp.sms.SmsApiActivity;
-import com.yuxie.myapp.utils.db.EntityManager;
 import com.yuxie.myapp.entity.User;
+import com.yuxie.myapp.greendao.UserDao;
 import com.yuxie.myapp.music.MusicActivity;
 import com.yuxie.myapp.mvvp.MvvpActivity;
+import com.yuxie.myapp.sms.SmsApiActivity;
 import com.yuxie.myapp.txt.TxtActivity;
+import com.yuxie.myapp.utils.db.EntityManager;
 import com.yuxie.myapp.video.VideoListActivity;
 
 import java.util.ArrayList;
@@ -28,20 +30,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
     ListView lv_test;
     Context mContext;
+    @Bind(R.id.rl_left)
+    RelativeLayout rlLeft;
+    @Bind(R.id.title)
+    TextView title;
 //    private Handler mHandler=new InnerHandler(this);
 
     private List<Class<? extends Activity>> alist;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public int getLayoutId() {
+        return R.layout.activity_main;
+    }
 
-//        long maxMemory=Runtime.getRuntime().maxMemory();
+    @Override
+    protected void initView(Bundle savedInstanceState) {
+        title.setText("首页");
+        rlLeft.setVisibility(View.INVISIBLE);
+
+        init();
+        //        long maxMemory=Runtime.getRuntime().maxMemory();
 //        LruCache<String,Bitmap> mLruCache=new LruCache<String,Bitmap>((int)maxMemory){
 //            @Override
 //            protected int sizeOf(String key, Bitmap value) {
@@ -49,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //                return super.sizeOf(key, value);
 //            }
 //        };
-        init();
     }
 
 //    private static class InnerHandler extends Handler{
@@ -160,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //        }
 
         UserDao userDao = EntityManager.getInstance().getUserDao();
-        userDao.insertOrReplace(new User(1l, "小明","123","北京"));
+        userDao.insertOrReplace(new User(1l, "小明", "123", "北京"));
 
         List<User> list = userDao.loadAll();
 
@@ -260,4 +274,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Intent intent = new Intent(this, alist.get(i));
         startActivity(intent);
     }
+
 }

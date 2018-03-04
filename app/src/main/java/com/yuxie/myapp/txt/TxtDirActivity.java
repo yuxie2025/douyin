@@ -1,7 +1,7 @@
 package com.yuxie.myapp.txt;
 
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baselib.base.BaseActivity;
 import com.yuxie.myapp.R;
 import com.yuxie.myapp.utils.Utils;
 
@@ -19,38 +20,51 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class TxtDirActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class TxtDirActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
-    private ListView lv_txt_dir;
-    private Button btn_sort;
-    private TextView tv_txt_name;
+    @Bind(R.id.title)
+    TextView title;
+    @Bind(R.id.lv_txt_dir)
+    ListView lv_txt_dir;
+    @Bind(R.id.btn_sort)
+    Button btn_sort;
+
     private String TAG;
-    private String TextName;
+    private String txtName;
 
     private TxtDirAdapter txtDirAdapter;
     private List<TxtDir> data = new ArrayList<TxtDir>();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_txt_dir);
+    public static void start(Context context, String TextName, String TxtDirUrl, String TAG) {
+        Intent intent = new Intent(context, TxtDirActivity.class);
+        intent.putExtra("TextName", TextName);
+        intent.putExtra("TxtDirUrl", TxtDirUrl);
+        intent.putExtra("TAG", TAG);
+        context.startActivity(intent);
+    }
 
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_txt_dir;
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState) {
         Intent intent = getIntent();
         String txtDirUrl = intent.getStringExtra("TxtDirUrl");
-        TAG=intent.getStringExtra("TAG");
-        TextName=intent.getStringExtra("TextName");
+        TAG = intent.getStringExtra("TAG");
+        txtName = intent.getStringExtra("TextName");
 
-        Log.i("TAG", "onCreate: txtDirUrl:" + txtDirUrl);
-
-        lv_txt_dir = (ListView) findViewById(R.id.lv_txt_dir);
-        btn_sort = (Button) findViewById(R.id.btn_sort);
-        tv_txt_name = (TextView) findViewById(R.id.tv_txt_name);
+        title.setText(txtName);
 
         txtDirAdapter = new TxtDirAdapter(this, data, R.layout.item_txt_dir);
 
@@ -65,22 +79,17 @@ public class TxtDirActivity extends AppCompatActivity implements AdapterView.OnI
             }
         });
         initData(txtDirUrl);
-
     }
 
     private void initData(final String txtDirUrl) {
-
-        tv_txt_name.setText(TextName);
-
-        Log.i("TAG","TAG:"+TAG);
-        if (ContentBiqugeModelImpl.TAG.equals(TAG)){
+        if (ContentBiqugeModelImpl.TAG.equals(TAG)) {
             BiquziDir(txtDirUrl);
-        }else if(ContentGxwztvModelImpl.TAG.equals(TAG)){
+        } else if (ContentGxwztvModelImpl.TAG.equals(TAG)) {
             GxwztvDir(txtDirUrl);
         }
     }
 
-    private void  GxwztvDir(final String txtDirUrl){
+    private void GxwztvDir(final String txtDirUrl) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ContentGxwztvModelImpl.TAG)
                 .build();
@@ -112,7 +121,7 @@ public class TxtDirActivity extends AppCompatActivity implements AdapterView.OnI
         });
     }
 
-    private void  BiquziDir(final String txtDirUrl){
+    private void BiquziDir(final String txtDirUrl) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ContentBiqugeModelImpl.TAG)
                 .build();
@@ -123,7 +132,7 @@ public class TxtDirActivity extends AppCompatActivity implements AdapterView.OnI
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    String s= Utils.inputStreamToStringGbk(response.body().byteStream());
+                    String s = Utils.inputStreamToStringGbk(response.body().byteStream());
 
                     List<TxtDir> list = ContentBiqugeModelImpl.getInstance().chaptersList(s, "");
                     if (list.size() == 0) {
@@ -145,20 +154,21 @@ public class TxtDirActivity extends AppCompatActivity implements AdapterView.OnI
     }
 
 
-
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
         String txtContentUrl = data.get(i).getTitleDir();
+        String titleStr = data.get(i).getTitle();
         if (TextUtils.isEmpty(txtContentUrl)) {
             Toast.makeText(TxtDirActivity.this, "未获取到该章的内容地址...", Toast.LENGTH_SHORT).show();
             return;
         }
+        ReadTxtActivity.start(context, titleStr, txtContentUrl, TAG);
 
-        Intent intent = new Intent(this, ReadTxtActivity.class);
-        intent.putExtra("txtContentUrl", txtContentUrl);
-        intent.putExtra("TAG", TAG);
-        startActivity(intent);
+    }
 
+    @OnClick(R.id.rl_left)
+    public void onViewClicked() {
+        finish();
     }
 }

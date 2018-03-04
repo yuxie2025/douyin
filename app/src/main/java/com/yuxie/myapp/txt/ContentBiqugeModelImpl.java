@@ -27,7 +27,6 @@ public class ContentBiqugeModelImpl implements IWebContentModel{
         Document doc = Jsoup.parse(s);
         List<TextNode> contentEs = doc.getElementById("content").textNodes();
         StringBuilder content = new StringBuilder();
-        Log.i("TAG", "analyBookcontent: "+contentEs.size());
         for (int i = 0; i < contentEs.size(); i++) {
             String temp = contentEs.get(i).text().trim();
             temp = temp.replaceAll(" ", "").replaceAll(" ", "");
@@ -85,8 +84,7 @@ public class ContentBiqugeModelImpl implements IWebContentModel{
         Elements booksE = doc.getElementById("list").getElementsByTag("dl").get(0).getElementsByTag("dd");
         if (null != booksE && booksE.size()>= 2) {
             TxtDir txtDir=null;
-            Log.i("TAG","booksE.size():"+booksE.size());
-            for (int i = 0; i < booksE.size(); i++) {
+            for (int i = 9; i < booksE.size(); i++) {
                 txtDir=new TxtDir();
                 txtDir.setTitle(booksE.get(i).text());
                 Elements href=booksE.get(i).getElementsByTag("a");

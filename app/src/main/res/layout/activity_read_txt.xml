@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yuxie.myapp.txt.ReadTxtActivity">
+    android:orientation="vertical">
+
+    <include layout="@layout/navigation_bar" />
+
+    <include layout="@layout/line_view" />
 
     <ScrollView
         android:id="@+id/SCROLLER_ID"

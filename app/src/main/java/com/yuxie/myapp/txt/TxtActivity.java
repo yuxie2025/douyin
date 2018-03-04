@@ -1,7 +1,6 @@
 package com.yuxie.myapp.txt;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,21 +9,28 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baselib.base.BaseActivity;
 import com.yuxie.myapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class TxtActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class TxtActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
+    @Bind(R.id.title)
+    TextView title;
     private ListView lv_musics;
     private TxtListAdapter txtListAdapter;
     private List<Txt> data = new ArrayList<Txt>();
@@ -33,10 +39,13 @@ public class TxtActivity extends AppCompatActivity implements AdapterView.OnItem
     private EditText et_txt_name;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_txt);
+    public int getLayoutId() {
+        return R.layout.activity_txt;
+    }
 
+    @Override
+    protected void initView(Bundle savedInstanceState) {
+        title.setText("小说");
         lv_musics = (ListView) findViewById(R.id.lv_musics);
         txtListAdapter = new TxtListAdapter(this, data, R.layout.item_txt);
         lv_musics.setAdapter(txtListAdapter);
@@ -75,7 +84,7 @@ public class TxtActivity extends AppCompatActivity implements AdapterView.OnItem
                 try {
                     String s = response.body().string();
                     List<Txt> list = ContentGxwztvModelImpl.getInstance().analyBookDir(s, "");
-                    if (list.size() == 0&&data.size()==0) {
+                    if (list.size() == 0 && data.size() == 0) {
                         Toast.makeText(TxtActivity.this, key + ",未收录...", Toast.LENGTH_SHORT).show();
                     }
                     data.addAll(list);
@@ -134,10 +143,16 @@ public class TxtActivity extends AppCompatActivity implements AdapterView.OnItem
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
 
-        Intent intent = new Intent(TxtActivity.this, ReadTxtActivity.class);
-        intent.putExtra("txtContentUrl", data.get(i).getLatestUrl());
-        intent.putExtra("TAG", data.get(i).getTag());
-        startActivity(intent);
+        String titleStr = data.get(i).getLatestTitle();
+        String txtContentUrl = data.get(i).getLatestUrl();
+        String tag = data.get(i).getTag();
 
+        ReadTxtActivity.start(context, titleStr, txtContentUrl, tag);
+
+    }
+
+    @OnClick(R.id.rl_left)
+    public void onViewClicked() {
+        finish();
     }
 }

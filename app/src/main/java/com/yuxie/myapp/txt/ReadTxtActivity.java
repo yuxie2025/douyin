@@ -1,44 +1,61 @@
 package com.yuxie.myapp.txt;
 
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baselib.base.BaseActivity;
 import com.yuxie.myapp.R;
 import com.yuxie.myapp.utils.Utils;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class ReadTxtActivity extends AppCompatActivity {
+public class ReadTxtActivity extends BaseActivity {
 
-    private TextView tv_txt_show;
+    @Bind(R.id.title)
+    TextView title;
+    @Bind(R.id.tv_txt_show)
+    TextView tv_txt_show;
     private String TAG;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_read_txt);
+    public static void start(Context context, String title, String txtContentUrl, String tag) {
+        Intent intent = new Intent(context, ReadTxtActivity.class);
+        intent.putExtra("txtContentUrl", txtContentUrl);
+        intent.putExtra("TAG", tag);
+        intent.putExtra("title", title);
+        context.startActivity(intent);
+    }
 
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_read_txt;
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState) {
         Intent intent = getIntent();
         String txtContentUrl = intent.getStringExtra("txtContentUrl");
         TAG = intent.getStringExtra("TAG");
+        String titleStr = intent.getStringExtra("title");
 
+        title.setText(titleStr);
 
         if (TextUtils.isEmpty(txtContentUrl) || TextUtils.isEmpty(TAG)) {
             Toast.makeText(this, "小说的url为空!", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
-
-        tv_txt_show = (TextView) findViewById(R.id.tv_txt_show);
 
         initData(txtContentUrl);
     }
@@ -90,4 +107,8 @@ public class ReadTxtActivity extends AppCompatActivity {
     }
 
 
+    @OnClick(R.id.rl_left)
+    public void onViewClicked() {
+        finish();
+    }
 }

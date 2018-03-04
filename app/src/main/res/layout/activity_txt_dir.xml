@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yuxie.myapp.txt.TxtDirActivity">
+    android:orientation="vertical">
+
+    <include layout="@layout/navigation_bar" />
+
+    <include layout="@layout/line_view" />
 
     <RelativeLayout
         android:id="@+id/rl_bar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
-
-        <TextView
-            android:id="@+id/tv_txt_name"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:text="杨幂"
-            android:textSize="18sp"
-            android:gravity="left|center"
-            android:layout_alignParentLeft="true" />
+        android:layout_height="50dp">
 
         <Button
             android:id="@+id/btn_sort"
@@ -31,11 +23,12 @@
             android:text="排序" />
     </RelativeLayout>
 
+    <include layout="@layout/line_view" />
+
     <ListView
         android:id="@+id/lv_txt_dir"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/rl_bar"
-        android:layout_margin="5dp"></ListView>
+        android:layout_margin="5dp" />
 
-</RelativeLayout>
+</LinearLayout>
