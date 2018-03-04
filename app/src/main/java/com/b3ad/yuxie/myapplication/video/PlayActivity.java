@@ -48,8 +48,6 @@ public class PlayActivity extends Activity {
     private myWebClient client;
     private String[] xllb = {
             "http://aikan-tv.com/?url=",
-            "http://g.o.t.o.tutulai.cn/?url=",
-            "http://www.chepeijian.cn/jiexi/vip.php?url=",
             "http://www.82190555.com/video.php?url=",
             "http://2gty.com/apiurl/yun.php?url=",
     };

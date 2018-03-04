@@ -64,19 +64,19 @@ public class VideoListActivity extends AppCompatActivity implements AdapterView.
         map1.put("img", R.drawable.tenxun);
         map1.put("name", "腾讯视频");
         map1.put("content", "马化腾产业....使用王卡的可以享福啦!!");
-        alist.add("http://v.qq.com");
+        alist.add("http://3g.v.qq.com");
 
         Map<String, Object> map2 = new HashMap<String, Object>();
         map2.put("img", R.drawable.youku);
         map2.put("name", "优酷视频");
         map2.put("content", "第这世界很酷!!!");
-        alist.add("http://youku.com");
+        alist.add("http://m.youku.com");
 
         Map<String, Object> map3 = new HashMap<String, Object>();
         map3.put("img", R.drawable.iqiyi);
         map3.put("name", "爱奇艺");
         map3.put("content", "爱奇艺,悦享品质");
-        alist.add("http://iqiyi.com");
+        alist.add("http://m.iqiyi.com");
 
         Map<String, Object> map4 = new HashMap<String, Object>();
         map4.put("img", R.drawable.leshi);
@@ -88,13 +88,13 @@ public class VideoListActivity extends AppCompatActivity implements AdapterView.
         map5.put("img", R.drawable.manguo);
         map5.put("name", "芒果TV");
         map5.put("content", "喜欢湖南卫视的一定知道这个的呢!!!");
-        alist.add("http://www.mgtv.com");
+        alist.add("http://m.mgtv.com");
 
         Map<String, Object> map6 = new HashMap<String, Object>();
         map6.put("img", R.drawable.souhu);
         map6.put("name", "搜狐视频");
         map6.put("content", "听说很多新闻都在这上面哦!!!");
-        alist.add("http://tv.sohu.com");
+        alist.add("http://m.tv.sohu.com");
 
         data.add(map1);
         data.add(map2);
