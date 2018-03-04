@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
-        android:name="com.yuxie.myapp.application.App"
+        android:name=".application.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -25,7 +25,7 @@
         <!-- 横屏：setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); -->
         <!-- 竖屏：setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); -->
         <!-- android:configChanges="orientation|keyboardHidden|screenSize">切换横竖屏,不从新执行生命周期,执行onConfigurationChanged 方法 -->
-        <activity android:name="com.yuxie.myapp.activity.MainActivity">
+        <activity android:name=".activity.MainActivity">
 
             <!-- android:configChanges="orientation|keyboardHidden|screenSize" -->
             <!-- android:screenOrientation="portrait"> -->
@@ -36,33 +36,34 @@
             </intent-filter>
         </activity>
         <!-- webview使用 -->
-        <activity android:name="com.yuxie.myapp.activity.WebViewJsActivity" />
+        <activity android:name=".activity.WebViewJsActivity" />
         <!-- okhttp3使用 -->
-        <activity android:name="com.yuxie.myapp.activity.Okhttp3Activity" />
-        <activity android:name="com.yuxie.myapp.activity.GlideAndPicassoActivity" />
-        <activity android:name="com.yuxie.myapp.activity.ViewActivity" />
-        <activity android:name="com.yuxie.myapp.mvp.view.UserActivity" />
-        <activity android:name="com.yuxie.myapp.Login.view.LoginActivity" />
-        <activity android:name="com.yuxie.myapp.activity.RxjavaActivity" />
-        <activity android:name="com.yuxie.myapp.mvvp.MvvpActivity" />
-        <activity android:name="com.yuxie.myapp.video.VideoListActivity" />
+        <activity android:name=".activity.Okhttp3Activity" />
+        <activity android:name=".activity.GlideAndPicassoActivity" />
+        <activity android:name=".activity.ViewActivity" />
+        <activity android:name=".mvp.view.UserActivity" />
+        <activity android:name=".Login.view.LoginActivity" />
+        <activity android:name=".activity.RxjavaActivity" />
+        <activity android:name=".mvvp.MvvpActivity" />
+        <activity android:name=".video.VideoListActivity" />
         <activity
-            android:name="com.yuxie.myapp.video.PlayActivity"
+            android:name=".video.PlayActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
             android:label="@string/title_activity_play" />
-        <activity android:name="com.yuxie.myapp.music.MusicActivity" />
-        <activity android:name="com.yuxie.myapp.txt.TxtActivity" />
-        <activity android:name="com.yuxie.myapp.txt.ReadTxtActivity" />
-        <activity android:name="com.yuxie.myapp.txt.TxtDirActivity" />
-        <activity android:name="com.yuxie.myapp.listandrecycler.ListAndRecyclerActivity" />
-        <activity android:name="com.yuxie.myapp.listandrecycler.MultiItemListViewActivity" />
-        <activity android:name="com.yuxie.myapp.listandrecycler.RecyclerViewActivity" />
-        <activity android:name="com.yuxie.myapp.listandrecycler.MultiItemRvActivity" />
-        <activity android:name="com.yuxie.myapp.controlpc.RemoteControlActivity" />
-        <activity android:name="com.yuxie.myapp.controlpc.ControlActivity" />
-        <activity android:name="com.yuxie.myapp.controlpc.PcScreenActivity" />
-        <activity android:name="com.yuxie.myapp.activity.SmsApiActivity"></activity>
+        <activity android:name=".music.MusicActivity" />
+        <activity android:name=".txt.TxtActivity" />
+        <activity android:name=".txt.ReadTxtActivity" />
+        <activity android:name=".txt.TxtDirActivity" />
+        <activity android:name=".listandrecycler.ListAndRecyclerActivity" />
+        <activity android:name=".listandrecycler.MultiItemListViewActivity" />
+        <activity android:name=".listandrecycler.RecyclerViewActivity" />
+        <activity android:name=".listandrecycler.MultiItemRvActivity" />
+        <activity android:name=".controlpc.RemoteControlActivity" />
+        <activity android:name=".controlpc.ControlActivity" />
+        <activity android:name=".controlpc.PcScreenActivity" />
+        <activity android:name=".sms.SmsApiActivity" />
+        <activity android:name=".sms.UpdateSmsApiActivity"></activity>
     </application>
 
 </manifest>

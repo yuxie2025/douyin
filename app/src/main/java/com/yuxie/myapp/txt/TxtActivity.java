@@ -56,7 +56,7 @@ public class TxtActivity extends AppCompatActivity implements AdapterView.OnItem
                     return;
                 }
                 //根据关键字查询小说信息
-                getBiquziByKey(key);
+                getBiqugeByKey(key);
             }
         });
     }
@@ -93,22 +93,22 @@ public class TxtActivity extends AppCompatActivity implements AdapterView.OnItem
         return data;
     }
 
-    public List<Txt> getBiquziByKey(final String key) {
+    public List<Txt> getBiqugeByKey(final String key) {
 
-        final String bqgUrl = "http://zhannei.baidu.com/";
+        final String bqgUrl = "http://www.biquge5200.com";
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(bqgUrl)
                 .build();
         TxtNetApi api = retrofit.create(TxtNetApi.class);
-        Call<ResponseBody> call = api.queryBQGTxtList(key, "11815863563564650233");
+        Call<ResponseBody> call = api.queryBQGTxtList(key);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     String s = response.body().string();
-                    List<Txt> list = ContentBiquziModelImpl.getInstance().analyBookDir(s, "");
+                    List<Txt> list = ContentBiqugeModelImpl.getInstance().analyBookDir(s, "");
 
                     data.clear();
                     data.addAll(list);

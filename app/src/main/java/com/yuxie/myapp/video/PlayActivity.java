@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
+import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.PluginState;
@@ -43,11 +44,10 @@ public class PlayActivity extends Activity {
     private FrameLayout fullscreenContainer;
     private WebChromeClient.CustomViewCallback customViewCallback;
     private myWebClient client;
+    private WebSettings settings;
     private String[] xllb = {
-            "http://aikan-tv.com/?url=",
             "http://www.82190555.com/video.php?url=",
             "http://2gty.com/apiurl/yun.php?url=",
-            "http://kppev.cn/vip.php?url=",
             "http://j.88gc.net/jx/?url=",
             "http://y.j1118.com/xnflv/index.php?url=",
     };
@@ -90,27 +90,25 @@ public class PlayActivity extends Activity {
         // 绑定
         web = (WebView) findViewById(R.id.play_video);
         url = getIntent().getStringExtra("what_web");
-        web.loadUrl(url);
 
-        WebSettings settings = web.getSettings();
+        settings = web.getSettings();
         settings.setDomStorageEnabled(true);
         settings.setPluginState(PluginState.ON);
 
+        settings.setBuiltInZoomControls(true);
         settings.setJavaScriptEnabled(true);// 启用支持javascript
 //        settings.setUseWideViewPort(true); // 关键点
         settings.setAllowFileAccess(true); // 允许访问文件
 //        settings.setSupportZoom(true); // 支持缩放
         settings.setLoadWithOverviewMode(true);
-        //settings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 不加载缓存内容
+//        settings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 不加载缓存内容
 
         //设置 缓存模式
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         // 开启 DOM storage API 功能
         settings.setDomStorageEnabled(true);
 
-
         //设置User-Agent,欺骗服务器端
-        settings.setUserAgentString("User-Agent: Mozilla/5.0 (Linux; MI 2 Build/LRX22G; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/55.0.2883.91 MobileSafari/537.36");
         if (Build.VERSION.SDK_INT >= 20) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
@@ -127,6 +125,9 @@ public class PlayActivity extends Activity {
         // 自定义客户端
         client = new myWebClient();
         web.setWebChromeClient(client);
+
+        isSetUserAgent(url);
+        web.loadUrl(url);
     }
 
     @Override
@@ -155,12 +156,15 @@ public class PlayActivity extends Activity {
         if (!current_web.contains(xllb[suoyin_index])) {
             current_web = xllb[suoyin_index] + current_web;
         }
+        isSetUserAgent(current_web);
         web.loadUrl(current_web);
     }
 
     // 前进
     public void fork(View v) {
         if (web.canGoForward()) {
+            WebBackForwardList list = web.copyBackForwardList();
+            isSetUserAgent(list.getItemAtIndex(list.getCurrentIndex() + 1).getUrl());
             web.goForward();
         } else {
             Toast.makeText(this, "小主，实在没有记录了....", Toast.LENGTH_SHORT).show();
@@ -171,6 +175,8 @@ public class PlayActivity extends Activity {
     // 后退
     public void back(View v) {
         if (web.canGoBack()) {
+            WebBackForwardList list = web.copyBackForwardList();
+            isSetUserAgent(list.getItemAtIndex(list.getCurrentIndex() - 1).getUrl());
             web.goBack();
         } else {
             tuichu(v);
@@ -313,7 +319,24 @@ public class PlayActivity extends Activity {
         } else {
             suoyin_index += 1;
         }
+        isSetUserAgent(xllb[suoyin_index] + url);
         web.loadUrl(xllb[suoyin_index] + url);
     }
+
+    private void isSetUserAgent(String url) {
+
+        for (String str : xllb) {
+            if (url.contains(str)) {
+                //设置User-Agent,欺骗服务器端
+                settings.setUserAgentString("User-Agent: Mozilla/5.0 (Linux; MI 2 Build/LRX22G; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/55.0.2883.91 MobileSafari/537.36");
+                return;
+            }
+        }
+        //设置User-Agent,欺骗服务器端
+        settings.setUserAgentString("Dalvik/2.1.0 (Linux; U; Android 7.0; MI 5s Plus MIUI/V9.2.1.0.NBGCNEK)");
+
+    }
+
+
 }
 

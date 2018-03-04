@@ -5,8 +5,11 @@ def androidCf = rootProject.ext.android
 
 greendao {
     schemaVersion 2
-    daoPackage androidCf.applicationId+".greendao"
+    daoPackage androidCf.applicationId + ".greendao"
     targetGenDir 'src/main/java'
+}
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
 }
 android {
     compileSdkVersion 25
@@ -22,6 +25,12 @@ android {
 
         //使用butterknife:7.0.1需要添加,如下配置必须放在主模块中
         javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+
+        //配置支持java 1.8
+        compileOptions {
+            targetCompatibility JavaVersion.VERSION_1_8
+            sourceCompatibility JavaVersion.VERSION_1_8
+        }
 
         //点9图出现问题解决方法
         aaptOptions {
@@ -40,7 +49,7 @@ android {
 
         ndk {
             // 设置支持的SO库架构
-            abiFilters "armeabi", "armeabi-v7a","arm64-v8a","mips","mips64","X86","X86_64"
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "mips", "mips64", "X86", "X86_64"
         }
     }
 

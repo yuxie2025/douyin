@@ -14,6 +14,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
+        //使用butterknife:7.0.1需要添加,如下配置必须放在主模块中
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+
         manifestPlaceholders = [
                 JPUSH_PKGNAME: androidCf.applicationId,
                 JPUSH_APPKEY : "425522f68290bf67f1f390c9", //JPush上注册的包名对应的appkey.
@@ -34,12 +37,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-
-    //配置支持java 1.8
-    compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_8
-        sourceCompatibility JavaVersion.VERSION_1_8
     }
 
     //65535的方法限制分包处理

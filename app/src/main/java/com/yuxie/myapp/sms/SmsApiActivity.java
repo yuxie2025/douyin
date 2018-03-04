@@ -1,4 +1,4 @@
-package com.yuxie.myapp.activity;
+package com.yuxie.myapp.sms;
 
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
@@ -48,6 +48,8 @@ public class SmsApiActivity extends BaseActivity {
 
     int successTotol = 0;
 
+    boolean isStop = false;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_sms_api;
@@ -58,7 +60,7 @@ public class SmsApiActivity extends BaseActivity {
 
         smsApiDao = EntityManager.getInstance().getSmsApiDao();
 
-        List<SmsApi> smsApiList = smsApiDao.loadAll();
+        List<SmsApi> smsApiList = smsApiDao.queryBuilder().orderDesc().list();
         if (smsApiList.size() == 0) {
             List<SmsApi> addData = addData();
             smsApiDao.insertOrReplaceInTx(addData);
@@ -70,14 +72,15 @@ public class SmsApiActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
 
+//        adapter.setOnItemClickListener((adapter1, view, position) -> {
+//            UpdateSmsApiActivity.start(context, adapter.getItem(position));
+//        });
+
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter1, View view, int position) {
                 if (view.getId() == R.id.btn_update) {
-                    ToastUtils.showShort("修改");
-                }
-                if (view.getId() == R.id.tv_name) {
-                    ToastUtils.showShort(adapter.getData().get(position).getUrl());
+                    UpdateSmsApiActivity.start(context, adapter.getItem(position));
                 }
                 if (view.getId() == R.id.btn_delete) {
                     smsApiDao.delete(adapter.getData().get(position));
@@ -89,6 +92,13 @@ public class SmsApiActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        List<SmsApi> data = smsApiDao.queryBuilder().orderDesc().list();
+        adapter.setNewData(data);
+    }
 
     @OnClick({R.id.start, R.id.stop, R.id.add_sms_api})
     public void onViewClicked(View view) {
@@ -102,18 +112,41 @@ public class SmsApiActivity extends BaseActivity {
                 fire(phone);
                 break;
             case R.id.stop:
+                isStop = true;
                 break;
             case R.id.add_sms_api:
+                startActivity(UpdateSmsApiActivity.class);
                 break;
         }
     }
 
-    private void fire(String phoneNumber) {
+    private void fire(final String phoneNumber) {
         successTotol = 0;
-        List<SmsApi> list = adapter.getData();
-        for (SmsApi smsApi : list) {
-            fire(phoneNumber, smsApi);
-        }
+
+        isStop = false;
+        ToastUtils.showShort("开火...");
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<SmsApi> list = adapter.getData();
+                for (SmsApi smsApi : list) {
+
+                    if (isStop) {
+                        ToastUtils.showShort("已经停火!");
+                        return;
+                    }
+
+                    fire(phoneNumber, smsApi);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
 
     }
 

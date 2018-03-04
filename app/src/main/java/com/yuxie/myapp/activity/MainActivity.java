@@ -15,6 +15,7 @@ import android.widget.SimpleAdapter;
 import com.yuxie.myapp.R;
 import com.yuxie.myapp.controlpc.RemoteControlActivity;
 import com.yuxie.myapp.greendao.UserDao;
+import com.yuxie.myapp.sms.SmsApiActivity;
 import com.yuxie.myapp.utils.db.EntityManager;
 import com.yuxie.myapp.entity.User;
 import com.yuxie.myapp.music.MusicActivity;

@@ -73,7 +73,7 @@ public class TxtDirActivity extends AppCompatActivity implements AdapterView.OnI
         tv_txt_name.setText(TextName);
 
         Log.i("TAG","TAG:"+TAG);
-        if (ContentBiquziModelImpl.TAG.equals(TAG)){
+        if (ContentBiqugeModelImpl.TAG.equals(TAG)){
             BiquziDir(txtDirUrl);
         }else if(ContentGxwztvModelImpl.TAG.equals(TAG)){
             GxwztvDir(txtDirUrl);
@@ -114,7 +114,7 @@ public class TxtDirActivity extends AppCompatActivity implements AdapterView.OnI
 
     private void  BiquziDir(final String txtDirUrl){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ContentBiquziModelImpl.TAG)
+                .baseUrl(ContentBiqugeModelImpl.TAG)
                 .build();
         TxtNetApi api = retrofit.create(TxtNetApi.class);
         Call<ResponseBody> call = api.queryDirUrlString(txtDirUrl);
@@ -125,7 +125,7 @@ public class TxtDirActivity extends AppCompatActivity implements AdapterView.OnI
                 try {
                     String s= Utils.inputStreamToStringGbk(response.body().byteStream());
 
-                    List<TxtDir> list = ContentBiquziModelImpl.getInstance().chaptersList(s, "");
+                    List<TxtDir> list = ContentBiqugeModelImpl.getInstance().chaptersList(s, "");
                     if (list.size() == 0) {
                         Toast.makeText(TxtDirActivity.this, txtDirUrl + ",未收录...", Toast.LENGTH_SHORT).show();
                     }

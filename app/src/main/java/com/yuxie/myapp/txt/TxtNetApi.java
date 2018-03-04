@@ -23,16 +23,16 @@ public interface TxtNetApi {
             "Cache-Control:no-cache"})
     Call<ResponseBody> queryTxtList(@Query("keyword") String keyword);
 
-//    http://zhannei.baidu.com/cse/search?q=%E6%AD%A6%E7%BB%83%E5%B7%85%E5%B3%B0&click=1&entry=1&s=11815863563564650233&nsid=
+//    http://www.biquge5200.com/modules/article/search.php?searchkey=%E5%A4%A7%E4%B8%BB%E5%AE%B0
 //    Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3
-    @GET("cse/search")
+    @GET("modules/article/search.php")
     @Headers({"Accept:text/html,application/xhtml+xml,application/xml",
             "User-Agent:Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3",
             "Accept-Charset:UTF-8",
             "Keep-Alive:300",
             "Connection:Keep-Alive",
             "Cache-Control:no-cache"})
-    Call<ResponseBody> queryBQGTxtList(@Query("q") String keyword, @Query("s") String s);
+    Call<ResponseBody> queryBQGTxtList(@Query("searchkey") String searchkey);
 
     @GET("{url}")
     @Headers({

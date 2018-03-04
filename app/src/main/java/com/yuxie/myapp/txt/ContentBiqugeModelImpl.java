@@ -11,15 +11,15 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContentBiquziModelImpl implements IWebContentModel{
-    public static final String TAG = "http://www.biquzi.com/";
+public class ContentBiqugeModelImpl implements IWebContentModel{
+    public static final String TAG = "http://www.biquge5200.com/";
     public static final String bqgUrl="http://zhannei.baidu.com/";
 
-    public static ContentBiquziModelImpl getInstance() {
-        return new ContentBiquziModelImpl();
+    public static ContentBiqugeModelImpl getInstance() {
+        return new ContentBiqugeModelImpl();
     }
 
-    private ContentBiquziModelImpl() {
+    private ContentBiqugeModelImpl() {
 
     }
     @Override
@@ -48,18 +48,18 @@ public class ContentBiquziModelImpl implements IWebContentModel{
     public List<Txt> analyBookDir(String s, String realUrl) throws Exception {
         List<Txt> data=new ArrayList<>();
         Document doc = Jsoup.parse(s);
-        Elements booksE = doc.getElementsByClass("result-item result-game-item");
+        Elements booksE = doc.getElementsByClass("grid").get(0).getElementsByTag("tr");
         if (null != booksE && booksE.size() >= 2) {
             Txt txt = null;
-            for (int i = 0; i < booksE.size(); i++) {
+            for (int i = 1; i < booksE.size(); i++) {
                 txt = new Txt();
-                txt.setAuthorName(booksE.get(i).getElementsByClass("result-game-item-detail").get(0).getElementsByClass("result-game-item-info").get(0).getElementsByClass("result-game-item-info-tag").get(0).child(1).text());
-                txt.setType(booksE.get(i).getElementsByClass("result-game-item-detail").get(0).getElementsByClass("result-game-item-info").get(0).getElementsByClass("result-game-item-info-tag").get(1).getElementsByClass("result-game-item-info-tag-title").get(1).text());
-                txt.setTxtName(booksE.get(i).getElementsByClass("result-game-item-detail").get(0).getElementsByClass("result-item-title result-game-item-title").get(0).getElementsByTag("a").get(0).attr("title"));
-                txt.setUpdateTime(booksE.get(i).getElementsByClass("result-game-item-detail").get(0).getElementsByClass("result-game-item-info").get(0).getElementsByClass("result-game-item-info-tag").get(2).getElementsByClass("result-game-item-info-tag-title").get(0).text());
-                txt.setLatestUrl(booksE.get(i).getElementsByClass("result-game-item-detail").get(0).getElementsByClass("result-game-item-info").get(0).getElementsByClass("result-game-item-info-tag").get(3).getElementsByClass("result-game-item-info-tag-item").get(0).attr("href"));
-                txt.setLatestTitle(booksE.get(i).getElementsByClass("result-game-item-detail").get(0).getElementsByClass("result-game-item-info").get(0).getElementsByClass("result-game-item-info-tag").get(3).getElementsByClass("result-game-item-info-tag-item").text());
-                txt.setPhoto(booksE.get(i).getElementsByClass("result-game-item-pic").get(0).getElementsByClass("result-game-item-pic-link-img").get(0).attr("src"));
+                txt.setAuthorName(booksE.get(i).getElementsByTag("td").get(2).text());
+                txt.setType(booksE.get(i).getElementsByTag("td").get(5).text());
+                txt.setTxtName(booksE.get(i).getElementsByTag("td").get(0).getElementsByTag("a").text());
+                txt.setUpdateTime(booksE.get(i).getElementsByTag("td").get(4).text());
+                txt.setLatestUrl(booksE.get(i).getElementsByTag("td").get(1).getElementsByTag("a").attr("href"));
+                txt.setLatestTitle(booksE.get(i).getElementsByTag("td").get(1).getElementsByTag("a").text());
+//                txt.setPhoto(booksE.get(i).getElementsByClass("result-game-item-pic").get(0).getElementsByClass("result-game-item-pic-link-img").get(0).attr("src"));
 
                 //获取目录的url
                 String dirUrl = txt.getLatestUrl();
@@ -68,12 +68,10 @@ public class ContentBiquziModelImpl implements IWebContentModel{
                 txt.setTag(tag);
 
                 String latestUrl=dirUrl.substring(dirUrl.indexOf("com/")+4,dirUrl.length());
-                txt.setLatestUrl(latestUrl);
                 if (!TextUtils.isEmpty(latestUrl)) {
                     dirUrl = latestUrl.substring(0, latestUrl.lastIndexOf("/"));
                 }
                 txt.setDirUrl(dirUrl);
-//                Log.i("TAG", "analyBookDir: "+txt.toString());
                 data.add(txt);
             }
         }

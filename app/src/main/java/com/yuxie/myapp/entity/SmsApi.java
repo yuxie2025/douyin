@@ -4,11 +4,15 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
+import java.io.Serializable;
+
 /**
  * Created by luo on 2018/3/3.
  */
 @Entity
-public class SmsApi {
+public class SmsApi implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     @Id
     private Long id;
 

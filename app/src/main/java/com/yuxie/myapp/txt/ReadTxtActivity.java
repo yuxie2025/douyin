@@ -27,23 +27,27 @@ public class ReadTxtActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_txt);
 
-        Intent intent=getIntent();
-        String txtContentUrl=intent.getStringExtra("txtContentUrl");
-        TAG=intent.getStringExtra("TAG");
+        Intent intent = getIntent();
+        String txtContentUrl = intent.getStringExtra("txtContentUrl");
+        TAG = intent.getStringExtra("TAG");
 
 
-        if(TextUtils.isEmpty(txtContentUrl)||TextUtils.isEmpty(TAG)){
+        if (TextUtils.isEmpty(txtContentUrl) || TextUtils.isEmpty(TAG)) {
             Toast.makeText(this, "小说的url为空!", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
-        tv_txt_show=(TextView)findViewById(R.id.tv_txt_show);
+        tv_txt_show = (TextView) findViewById(R.id.tv_txt_show);
 
         initData(txtContentUrl);
     }
 
     private void initData(String txtContentUrl) {
+
+        if (txtContentUrl.contains("com/")) {
+            txtContentUrl = txtContentUrl.substring(txtContentUrl.indexOf("com/") + 4, txtContentUrl.length());
+        }
 
         //获取最新章节类容
         Retrofit retrofit = new Retrofit.Builder()
@@ -57,17 +61,17 @@ public class ReadTxtActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    String s=null;
-                    String content=null;
-                    if (ContentGxwztvModelImpl.TAG.equals(TAG)){
-                        s=response.body().string();
-                        content=ContentGxwztvModelImpl.getInstance().analyBookcontent(s,"");
-                    }else if (ContentBiquziModelImpl.TAG.equals(TAG)) {
-                        s= Utils.inputStreamToStringGbk(response.body().byteStream());
-                        content=ContentBiquziModelImpl.getInstance().analyBookcontent(s,"");
+                    String s = null;
+                    String content = null;
+                    if (ContentGxwztvModelImpl.TAG.equals(TAG)) {
+                        s = response.body().string();
+                        content = ContentGxwztvModelImpl.getInstance().analyBookcontent(s, "");
+                    } else if (ContentBiqugeModelImpl.TAG.equals(TAG)) {
+                        s = Utils.inputStreamToStringGbk(response.body().byteStream());
+                        content = ContentBiqugeModelImpl.getInstance().analyBookcontent(s, "");
                     }
 
-                    if(TextUtils.isEmpty(content)){
+                    if (TextUtils.isEmpty(content)) {
                         Toast.makeText(ReadTxtActivity.this, "没有抓取到内容!", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -75,13 +79,12 @@ public class ReadTxtActivity extends AppCompatActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.i("TAG","Exception:"+e.getMessage());
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(ReadTxtActivity.this, "网络异常,"+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ReadTxtActivity.this, "网络异常," + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
