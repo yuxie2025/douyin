@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical" android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/share_layout_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:background="#353535"
+            android:alpha="0.2"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent"></LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_gravity="bottom"
+            android:background="#353535"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+          <RelativeLayout android:layout_width="match_parent"
+                          android:layout_height="92px">
+              <TextView
+                  android:id="@+id/cancel"
+                  android:layout_marginLeft="30px"
+                  android:layout_width="100px"
+                  android:text="取消"
+                  android:textSize="16sp"
+                  android:textColor="@color/code_text"
+                  android:gravity="center"
+                  android:layout_height="match_parent"/>
+              <TextView
+                  android:id="@+id/determine"
+                  android:layout_marginRight="30px"
+                  android:layout_width="100px"
+                  android:layout_alignParentRight="true"
+                  android:text="确定"
+                  android:textSize="16sp"
+                  android:textColor="@color/code_text"
+                  android:gravity="center"
+                  android:layout_height="match_parent"/>
+          </RelativeLayout>
+            <com.wx.wheelview.widget.WheelView
+                android:id="@+id/wheelview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#353535"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/add_task_layout"
+            android:background="@color/navigation_bar_bg"
+            android:alpha="0.2"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent"></LinearLayout>
+    </FrameLayout>
+</LinearLayout>

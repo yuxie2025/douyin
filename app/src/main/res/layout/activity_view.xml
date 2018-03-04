@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.b3ad.yuxie.myapplication.activity.ViewActivity">
+
+    <!--<com.b3ad.yuxie.myapplication.view.MyView
+        android:id="@+id/my_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />-->
+
+    <com.b3ad.yuxie.myapplication.myview.RadarView
+        android:layout_width="300dp"
+        android:layout_height="300dp" />
+    
+</android.support.constraint.ConstraintLayout>

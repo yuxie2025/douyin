@@ -1,0 +1,45 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"
+    <title>测试Js的三种不同对话框</title>
+    <script language="JavaScript">
+        function alertFun()
+        {
+            alert("Alert警告对话框!");
+        }
+        function confirmFun()
+        {
+            if(confirm("访问百度?"))
+            {location.href = "http://www.baidu.com";}
+            <!--{location.href = "https://www.baidu.com/link?url=9DrhvZLhIXGep2u3AqEwbdB5K-fHbV76vyx-Z301jLbLR4dVlbbYzevSG0X-uD_G5qiddsBkuJtD9GDIPaP5fL8e-gb36CpRiC5zhDT6Rae&wd=&eqid=bcff63690001cde2000000065966e5bd";}-->
+            else alert("取消访问!");
+        }
+        function promptFun()
+        {
+            var word = prompt("Prompt对话框","请输入点什么...:");
+            if(word)
+            {
+                alert("你输入了:"+word)
+            }else{alert("呵呵,你什么都没写!");}
+        }
+
+    </script>
+</head>
+
+<body>
+<p>三种对话框的使用</p>
+
+<p>Alert对话框</p>
+<p>
+    <input type="submit" name="Submit1" value="展示1" onclick="alertFun()"/>
+</p>
+<p>Confirm对话框</p>
+<p>
+    <input type="submit" name="Submit2" value="展示2" onclick="confirmFun()"/>
+</p>
+<p>Prompt对话框</p>
+<p>
+    <input type="submit" name="Submit3" value="展示3" onclick="promptFun()"/>
+</p>
+</body>
+</html>

@@ -1,0 +1,118 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+greendao {
+    schemaVersion 2
+    daoPackage 'com.example.anonymous.greendao'
+    targetGenDir 'src/main/java'
+}
+android {
+    compileSdkVersion 25
+    buildToolsVersion '26.0.2'
+    defaultConfig {
+        applicationId "com.b3ad.yuxie.myapplication"
+        minSdkVersion 14
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
+        aaptOptions {
+            cruncherEnabled = false
+            useNewCruncher = false
+        }
+
+        dexOptions {
+            javaMaxHeapSize "4g"
+            //打开dex增量编译
+            incremental true
+        }
+
+        //添加如下配置就OK了
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME           : applicationId,
+                JPUSH_APPKEY            : "425522f68290bf67f1f390c9", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL           : "developer-default", //暂时填写默认值即可.
+                UMENG_APPKEY            : "5a4ae7c0b27b0a3aab000044",//友盟
+                UMENG_CHANNEL           : "Channel ID",//友盟
+                "com.amap.api.v2.apikey": "caa67d9f01219028370158753e1efce0",//设置高德Key
+        ]
+
+//        ndk {
+//            moduleName "lsqlite3"
+//            // 指定编译平台，更多平台信息 参见https://developer.android.com/ndk/guides/abis.html#sa
+//            abiFilters "armeabi", "armeabi-v7a","arm64-v8a","mips","mips64","X86","X86_64"
+//        }
+    }
+
+//    sourceSets.main {
+//        // 你的源码目录
+//        jni.srcDir 'src/main/jni'
+//        jniLibs.srcDirs = ['libs']
+//    }
+
+    //mvvp需要申明的地方
+    dataBinding {
+        enabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
+    useLibrary 'org.apache.http.legacy'
+
+    dependencies {
+        compile fileTree(dir: 'libs', include: ['*.jar'])
+//        androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+//            exclude group: 'com.android.support', module: 'support-annotations'
+//        })
+
+//        compile 'com.android.support:appcompat-v7:25.3.1'
+//        compile 'com.android.support.constraint:constraint-layout:1.0.2'
+//        compile 'com.android.support:design:25.3.1'
+//        testCompile 'junit:junit:4.12'
+        /*okhttp3封装*/
+//        compile 'com.squareup.okhttp3:okhttp:3.3.0'
+//        compile 'com.squareup.okio:okio:1.6.0'
+        /*okhttp3使用架包 https://github.com/MrZhousf/OkHttp3 */
+//        compile 'com.zhousf.lib:okhttp3:2.8.6'
+        /*picasso图片缓存架包*/
+        compile 'com.squareup.picasso:picasso:2.5.1'
+
+        /*glide图片缓存架包*/
+//        compile 'com.github.bumptech.glide:glide:3.5.2'
+//        compile 'com.android.support:support-v4:25.3.1'
+
+        /*Rxjava框架*/
+//        compile 'io.reactivex.rxjava2:rxjava:2.0.4'
+
+        /*Retrofit2.0框架*/
+//        compile 'com.squareup.retrofit2:retrofit:2.0.2'
+//        compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+//        compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+//        compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+
+        //JSOUP 解析html使用
+        compile 'org.jsoup:jsoup:1.10.2'
+
+        compile 'com.alibaba:fastjson:1.2.23'
+        compile 'httpcomponents-httpcore:httpcore:4.0-alpha6'
+
+        compile 'org.greenrobot:greendao:3.2.2' // add library
+        compile project(path: ':baselib')
+
+
+        compile files('src/main/libs/sun.misc.BASE64Decoder.jar')
+    }
+}

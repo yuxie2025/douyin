@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.b3ad.yuxie.myapplication">
+
+    <!-- 添加读写权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- 访问互联网权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <application
+        android:name=".application.App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- 横屏:landscape -->
+        <!-- 竖屏:portrait -->
+        <!-- 横屏：setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); -->
+        <!-- 竖屏：setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); -->
+        <!-- android:configChanges="orientation|keyboardHidden|screenSize">切换横竖屏,不从新执行生命周期,执行onConfigurationChanged 方法 -->
+        <activity android:name=".activity.MainActivity">
+
+            <!-- android:configChanges="orientation|keyboardHidden|screenSize" -->
+            <!-- android:screenOrientation="portrait"> -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- webview使用 -->
+        <activity android:name=".activity.WebViewJsActivity" />
+        <!-- okhttp3使用 -->
+        <activity android:name=".activity.Okhttp3Activity" />
+        <activity android:name=".activity.GlideAndPicassoActivity" />
+        <activity android:name=".activity.ViewActivity" />
+        <activity android:name=".mvp.view.UserActivity" />
+        <activity android:name=".Login.view.LoginActivity" />
+        <activity android:name=".activity.RxjavaActivity" />
+        <activity android:name=".mvvp.MvvpActivity" />
+        <activity android:name=".video.VideoListActivity" />
+        <activity
+            android:name=".video.PlayActivity"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:label="@string/title_activity_play" />
+        <activity android:name=".music.MusicActivity" />
+        <activity android:name=".txt.TxtActivity" />
+        <activity android:name=".txt.ReadTxtActivity" />
+        <activity android:name=".txt.TxtDirActivity" />
+        <activity android:name=".listandrecycler.ListAndRecyclerActivity" />
+        <activity android:name=".listandrecycler.MultiItemListViewActivity" />
+        <activity android:name=".listandrecycler.RecyclerViewActivity" />
+        <activity android:name=".listandrecycler.MultiItemRvActivity" />
+        <activity android:name=".controlpc.RemoteControlActivity" />
+        <activity android:name=".controlpc.ControlActivity" />
+        <activity android:name=".controlpc.PcScreenActivity" />
+        <activity android:name=".activity.SmsApiActivity"></activity>
+    </application>
+
+</manifest>

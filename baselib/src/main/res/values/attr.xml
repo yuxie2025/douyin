@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NumberButton">
+        <attr name="editable" format="boolean"/>
+        <attr name="buttonWidth" format="dimension" />
+        <attr name="textWidth" format="dimension" />
+        <attr name="textSize" format="dimension"/>
+        <attr name="textColor" format="color"/>
+    </declare-styleable>
+</resources>

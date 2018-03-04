@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/id_txv"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:gravity="center_horizontal"
+        android:text="@string/id"
+        android:textSize="28sp" />
+
+    <EditText
+        android:id="@+id/id_edt"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_toRightOf="@id/id_txv"
+        android:inputType="text"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/first_name_txv"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/id_txv"
+        android:gravity="center_horizontal"
+        android:text="@string/firstname"
+        android:textSize="28sp" />
+
+    <EditText
+        android:id="@+id/first_name_edt"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/id_txv"
+        android:layout_toRightOf="@id/first_name_txv"
+        android:inputType="text"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/last_name_txv"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/first_name_txv"
+        android:gravity="center_horizontal"
+        android:text="@string/lastname"
+        android:textSize="28sp" />
+
+
+    <EditText
+        android:id="@+id/last_name_edt"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/first_name_edt"
+        android:layout_toRightOf="@id/last_name_txv"
+        android:inputType="text"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/address_txv"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/last_name_txv"
+        android:gravity="center_horizontal"
+        android:text="地址"
+        android:textSize="28sp" />
+
+    <EditText
+        android:id="@+id/address_edt"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/last_name_txv"
+        android:layout_toRightOf="@id/address_txv"
+        android:inputType="text"
+        android:textSize="18sp" />
+
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/address_edt"
+        android:text="@string/save" />
+
+    <Button
+        android:id="@+id/loadButton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/address_edt"
+        android:layout_toRightOf="@id/saveButton"
+        android:text="@string/load" />
+
+</RelativeLayout>
