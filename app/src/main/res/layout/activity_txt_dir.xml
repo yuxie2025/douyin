@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.b3ad.yuxie.myapplication.txt.TxtDirActivity">
+    tools:context="com.yuxie.myapp.txt.TxtDirActivity">
 
     <RelativeLayout
         android:id="@+id/rl_bar"

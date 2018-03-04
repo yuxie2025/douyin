@@ -3,7 +3,7 @@
 
     <data>
 
-        <import type="com.b3ad.yuxie.myapplication.mvvp.User" />
+        <import type="com.yuxie.myapp.mvvp.User" />
 
         <variable
             name="user"

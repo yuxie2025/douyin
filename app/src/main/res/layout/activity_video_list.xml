@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.b3ad.yuxie.myapplication.video.VideoListActivity">
+    tools:context="com.yuxie.myapp.video.VideoListActivity">
 
 </android.support.constraint.ConstraintLayout>

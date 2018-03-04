@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 
+def androidCf = rootProject.ext.android
+
 android {
     compileSdkVersion 25
     buildToolsVersion "26.0.2"
@@ -12,8 +14,20 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
-        //添加如下配置就OK了
-        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: androidCf.applicationId,
+                JPUSH_APPKEY : "425522f68290bf67f1f390c9", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
+                UMENG_APPKEY            : "5a4ae7c0b27b0a3aab000044",//友盟
+                UMENG_CHANNEL           : "Channel ID",//友盟
+                "com.amap.api.v2.apikey": "caa67d9f01219028370158753e1efce0",//设置高德Key
+        ]
+
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters "armeabi", "armeabi-v7a","arm64-v8a","mips","mips64","X86","X86_64"
+        }
+
     }
     buildTypes {
         release {
@@ -21,29 +35,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    defaultConfig {
-        ndk {
-            // 设置支持的SO库架构
-            abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
-        }
-    }
+
+    //配置支持java 1.8
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
 
-
-    //添加如下配置就ok了
-//    lintOptions {
-//        checkReleaseBuilds false
-//        abortOnError false
-//    }
-
+    //65535的方法限制分包处理
     dexOptions {
-        javaMaxHeapSize "1000"
-        //打开dex增量编译
-        incremental true
+        javaMaxHeapSize "4g"
+        //打开dex增量编译新版默认打开的
+        // incremental true
     }
+
 }
 
 dependencies {

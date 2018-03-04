@@ -1,0 +1,81 @@
+ext {
+
+    //android
+    android = [
+            compileSdkVersion : 25,
+            buildToolsVersion : "26.0.2",
+            applicationId     : "com.yuxie.myapp",
+            minSdkVersion     : 18,
+            targetSdkVersion  : 22,
+            versionCode       : 2,
+            versionName       : "1.2"
+    ]
+
+    //Libraries variable
+    appcompatv7_Version     = '24.2.0'
+    supportv4_Verion        = '24.2.0'
+    design_Version          = '24.2.0'
+    gridlayout_Version      = '24.2.0'
+    recyclerview_Version    = '24.2.0'
+    cardview_Version        = '24.2.0'
+    rxjava_Version          = '1.1.9'
+    rxandroid_Version       = '1.2.1'
+    rxbinding_Version       = '2.0.0'
+    retrofit_Version        = '2.3.0'
+    retrofit_adapter_rxjava_Version = '2.3.0'
+    retrofit_converter_gson_Version = '2.3.0'
+
+//    okhttp_Version          = '3.9.0'
+    butterknife_Version     = '7.0.1'
+    eventbus_Version        = '3.0.0-beta1'
+    ormlite_core_Version    = '4.48'
+    ormlite_android_Version = '4.48'
+    autolayout_Version      = '1.4.3'
+    imageloader_Version     = '1.9.5'
+    glide_Version           = '3.7.0'
+    bgarefreshlayout_Version = '1.1.4'
+    multiStateView_Version  = '1.1.1'
+    picasso_Version         = '2.5.2'
+    taggroup_Version        = '1.4@aar'
+    photoview_Version       = '1.2.3'
+    android_utils_Version   = '1.0.0'
+    convenientbanner_Version = '2.0.5'
+    swiperecyclerview_Version = '1.0.4'
+    dependencieslib = [
+            appcompatv7       :   "com.android.support:appcompat-v7:${appcompatv7_Version}",
+            supportv4         :   "com.android.support:support-v4:${supportv4_Verion}",
+            design            :   "com.android.support:design:${design_Version}",
+            gridlayout        :   "com.android.support:gridlayout-v7:${gridlayout_Version}",
+            recyclerview      :   "com.android.support:recyclerview-v7:${recyclerview_Version}",
+            cardview          :   "com.android.support:cardview-v7:${cardview_Version}",
+            rxjava            :   "io.reactivex:rxjava:${rxjava_Version}",
+            rxandroid         :   "io.reactivex:rxandroid:${rxandroid_Version}",
+            rxbinding         :   "com.jakewharton.rxbinding2:rxbinding:${rxbinding_Version}",
+            retrofit_converter_gson  : "com.squareup.retrofit2:converter-gson:${retrofit_converter_gson_Version}",
+            retrofit_adapter_rxjava  : "com.squareup.retrofit2:adapter-rxjava:${retrofit_adapter_rxjava_Version}",
+            retrofit          :   "com.squareup.retrofit2:retrofit:${retrofit_Version}",
+//            okhttp            :   "com.squareup.okhttp3:okhttp:${okhttp_Version}",
+            butterknife       :   "com.jakewharton:butterknife:${butterknife_Version}",
+            eventbus          :   "de.greenrobot:eventbus:${eventbus_Version}",
+            ormlite_core      :   "com.j256.ormlite:ormlite-core:${ormlite_core_Version}",
+            ormlite_android   :   "com.j256.ormlite:ormlite-android:${ormlite_android_Version}",
+            autolayout        :   "com.zhy:autolayout:${autolayout_Version}",
+            imageloader       :   "com.nostra13.universalimageloader:universal-image-loader:${imageloader_Version}",
+            glide             :   "com.github.bumptech.glide:glide:${glide_Version}",
+            picasso           :   "com.squareup.picasso:picasso:${picasso_Version}",
+            bgarefreshlayout  :   "cn.bingoogolapple:bga-refreshlayout:${bgarefreshlayout_Version}",
+            multistateview    :   "com.github.Kennyc1012:MultiStateView:${multiStateView_Version}",
+            taggroup          :   "me.gujun.android.taggroup:library:${taggroup_Version}",
+            photoview         :   "com.mcxiaoke.photoview:library:${photoview_Version}",//点击放大图片集合
+            android_utils     : "com.github.kibotu:android-utils:${android_utils_Version}",
+            //轮播图
+            convenientbanner  :  "com.bigkoo:convenientbanner:${convenientbanner_Version}",
+            bga_banner        :  "cn.bingoogolapple:bga-banner:2.1.7@aar",
+            baserecycleviewadapterhelper : "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30",
+            asyncexpandablelist : "com.ericliu.asyncexpandablelist:asyncexpandablelist:1.1.0",
+            swiperecyclerview :   "com.yanzhenjie:recyclerview-swipe:${swiperecyclerview_Version}",
+            switchbutton    :   "com.kyleduo.switchbutton:library:1.4.5",
+            apkupdate       : "com.xs.versionupdate:apkupdate:1.0.0"
+    ]
+
+}

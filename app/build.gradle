@@ -1,15 +1,18 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
+
+def androidCf = rootProject.ext.android
+
 greendao {
     schemaVersion 2
-    daoPackage 'com.example.anonymous.greendao'
+    daoPackage androidCf.applicationId+".greendao"
     targetGenDir 'src/main/java'
 }
 android {
     compileSdkVersion 25
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "com.b3ad.yuxie.myapplication"
+        applicationId androidCf.applicationId
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
@@ -17,22 +20,17 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
+        //使用butterknife:7.0.1需要添加,如下配置必须放在主模块中
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+
+        //点9图出现问题解决方法
         aaptOptions {
             cruncherEnabled = false
             useNewCruncher = false
         }
 
-        dexOptions {
-            javaMaxHeapSize "4g"
-            //打开dex增量编译
-            incremental true
-        }
-
-        //添加如下配置就OK了
-        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
-
         manifestPlaceholders = [
-                JPUSH_PKGNAME           : applicationId,
+                JPUSH_PKGNAME           : androidCf.applicationId,
                 JPUSH_APPKEY            : "425522f68290bf67f1f390c9", //JPush上注册的包名对应的appkey.
                 JPUSH_CHANNEL           : "developer-default", //暂时填写默认值即可.
                 UMENG_APPKEY            : "5a4ae7c0b27b0a3aab000044",//友盟
@@ -40,18 +38,11 @@ android {
                 "com.amap.api.v2.apikey": "caa67d9f01219028370158753e1efce0",//设置高德Key
         ]
 
-//        ndk {
-//            moduleName "lsqlite3"
-//            // 指定编译平台，更多平台信息 参见https://developer.android.com/ndk/guides/abis.html#sa
-//            abiFilters "armeabi", "armeabi-v7a","arm64-v8a","mips","mips64","X86","X86_64"
-//        }
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters "armeabi", "armeabi-v7a","arm64-v8a","mips","mips64","X86","X86_64"
+        }
     }
-
-//    sourceSets.main {
-//        // 你的源码目录
-//        jni.srcDir 'src/main/jni'
-//        jniLibs.srcDirs = ['libs']
-//    }
 
     //mvvp需要申明的地方
     dataBinding {
@@ -65,11 +56,7 @@ android {
         }
     }
 
-    packagingOptions {
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
-    }
-
+    //Android 6.0不再支持 Apache HTTP client 使用许添加
     useLibrary 'org.apache.http.legacy'
 
     dependencies {
@@ -112,7 +99,6 @@ android {
         compile 'org.greenrobot:greendao:3.2.2' // add library
         compile project(path: ':baselib')
 
-
-        compile files('src/main/libs/sun.misc.BASE64Decoder.jar')
+        compile files('libs/sun.misc.BASE64Decoder.jar')
     }
 }

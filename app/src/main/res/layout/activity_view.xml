@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.b3ad.yuxie.myapplication.activity.ViewActivity">
+    tools:context="com.yuxie.myapp.activity.ViewActivity">
 
-    <!--<com.b3ad.yuxie.myapplication.view.MyView
+    <com.yuxieuxie.myapplication.view.MyView
         android:id="@+id/my_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />-->
 
-    <com.b3ad.yuxie.myapplication.myview.RadarView
+    <com.yuxie.myapp.myview.RadarView
         android:layout_width="300dp"
         android:layout_height="300dp" />
     
