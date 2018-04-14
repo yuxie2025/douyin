@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
+    <!--<data>-->
 
-        <import type="com.yuxie.myapp.mvvp.User" />
+        <!--<import type="com.yuxie.myapp.mvvp.User" />-->
 
-        <variable
-            name="user"
-            type="User" />
+        <!--<variable-->
+            <!--name="user"-->
+            <!--type="User" />-->
 
-    </data>
+    <!--</data>-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{String.valueOf(user.id)}" />
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@{String.valueOf(user.id)}" />-->
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{user.username}" />
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@{user.username}" />-->
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{user.password}" />
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@{user.password}" />-->
 
     </LinearLayout>
 

@@ -436,6 +436,38 @@ public class SmsApiActivity extends BaseActivity {
         smsApi.setParameterAfter("");
         smsApi.setResultOk("\"ok\":true");
         data.add(smsApi);
+        smsApi = new SmsApi();
+        smsApi.setId(26L);
+        smsApi.setType("post");
+        smsApi.setUrl("https://api2.quhepai.com/user/getsmscode");
+        smsApi.setParameterBefore("os=Android&model=SM-G930F&area_id=110000&rctk=&imei=865821079483270&hpid=&ver=1.6.9&long=106.67963615746643&build=1712211344&token_temp=&netk=&nonce=1515146882410&token=&sa=SvWDOSgflCTktWN2gZJeA26s%2FKsJfvkYUf3h8KsEJ%2FxBUE3KOW%2BlQWy3g9bqRlNZ0EYGzUKwOb%2F0%0AYgOREoKTl3mmqa2pcsblrYUDbkDcT8dQiWJ9VxTaKqeIEbVl38VE4rXB1avYbPR2zOkD28c7%2Fas%2F%0Ap0R38lq3nziMVHRap34%3D&company=samsung&logined=0&api=39&verCode=446&user_id=&ch=hepai_s_018&lat=26.636185489185326&type=1&phone=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("请求成功");
+        data.add(smsApi);
+        smsApi = new SmsApi();
+        smsApi.setId(27L);
+        smsApi.setType("post");
+        smsApi.setUrl("https://www.1yuanxing.com/apiAngular/getSMS.jsp");
+        smsApi.setParameterBefore("username=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("\"code\":200");
+        data.add(smsApi);
+        smsApi = new SmsApi();
+        smsApi.setId(28L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://api-cc.babybus.org/User/VerificationCode");
+        smsApi.setParameterBefore("al=403&ost=1&type=1&channel=A002&phone=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("ResultCode\": \"0\"");
+        data.add(smsApi);
+        smsApi = new SmsApi();
+        smsApi.setId(29L);
+        smsApi.setType("post");
+        smsApi.setUrl("https://api2.drcuiyutao.com/v55/user/sendVerificationCode");
+        smsApi.setParameterBefore("dialCode=86&mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("\"code\": 1");
+        data.add(smsApi);
 
         //以上是成功数据-------------------------
 

@@ -4,4 +4,19 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="windowBackground">#f7f7f7</color>
+
+    <color name="featureTitleColor">#939597</color>
+    <color name="actionBarColor">#009CDE</color>
+    <color name="actionBarColorDark">#0081B7</color>
+    <color name="nordicBackground">#FFF5F5F5</color>
+    <color name="backgroundColor">#E6E7E8</color>
+    <color name="orange">#DC582A</color>
+    <color name="dark_orange">#9E3F1E</color>
+    <color name="light_orange">#EFB5A0</color>
+    <color name="headerBackgroundColor">#009ada</color>
+    <color name="headerBackgroundColorDark">#0081B7</color>
+    <color name="headerTextColor">#FFFFFF</color>
+    <color name="actionBarMenuTextColor">#FFFFFF</color>
+
+    <color name="darkGray">#AAABAF</color>
 </resources>

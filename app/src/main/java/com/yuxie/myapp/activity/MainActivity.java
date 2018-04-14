@@ -13,25 +13,26 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.apkupdate.UpdateActivity;
 import com.baselib.base.BaseActivity;
+import com.baselib.takephoto.app.SelectPhotoActivity;
+import com.baselib.utilcode.util.ToastUtils;
 import com.yuxie.myapp.R;
 import com.yuxie.myapp.controlpc.RemoteControlActivity;
-import com.yuxie.myapp.entity.User;
-import com.yuxie.myapp.greendao.UserDao;
 import com.yuxie.myapp.music.MusicActivity;
 import com.yuxie.myapp.mvvp.MvvpActivity;
 import com.yuxie.myapp.sms.SmsApiActivity;
 import com.yuxie.myapp.txt.TxtActivity;
-import com.yuxie.myapp.utils.db.EntityManager;
 import com.yuxie.myapp.video.VideoListActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
+import no.nordicsemi.android.dfuutils.DfuActivity;
 
 public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
@@ -173,13 +174,23 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 //            });
 //        }
 
-        UserDao userDao = EntityManager.getInstance().getUserDao();
-        userDao.insertOrReplace(new User(1l, "小明", "123", "北京"));
+//        UserDao userDao = EntityManager.getInstance().getUserDao();
+//        userDao.insertOrReplace(new User(1l, "小明", "123", "北京"));
+//
+//        List<User> list = userDao.loadAll();
+//
+//        Log.d("TAG", "list:" + list.toString());
+//        Log.d("TAG", "list:" + list.toString());
 
-        List<User> list = userDao.loadAll();
+//        update();
 
-        Log.d("TAG", "list:" + list.toString());
-        Log.d("TAG", "list:" + list.toString());
+        Intent intent = new Intent(MainActivity.this, UpdateActivity.class);
+        startActivity(intent);
+//        Intent intent = new Intent(MainActivity.this, DfuActivity.class);
+//        startActivity(intent);
+
+//        PerfectPopWindow popWindow = new PerfectPopWindow(MainActivity.this, MainActivity.class);
+//        popWindow.showPopupWindow();
 
     }
 
@@ -274,5 +285,26 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         Intent intent = new Intent(this, alist.get(i));
         startActivity(intent);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /**
+         * 回调选择头像地址
+         */
+        if (resultCode == SelectPhotoActivity.RESULT_CODE) {
+            switch (requestCode) {
+                case SelectPhotoActivity.REQUEST_CODE:   // 调用相机拍照
+                    File file = new File(data.getStringExtra(SelectPhotoActivity.PATH));
+                    if (file.exists() && file.length() == 0) {
+                        return;
+                    }
+                    ToastUtils.showShort("file:" + file.getAbsolutePath());
+                    //getPresenter().setModifyHeadParam(file);
+                    break;
+            }
+        }
+    }
+
 
 }

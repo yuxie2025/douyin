@@ -22,6 +22,7 @@ public abstract class NoDoubleClickListener implements OnClickListener {
     @Override
     public void onClick(View v) {
         long currentTime = Calendar.getInstance().getTimeInMillis();
+        //增加currentTime - lastClickTime < 0 是防止,把手机时间修改提前问题
         if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME || currentTime - lastClickTime < 0) {
             lastClickTime = currentTime;
             onNoDoubleClick(v);

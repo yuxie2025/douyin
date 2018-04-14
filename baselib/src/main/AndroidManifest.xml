@@ -58,8 +58,8 @@
 
         <!--设置高德Key-->
         <!--<meta-data-->
-            <!--android:name="com.amap.api.v2.apikey"-->
-            <!--android:value="caa67d9f01219028370158753e1efce0"></meta-data>-->
+        <!--android:name="com.amap.api.v2.apikey"-->
+        <!--android:value="caa67d9f01219028370158753e1efce0"></meta-data>-->
 
         <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
         <!--<service android:name="com.amap.api.location.APSService"></service>-->
@@ -68,11 +68,11 @@
         <!-- 友盟 -->
         <!--友盟ID-->
         <!--<meta-data-->
-            <!--android:name="UMENG_APPKEY"-->
-            <!--android:value="5a4ae7c0b27b0a3aab000044" />-->
+        <!--android:name="UMENG_APPKEY"-->
+        <!--android:value="5a4ae7c0b27b0a3aab000044" />-->
         <!--<meta-data-->
-            <!--android:name="UMENG_CHANNEL"-->
-            <!--android:value="Channel ID" />-->
+        <!--android:name="UMENG_CHANNEL"-->
+        <!--android:value="Channel ID" />-->
         <!-- Channel ID 替换为您应用的推广渠道名称，channel id自定义。如:Wandoujia -->
 
         <!--支付宝-->
@@ -89,6 +89,10 @@
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <!--支付宝-->
+
+        <activity
+            android:name=".takephoto.app.SelectPhotoActivity"
+            android:theme="@style/AlertNoActionBar"></activity>
 
 
     </application>

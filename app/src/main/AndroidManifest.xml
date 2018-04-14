@@ -63,7 +63,8 @@
         <activity android:name=".controlpc.ControlActivity" />
         <activity android:name=".controlpc.PcScreenActivity" />
         <activity android:name=".sms.SmsApiActivity" />
-        <activity android:name=".sms.UpdateSmsApiActivity"></activity>
+        <activity android:name=".sms.UpdateSmsApiActivity" />
+        <activity android:name=".activity.BleActivity"></activity>
     </application>
 
 </manifest>

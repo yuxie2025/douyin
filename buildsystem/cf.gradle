@@ -2,22 +2,22 @@ ext {
 
     //android
     android = [
-            compileSdkVersion : 25,
+            compileSdkVersion : 26,
             buildToolsVersion : "26.0.2",
             applicationId     : "com.yuxie.myapp",
             minSdkVersion     : 18,
-            targetSdkVersion  : 22,
+            targetSdkVersion  : 23,
             versionCode       : 2,
             versionName       : "1.2"
     ]
 
     //Libraries variable
-    appcompatv7_Version     = '24.2.0'
-    supportv4_Verion        = '24.2.0'
-    design_Version          = '24.2.0'
-    gridlayout_Version      = '24.2.0'
-    recyclerview_Version    = '24.2.0'
-    cardview_Version        = '24.2.0'
+    appcompatv7_Version     = '26.0.2'
+    supportv4_Verion        = '26.0.2'
+    design_Version          = '26.0.2'
+    gridlayout_Version      = '26.0.2'
+    recyclerview_Version    = '26.0.2'
+    cardview_Version        = '26.0.2'
     rxjava_Version          = '1.1.9'
     rxandroid_Version       = '1.2.1'
     rxbinding_Version       = '2.0.0'

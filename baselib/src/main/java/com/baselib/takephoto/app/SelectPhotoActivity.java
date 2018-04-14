@@ -1,5 +1,6 @@
 package com.baselib.takephoto.app;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,12 +19,42 @@ import java.io.File;
  * 传入值为 Type
  * CAMERA 调用相机
  * PHOTO 调用相册
- *
  */
+public class SelectPhotoActivity extends TakePhotoActivity {
 
-public class SelectPhotoTestActivity extends TakePhotoActivity {
+    /**
+     * 选择了相机
+     */
+    public static final String CAMERA = "CAMERA";
+    /**
+     * 选择了相册
+     */
+    public static final String PHOTO = "PHOTO";
+    /**
+     * 请求码
+     */
+    public static final int REQUEST_CODE = 1021;
+    /**
+     * 返回码
+     */
+    public static final int RESULT_CODE = 6666;
+
+    /**
+     * 返回路径
+     */
+    public static final String PATH = "path";
+
+
+    private static Class<?> mCls;
 
     File file;
+
+    public static void start(Activity activity, Class<?> cls, String Type) {
+        Intent intent = new Intent(activity, SelectPhotoActivity.class);
+        intent.putExtra("Type", Type);
+        mCls = cls;
+        activity.startActivityForResult(intent, REQUEST_CODE);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +80,10 @@ public class SelectPhotoTestActivity extends TakePhotoActivity {
     public void takeSuccess(TResult result) {
         super.takeSuccess(result);
         if (result != null) {
-            //TODO 这里是设置返回页面
-//            Intent intent=new Intent(SelectPhotoActivity.this,HeadPortraitActivity.class);
-//            intent.putExtra("path",result.getImage().getCompressPath());
-//            setResult(6,intent);
+            //这里是设置返回页面
+            Intent intent = new Intent(SelectPhotoActivity.this, mCls);
+            intent.putExtra(PATH, result.getImage().getCompressPath());
+            setResult(RESULT_CODE, intent);
         }
         finish();
     }
@@ -81,12 +112,12 @@ public class SelectPhotoTestActivity extends TakePhotoActivity {
         builder.setWithOwnCrop(true);
 
         String type = getIntent().getStringExtra("Type");
-        if ("CAMERA".equals(type)) {
+        if (CAMERA.equals(type)) {
             takePhoto.onPickFromCaptureWithCrop(imageUri, builder.create());
-        } else if ("PHOTO".equals(type)) {
+        } else if (PHOTO.equals(type)) {
             takePhoto.onPickFromGalleryWithCrop(imageUri, builder.create());
-        }else{
-            Toast.makeText(this,"缺少Type请用意图传入...",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "缺少Type请用意图传入...", Toast.LENGTH_SHORT).show();
         }
 
     }

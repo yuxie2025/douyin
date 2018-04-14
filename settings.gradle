@@ -1,1 +1,1 @@
-include ':app', ':baselib', ':okhttp3'
+include ':app', ':baselib', ':library_alipay', ':dfu', ':apkupdatelib'

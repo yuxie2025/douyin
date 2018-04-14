@@ -8,19 +8,16 @@ greendao {
     daoPackage androidCf.applicationId + ".greendao"
     targetGenDir 'src/main/java'
 }
-dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:+'
-    compile project(path: ':okhttp3')
-}
+
 android {
-    compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    compileSdkVersion androidCf.compileSdkVersion
+    buildToolsVersion androidCf.buildToolsVersion
     defaultConfig {
         applicationId androidCf.applicationId
-        minSdkVersion 14
-        targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion androidCf.minSdkVersion
+        targetSdkVersion androidCf.targetSdkVersion
+        versionCode androidCf.versionCode
+        versionName androidCf.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -48,10 +45,10 @@ android {
                 "com.amap.api.v2.apikey": "caa67d9f01219028370158753e1efce0",//设置高德Key
         ]
 
-        ndk {
-            // 设置支持的SO库架构
-            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "mips", "mips64", "X86", "X86_64"
-        }
+//        ndk {
+//            // 设置支持的SO库架构
+//            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "mips", "mips64", "X86", "X86_64"
+//        }
     }
 
     //mvvp需要申明的地方
@@ -104,6 +101,19 @@ android {
         compile 'org.greenrobot:greendao:3.2.2' // add library
         compile project(path: ':baselib')
 
+        compile project(path: ':dfu')
+
+        // The DFU Library is imported automatically from jcenter:
+//        implementation 'no.nordicsemi.android:dfu:1.6.1'
+
         compile files('libs/sun.misc.BASE64Decoder.jar')
+
+        implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+        compile project(path: ':apkupdatelib')
+
+        //将最新的版本改为当前版本号，例如2.3.1(报错就填写固定的版本号)
+        compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
+        annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
+
     }
 }

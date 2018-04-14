@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Process;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -15,6 +16,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -27,6 +29,7 @@ import com.baselib.baserx.RxManager;
 import com.baselib.commonutils.TUtil;
 import com.baselib.commonwidget.StatusBarCompat;
 import com.baselib.daynightmodeutils.ChangeModeController;
+import com.baselib.uitls.CommonUtils;
 import com.baselib.uitls.StatusBarUtil;
 import com.zhy.autolayout.AutoLayoutActivity;
 
@@ -55,7 +58,10 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
         context = this;
         mRxManager = new RxManager();
         onBeforeSetContentView();
-        setContentView(getLayoutId());
+        if (getLayoutId()!=0){
+            setContentView(getLayoutId());
+        }
+
         ButterKnife.bind(this);
         mPresenter = TUtil.getT(this, 0);
         mModel = TUtil.getT(this, 1);
@@ -245,6 +251,57 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
         builder.setNegativeButton(negativeText, onNegativeButtonClickListener);
         mAlertDialog = builder.show();
     }
+
+    /**
+     * 必须权限设置
+     *
+     * @param message
+     */
+    protected void mustSetting(String message) {
+        if (TextUtils.isEmpty(message)) {
+            message = "应用需要定位权限和存储权限,是否去设置";
+        }
+        showAlertDialog(null, message, new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                CommonUtils.toSelfSetting();
+            }
+        }, "确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                System.exit(0);
+                Process.killProcess(Process.myPid());
+            }
+        }, "取消", false);
+    }
+
+    /**
+     * 建议权限设置
+     *
+     * @param message
+     */
+    protected void suggestSetting(String message) {
+        if (TextUtils.isEmpty(message)) {
+            message = "应用需要定位权限和存储权限,是否去设置";
+        }
+        showAlertDialog(null, message, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                CommonUtils.toSelfSetting();
+            }
+        }, "确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        }, "取消", false);
+    }
+
+    protected void suggestSetting() {
+        suggestSetting("");
+    }
+
 
     @Override
     protected void onDestroy() {
