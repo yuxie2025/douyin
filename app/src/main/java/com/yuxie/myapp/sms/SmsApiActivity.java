@@ -20,6 +20,8 @@ import com.yuxie.myapp.entity.SmsApi;
 import com.yuxie.myapp.greendao.SmsApiDao;
 import com.yuxie.myapp.utils.db.EntityManager;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +36,7 @@ import retrofit2.adapter.rxjava.Result;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+import retrofit2.http.Url;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
@@ -77,10 +80,6 @@ public class SmsApiActivity extends BaseActivity {
         adapter = new SmsApiAdapter(data);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
-
-//        adapter.setOnItemClickListener((adapter1, view, position) -> {
-//            UpdateSmsApiActivity.start(context, adapter.getItem(position));
-//        });
 
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
@@ -161,14 +160,27 @@ public class SmsApiActivity extends BaseActivity {
 
     private void fire(String phoneNumber, final SmsApi smsApi) {
 
+        URL urlHost=null;
+        String host="http://www.baidu.com";
+        String path="";
+        try {
+            urlHost=new URL(smsApi.getUrl());
+            host="http://"+urlHost.getHost();
+            path=urlHost.getPath();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
         //开启Log
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
         logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(logInterceptor).build();
 
+
+
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.baidu.com")
+                .baseUrl(host)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -179,8 +191,13 @@ public class SmsApiActivity extends BaseActivity {
         String body = smsApi.getParameterBefore() + phoneNumber + smsApi.getParameterAfter();
         String url = smsApi.getUrl();
 
-        if (!TextUtils.isEmpty(body) && !body.contains("=")) {
-            service.getBlogs(url, body).subscribeOn(Schedulers.io())
+        if (TextUtils.isEmpty(body)) {
+            return;
+        }
+
+        Map<String, String> options = CRequest.URLRequestParameter(body);
+        if ("post".equals(smsApi.getType())) {
+            service.getSmsApi(url, options).subscribeOn(Schedulers.io())
                     .subscribe(new Subscriber<Result<String>>() {
                         @Override
                         public void onCompleted() {
@@ -193,41 +210,50 @@ public class SmsApiActivity extends BaseActivity {
 
                         @Override
                         public void onNext(Result<String> stringResult) {
-                            if (!TextUtils.isEmpty(stringResult.response().body()) && stringResult.response().body().contains(smsApi.getResultOk())) {
+                            String body = stringResult.response().body();
+                            if (!TextUtils.isEmpty(body) && body.contains(smsApi.getResultOk())) {
+                                LogUtils.logd("发送成功!");
                                 ++successTotol;
                                 ToastUtils.showShort("成功:" + successTotol);
-                                LogUtils.logd("发送成功!");
                             } else {
                                 LogUtils.logd("发送失败!");
                             }
                         }
                     });
-            return;
-        }
+        } else {
 
-        Map<String, String> options = CRequest.URLRequestParameter(body);
-        service.getBlogs(url, options).subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<Result<String>>() {
-                    @Override
-                    public void onCompleted() {
-                    }
+            if (!TextUtils.isEmpty(path)){
+                path=path.substring(1);
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtils.logd("string--onError()---" + e.toString());
-                    }
+            String pathUrl=path+"?"+body;
 
-                    @Override
-                    public void onNext(Result<String> stringResult) {
-                        if (!TextUtils.isEmpty(stringResult.response().body()) && stringResult.response().body().contains(smsApi.getResultOk())) {
-                            LogUtils.logd("发送成功!");
-                            ++successTotol;
-                            ToastUtils.showShort("成功:" + successTotol);
-                        } else {
-                            LogUtils.logd("发送失败!");
+            service.getSmsApi(pathUrl).subscribeOn(Schedulers.io())
+                    .subscribe(new Subscriber<Result<String>>() {
+                        @Override
+                        public void onCompleted() {
                         }
-                    }
-                });
+
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtils.logd("string--onError()---" + e.toString());
+                        }
+
+                        @Override
+                        public void onNext(Result<String> stringResult) {
+
+                            String body = stringResult.response().body();
+
+                            if (!TextUtils.isEmpty(body) && body.contains(smsApi.getResultOk())) {
+                                LogUtils.logd("发送成功!");
+                                ++successTotol;
+                                ToastUtils.showShort("成功:" + successTotol);
+                            } else {
+                                LogUtils.logd("发送失败!");
+                            }
+                        }
+                    });
+        }
 
 
     }
@@ -467,6 +493,14 @@ public class SmsApiActivity extends BaseActivity {
         smsApi.setParameterBefore("dialCode=86&mobile=");
         smsApi.setParameterAfter("");
         smsApi.setResultOk("\"code\": 1");
+        data.add(smsApi);
+        smsApi = new SmsApi();
+        smsApi.setId(30L);
+        smsApi.setType("get");
+        smsApi.setUrl("http://msg.106117.com/submit_ajax.ashx");
+        smsApi.setParameterBefore("callback=jQuery11120836245647952194_1519923914449&action=getValidate&_=1519923914450&username=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("发送验证码成功");
         data.add(smsApi);
 
         //以上是成功数据-------------------------
