@@ -5,6 +5,7 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -160,13 +161,13 @@ public class SmsApiActivity extends BaseActivity {
 
     private void fire(String phoneNumber, final SmsApi smsApi) {
 
-        URL urlHost=null;
-        String host="http://www.baidu.com";
-        String path="";
+        URL urlHost = null;
+        String host = "http://www.baidu.com";
+        String path = "";
         try {
-            urlHost=new URL(smsApi.getUrl());
-            host="http://"+urlHost.getHost();
-            path=urlHost.getPath();
+            urlHost = new URL(smsApi.getUrl());
+            host = "http://" + urlHost.getHost();
+            path = urlHost.getPath();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -176,7 +177,6 @@ public class SmsApiActivity extends BaseActivity {
         logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(logInterceptor).build();
-
 
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -222,11 +222,11 @@ public class SmsApiActivity extends BaseActivity {
                     });
         } else {
 
-            if (!TextUtils.isEmpty(path)){
-                path=path.substring(1);
+            if (!TextUtils.isEmpty(path)) {
+                path = path.substring(1);
             }
 
-            String pathUrl=path+"?"+body;
+            String pathUrl = path + "?" + body;
 
             service.getSmsApi(pathUrl).subscribeOn(Schedulers.io())
                     .subscribe(new Subscriber<Result<String>>() {
@@ -254,8 +254,6 @@ public class SmsApiActivity extends BaseActivity {
                         }
                     });
         }
-
-
     }
 
     private List<SmsApi> addData() {
@@ -466,7 +464,7 @@ public class SmsApiActivity extends BaseActivity {
         smsApi.setId(26L);
         smsApi.setType("post");
         smsApi.setUrl("https://api2.quhepai.com/user/getsmscode");
-        smsApi.setParameterBefore("os=Android&model=SM-G930F&area_id=110000&rctk=&imei=865821079483270&hpid=&ver=1.6.9&long=106.67963615746643&build=1712211344&token_temp=&netk=&nonce=1515146882410&token=&sa=SvWDOSgflCTktWN2gZJeA26s%2FKsJfvkYUf3h8KsEJ%2FxBUE3KOW%2BlQWy3g9bqRlNZ0EYGzUKwOb%2F0%0AYgOREoKTl3mmqa2pcsblrYUDbkDcT8dQiWJ9VxTaKqeIEbVl38VE4rXB1avYbPR2zOkD28c7%2Fas%2F%0Ap0R38lq3nziMVHRap34%3D&company=samsung&logined=0&api=39&verCode=446&user_id=&ch=hepai_s_018&lat=26.636185489185326&type=1&phone=");
+        smsApi.setParameterBefore("os=Android&model=SM-G930F&area_id=110000&rctk=&imei=865821079483270&hpid=&ver=1.6.9&long=106.67963615746643&build=1712211344&token_temp=&netk=&nonce=1515146882410&token=&sa=SvWDOSgflCTktWN2gZJeA26s%2FKsJfvkYUf3h8KsEJ%2FxBUE3KOW%2BlQWy3g9bqRlNZ0EYGzUKwOb%2F0%0AYgOREoKTl3mmqa2pcsblrYUDbkDcT8dQiWJ9VxTaKqeIEbVl38VE4rXB1avYbPR2zOkD28c7%2Fas%2F%0Ap0R38lq3nziMVHRap34%3D&company=samsung&logined=0&api=39&verCode=446&user_id=&ch=hepai_s_018&lat=26.636185489185326&type=1&phone=86");
         smsApi.setParameterAfter("");
         smsApi.setResultOk("请求成功");
         data.add(smsApi);
@@ -484,7 +482,7 @@ public class SmsApiActivity extends BaseActivity {
         smsApi.setUrl("http://api-cc.babybus.org/User/VerificationCode");
         smsApi.setParameterBefore("al=403&ost=1&type=1&channel=A002&phone=");
         smsApi.setParameterAfter("");
-        smsApi.setResultOk("ResultCode\": \"0\"");
+        smsApi.setResultOk("获取验证码成功");
         data.add(smsApi);
         smsApi = new SmsApi();
         smsApi.setId(29L);
@@ -501,6 +499,359 @@ public class SmsApiActivity extends BaseActivity {
         smsApi.setParameterBefore("callback=jQuery11120836245647952194_1519923914449&action=getValidate&_=1519923914450&username=");
         smsApi.setParameterAfter("");
         smsApi.setResultOk("发送验证码成功");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(31L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://www.csti.cn/uc/index/index.do");
+        smsApi.setParameterBefore("method=checkPhone&login_phone=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("true");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(32L);
+        smsApi.setType("post");
+        smsApi.setUrl("https://reguser.sdo.com/user/register/confirm-needed-mobile.jsonp?callback=jQuery18208562389784247074_152504");
+        smsApi.setParameterBefore("8246832&sessionKey=QIEZ3hVn6uvgTdmN&appId=201&areaId=-1&password=&realname=&idCard=&backUrl=http%3A%2F%2Fwww.sdo.com&_=1525048260204&mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("success");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(33L);
+        smsApi.setType("get");
+        smsApi.setUrl("http://fof.simuwang.com/index.php");
+        smsApi.setParameterBefore("c=Login&a=getRegisterPhoneCode&phone=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("发送成功");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(34L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://app.syxwnet.com/?app=member&controller=index&action=sendMobileMessage");
+        smsApi.setParameterBefore("mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("true");
+        data.add(smsApi);
+
+//        http://youshi.changzhengedu.com/mobileCode/send/15622145862
+//        smsApi = new SmsApi();
+//        smsApi.setId(35L);
+//        smsApi.setType("get");
+//        smsApi.setUrl("http://youshi.changzhengedu.com/mobileCode/send/");
+//        smsApi.setParameterBefore("");
+//        smsApi.setParameterAfter("");
+//        smsApi.setResultOk("ok");
+//        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(36L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://www.cacp.org.cn/zgxt/conmon/verification.htm");
+        smsApi.setParameterBefore("type=1&key=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("\"recode\":\"1\"");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(37L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://www.jlhuafei.cn/movecar/client/code/setCheckCode.action");
+        smsApi.setParameterBefore("tel=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("true");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(38L);
+        smsApi.setType("post");
+        smsApi.setUrl("https://memberprod.alipay.com/account/reg/section/reSendVerifyCode.json");
+        smsApi.setParameterBefore("scene=mobileReg&json_ua=null&json_tk=fa4b8346c23891d3998c41868c7263c622fd9c086aaa44d19a206213db0ee611GZ00&_input_charset=utf-8&ctoken=wqsEenTc5I0ZF8k7&mobile=86-");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("发送验证码成功");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(39L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://bx.egretloan.com/safe/app/sendcode");
+        smsApi.setParameterBefore("phone=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("\"code\":200");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(40L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://www.ci4a.cn/index.php?m=member&c=content&a=mobile_code");
+        smsApi.setParameterBefore("mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("Success");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(41L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://account.limsam.cn/ucenter/mobilebind/ajaxgetcode.aspx");
+        smsApi.setParameterBefore("acc=15622145861&type=6&rnd=0.44647784629374976&tel=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("手机验证码发送成功！");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(42L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://www.ahhbzyz.com/program/include/component/cvmp/get_platform_code.aspx");
+        smsApi.setParameterBefore("telphone=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("1");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(43L);
+        smsApi.setType("get");
+        smsApi.setUrl("http://www.aipai.com/app/www/apps/ums.php");
+        smsApi.setParameterBefore("step=ums&mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("\"code\":0");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(44L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://www.jylearning.com/getRegCode");
+        smsApi.setParameterBefore("mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("已发送");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(45L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://www.fengtao365.com/index.php");
+        smsApi.setParameterBefore("ctrl=member&action=regesterphone&random=527&_=1525052587490&phone=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("180");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(46L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://www.ad1024.com/site/send-register-verify-code");
+        smsApi.setParameterBefore("email=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("\"code\":200");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(47L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://member.21-sun.com/tools/ajax.jsp");
+        smsApi.setParameterBefore("flag=createVeriCode&_=1525053040106&tel=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("success");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(48L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://ggfw.wuxi.gov.cn/wx_portal/user/service/User.checkMobile.json");
+        smsApi.setParameterBefore("mobile=");
+        smsApi.setParameterAfter("&MOBILENUM=15622145861");
+        smsApi.setResultOk("本次请求成功");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(49L);
+        smsApi.setType("get");
+        smsApi.setUrl("http://www.ejtong.cn/cop5/phone.asp");
+        smsApi.setParameterBefore("t=1&mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(50L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://www.lequ.com/Public/sendsms");
+        smsApi.setParameterBefore("formhash=972eee2ac80f258a25384bc2e9733c96&mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("\"status\":1");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(51L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://www.yifatong.com/Customers/getsms");
+        smsApi.setParameterBefore("rnd=1525054197.628&mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("success");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(52L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://www.12123.com/api/login/send.json");
+        smsApi.setParameterBefore("mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("true");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(53L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://i.xafc.com/home/register/sendMsgCode");
+        smsApi.setParameterBefore("from=pc_bindphone&mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("\"code\":\"1\"");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(54L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://pcmall.chinayanghe.com/send_mcode.shtml");
+        smsApi.setParameterBefore("type=register&verify_mobile_code=2l1II48iO9&mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("短信发送成功");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(55L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://oa.lehome114.com/action/sendcode");
+        smsApi.setParameterBefore("phone=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("1");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(56L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://www.gaokaoer.cn/Index/Sms.html");
+        smsApi.setParameterBefore("loginname=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(57L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://reg.ztgame.com/common/sendmpcode");
+        smsApi.setParameterBefore("source=&nonce=&type=verifycode&token=&refurl=https://www.baidu.com/link?url=Qvgq2JleTH1zgtvO3GZX2Eis0xN7O7Y8uK-BoAXggN_&wd=&eqid=b87d3edb0000102f000000065ae68226&cururl=http://reg.ztgame.com/&mpcode=&pwd=&tname=&idcard=&phone=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("success");
+        data.add(smsApi);
+
+//        smsApi = new SmsApi();
+//        smsApi.setId(58L);
+//        smsApi.setType("post");
+//        smsApi.setUrl("https://appapi.dmall.com/app/passport/validCode");
+//        smsApi.setParameterBefore("param={\"graphCode\":\"\",\"phone\":\"");
+//        smsApi.setParameterAfter("\",\"type\":\"register\"}");
+//        smsApi.setResultOk("成功！");
+//        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(59L);
+        smsApi.setType("post");
+        smsApi.setUrl("https://mapi.ffan.com/ffan/v1/member/verifycodes");
+        smsApi.setParameterBefore("type=1&mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("200");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(60L);
+        smsApi.setType("get");
+        smsApi.setUrl("https://uac.10010.com/portal/Service/SendMSG");
+        smsApi.setParameterBefore("callback=jQuery172009245047252625227_1450060042&_=1450060042&mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("200");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(61L);
+        smsApi.setType("get");
+        smsApi.setUrl("http://m.cmvideo.cn/sendMiguMsgCode.msp");
+        smsApi.setParameterBefore("isH5=1&businessid=2&mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("result");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(62L);
+        smsApi.setType("get");
+        smsApi.setUrl("http://uniportal.huawei.com/accounts/sendsms");
+        smsApi.setParameterBefore("countryCode=%2B86&id=1465355400790&mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("1");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(63L);
+        smsApi.setType("get");
+        smsApi.setUrl("https://passport.ceair.com/cesso/mobile!sendDynamicPassword.shtml");
+        smsApi.setParameterBefore("rand=&mobileNo=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("");
+        data.add(smsApi);
+
+//        smsApi = new SmsApi();
+//        smsApi.setId(64L);
+//        smsApi.setType("get");
+//        smsApi.setUrl("http://passenger.01zhuanche.com/car-rest/webservice/getVal/phoneNumber=15622145861");
+//        smsApi.setParameterBefore(");
+//        smsApi.setParameterAfter("");
+//        smsApi.setResultOk("1");
+//        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(65L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://www.zhibo.tv/app/user/GetNumForRegis");
+        smsApi.setParameterBefore("phone=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("0");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(66L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://xhssdpt.com:8096/party-api/m/sendSms");
+        smsApi.setParameterBefore("msg=短信验证码&mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("0000");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(67L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://m.judazhe.com/user/send_mobile_share");
+        smsApi.setParameterBefore("mobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("true");
+        data.add(smsApi);
+
+
+        smsApi = new SmsApi();
+        smsApi.setId(68L);
+        smsApi.setType("get");
+        smsApi.setUrl("https://passport.ceair.com/cesso/mobile!sendDynamicPassword.shtml");
+        smsApi.setParameterBefore("rand=&mobileNo=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("");
+        data.add(smsApi);
+
+        smsApi = new SmsApi();
+        smsApi.setId(69L);
+        smsApi.setType("post");
+        smsApi.setUrl("http://service.api.atxiaoge.com/v2d0/sms/sendVerifi.json");
+        smsApi.setParameterBefore("category=USERmobile=");
+        smsApi.setParameterAfter("");
+        smsApi.setResultOk("发送成功");
         data.add(smsApi);
 
         //以上是成功数据-------------------------
