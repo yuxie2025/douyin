@@ -1,1 +1,1 @@
-include ':app', ':baselib', ':library_alipay', ':dfu', ':apkupdatelib'
+include ':app', ':baselib', ':alipay_lib', ':dfu_lib', ':apkupdate_lib', ':wechat_pay_lib'

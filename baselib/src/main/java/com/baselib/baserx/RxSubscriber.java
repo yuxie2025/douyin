@@ -85,7 +85,6 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
         if (showDialog) {
             LoadingDialog.cancelDialogForLoading();
         }
-//        e.printStackTrace();
         //网络
         if (!NetWorkUtils.isNetConnected(BaseApplication.getAppContext())) {
             _onError(BaseApplication.getAppContext().getString(R.string.no_net));
@@ -110,7 +109,7 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
                     _onError(err.getErrMsg());
                 }
             } else {
-                _onData(err.getErrMsg());
+                _onError(err.getErrMsg());
             }
         } else { //其它
             _onError("网络访问错误,请稍后再试!");
@@ -120,8 +119,6 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
     }
 
     protected abstract void _onNext(T t);
-
-    protected abstract void _onData(String message);
 
     protected abstract void _onError(String message);
 

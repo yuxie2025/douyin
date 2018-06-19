@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yuxie.myapp">
+    package="com.yuxie.demo">
 
     <!-- 添加读写权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -42,7 +42,7 @@
         <activity android:name=".activity.GlideAndPicassoActivity" />
         <activity android:name=".activity.ViewActivity" />
         <activity android:name=".mvp.view.UserActivity" />
-        <activity android:name=".Login.view.LoginActivity" />
+        <activity android:name=".login.view.LoginActivity" />
         <activity android:name=".activity.RxjavaActivity" />
         <activity android:name=".mvvp.MvvpActivity" />
         <activity android:name=".video.VideoListActivity" />
@@ -64,7 +64,32 @@
         <activity android:name=".controlpc.PcScreenActivity" />
         <activity android:name=".sms.SmsApiActivity" />
         <activity android:name=".sms.UpdateSmsApiActivity" />
-        <activity android:name=".activity.BleActivity"></activity>
+
+        <!-- 微信支付 -->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"></activity>
+
+        <receiver android:name=".wxapi.AppRegister">
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 微信 -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- 微信支付 -->
+
+        <activity android:name=".play.PalyActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Translucent"></activity>
     </application>
 
 </manifest>

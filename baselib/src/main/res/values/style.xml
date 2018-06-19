@@ -6,7 +6,15 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="AlertNoActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="CustomDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+
+    <style name="AlertNoActionBar" parent="@android:style/Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -17,13 +25,6 @@
         <!--  <item name="android:windowBackground">@null</item> --><!--除去背景色-->
     </style>
 
-    <style name="CustomDialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
-        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
-    </style>
     <!-- 状态栏 -->
     <style name="MyToolBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">?colorPrimary</item>

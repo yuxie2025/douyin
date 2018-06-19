@@ -1,0 +1,21 @@
+<!-- 微信支付 -->
+<activity
+    android:name=".wxapi.WXPayEntryActivity"
+    android:exported="true"
+    android:launchMode="singleTop">
+</activity>
+
+<receiver android:name=".wxapi.AppRegister">
+    <intent-filter>
+        <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+    </intent-filter>
+</receiver>
+
+<!-- 微信登录实体 -->
+<activity
+    android:name=".wxapi.WXEntryActivity"
+    android:configChanges="keyboardHidden|orientation|screenSize"
+    android:exported="true"
+    android:screenOrientation="portrait"
+    android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+<!--  微信支付 -->

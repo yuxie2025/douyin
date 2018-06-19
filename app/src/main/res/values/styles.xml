@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="@style/Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#FD702B</item>
         <item name="colorPrimaryDark">#FD702B</item>
@@ -154,6 +154,15 @@
 
     <style name="AppTheme.Fullscreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/nordicBackground</item>
+    </style>
+
+    <!-- window 透明的-->
+    <style name="Theme.AppCompat.Translucent" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>
