@@ -1,10 +1,12 @@
 package com.yuxie.myapp.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.apkupdate.UpdateActivity;
 import com.baselib.base.BaseActivity;
 import com.baselib.takephoto.app.SelectPhotoActivity;
 import com.baselib.utilcode.util.ToastUtils;
@@ -33,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
-import no.nordicsemi.android.dfuutils.DfuActivity;
 
 public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
@@ -185,8 +185,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
 //        update();
 
-        Intent intent = new Intent(MainActivity.this, UpdateActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(MainActivity.this, UpdateActivity.class);
+//        startActivity(intent);
 //        Intent intent = new Intent(MainActivity.this, DfuActivity.class);
 //        startActivity(intent);
 
@@ -306,6 +306,5 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             }
         }
     }
-
 
 }

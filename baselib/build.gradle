@@ -50,12 +50,15 @@ android {
 
 dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.android.support:support-v4:26.0.2'
-    compile 'com.android.support:cardview-v7:26.0.2'
-    compile 'com.android.support:appcompat-v7:26.0.2'
-    compile 'com.android.support:recyclerview-v7:26.0.2'
+    def dependenciesCf = rootProject.ext.dependencieslib
+    api dependenciesCf.supportv4
+    api dependenciesCf.cardview
+    api dependenciesCf.appcompatv7
+    api dependenciesCf.annotations
+    api dependenciesCf.recyclerview
     //侧滑菜单效果
-    compile 'com.android.support:design:26.0.2'
+    api dependenciesCf.design
+
     //BRecyclerViewAdapter
 //    需要先在 build.gradle(Project:XXXX) 的 repositories 添加:
 //    allprojects {
@@ -103,8 +106,6 @@ dependencies {
     compile 'com.amap.api:search:6.1.0'
 
 
-
-
     //json 解析
 //    compile 'com.google.code.gson:gson:2.7'
     //开源框架查看日志
@@ -131,9 +132,6 @@ dependencies {
     compile 'com.darsh.multipleimageselect:multipleimageselect:1.0.4'
     compile 'me.shaohui.advancedluban:library:1.3.2'
     //---TakePhoto使用包
-    //支付宝支付---
-    compile files('libs/alipaySdk-20160802.jar')
-    //---支付宝支付
 
     //微信支付---
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'

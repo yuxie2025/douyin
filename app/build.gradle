@@ -72,9 +72,9 @@ android {
             exclude group: 'com.android.support', module: 'support-annotations'
         })
 
-//        compile 'com.android.support:appcompat-v7:25.3.1'
-//        compile 'com.android.support.constraint:constraint-layout:1.0.2'
-//        compile 'com.android.support:design:25.3.1'
+        def dependenciesCf = rootProject.ext.dependencieslib
+        api dependenciesCf.annotations
+
         testCompile 'junit:junit:4.12'
         /*picasso图片缓存架包*/
         compile 'com.squareup.picasso:picasso:2.5.1'
@@ -101,7 +101,7 @@ android {
         compile 'org.greenrobot:greendao:3.2.2' // add library
         compile project(path: ':baselib')
 
-        compile project(path: ':dfu')
+//        compile project(path: ':dfu')
 
         // The DFU Library is imported automatically from jcenter:
 //        implementation 'no.nordicsemi.android:dfu:1.6.1'
@@ -109,7 +109,7 @@ android {
         compile files('libs/sun.misc.BASE64Decoder.jar')
 
         implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-        compile project(path: ':apkupdatelib')
+//        compile project(path: ':apkupdatelib')
 
         //将最新的版本改为当前版本号，例如2.3.1(报错就填写固定的版本号)
         compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
