@@ -3,7 +3,7 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 /**
- * 作者: liuhuaqian on 2017/9/8.
+ * 作者: llk on 2017/9/8.
  * RxJava调度管理
  */
 

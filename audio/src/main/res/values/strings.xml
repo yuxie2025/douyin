@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">百度语音示例(3.x)</string>
+    <string name="please_speak">请说话</string>
+    <string name="speaking">说话中</string>
+    <string name="cancel">取消</string>
+    <string name="start">开始</string>
+    <string name="setting">设置</string>
+
+
+    <string name="infile_default"></string>
+    <string-array name="infile_list">
+        <item>@string/infile_default</item>
+        <item>res:///com/baidu/android/voicedemo/16k_test.pcm, 16k采样的测试音频</item>
+        <item>res:///com/baidu/android/voicedemo/offline_input.pcm, 测试离线命令词</item>
+        <item>#com.baidu.android.voicedemo.recognization.inputstream.InFileStream.create16kStream(), 文件流</item>
+        <item>#com.baidu.android.voicedemo.recognization.inputstream.MyMicrophoneInputStream.getInstance(), 自行从麦克风读取</item>
+    </string-array>
+
+    <string name="decoder_default"></string>
+    <string-array name="decoder_list">
+        <item>@string/decoder_default</item>
+        <item>0, 纯在线</item>
+        <item>2, 离线命令词及在线识别混合, 在线优先</item>
+    </string-array>
+
+    <string name="pid_default"></string>
+    <string-array name="pid">
+        <item>@string/pid_default</item>
+        <item>1536, 普通话搜索模型(默认)</item>
+        <item>15361, 普通话搜索模型（在线语义） </item>
+        <item>15362, 普通话搜索模型(加强标点)</item>
+        <item>1537, 普通话输入法模型 </item>
+        <item>1936, 普通话远场模型 </item>
+        <item>19361,普通话远场模型（在线语义） </item>
+        <item>19362,普通话远场模型（加强标点） </item>
+        <item>1737, 英语</item>
+        <item>1637, 粤语</item>
+        <item>16372, 粤语（加强标点）</item>
+        <item>1837, 四川话</item>
+    </string-array>
+
+    <string name="nlu_default"></string>
+    <string-array name="nlu_list">
+        <item>@string/nlu_default</item>
+        <item>enable, 开启本地语义解析（不支持英语）</item>
+        <item>enable-all, 在enable参数基础上,临时解析结果也做本地语义分析</item>
+        <item>disable, 不适用语义解析</item>
+    </string-array>
+
+    <string name="vad_default"></string>
+    <string-array name="vad_list">
+        <item>@string/vad_default</item>
+        <item>dnn, 默认，推荐模型</item>
+        <item>touch,  关闭静音断句功能。用戶手动停止录音</item>
+    </string-array>
+    <string name="_model_default"></string>
+    <string-array name="_model_list">
+        <item>@string/vad_default</item>
+        <item>search, 搜索模型，默认， 适用于短句， 无逗号，可以有语义</item>
+        <item>input, 输入法模型，适用于长句及长语音，有逗号分割， 无语义</item>
+        <item>far, 远场模型，高级，适用于音源离麦克风较远(>1m)的录音，有逗号分割， 可以有语义</item>
+    </string-array>
+    <string name="vad_timeout_default"></string>
+    <string-array name="vad_timeout_list">
+        <item>@string/vad_timeout_default</item>
+        <item>0, 开启长语音（离线不支持）。建议输入法模型。</item>
+        <item>800, 毫秒，静音800ms后断句，适用于输入短语</item>
+        <item>2000, 毫秒，静音2000ms后断句，适用于输入长句</item>
+        <item>2230, 毫秒，请修改代码中的VAD_ENDPOINT_TIMEOUT，自定义时长（建议800ms-3000ms之间）</item>
+    </string-array>
+</resources>

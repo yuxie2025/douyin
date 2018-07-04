@@ -3,7 +3,7 @@ package com.baselib.baserx;
 import java.io.IOException;
 
 /**
- * 作者: liuhuaqian on 2017/10/9.
+ * 作者: llk on 2017/10/9.
  */
 
 public class ResultException extends IOException {

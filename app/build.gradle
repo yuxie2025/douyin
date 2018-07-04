@@ -1,11 +1,15 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'com.antfortune.freeline'
+
 def androidCf = rootProject.ext.android
+
 greendao {
     schemaVersion 2
     daoPackage androidCf.applicationId + ".greendao"
     targetGenDir 'src/main/java'
 }
+
 android {
     compileSdkVersion androidCf.compileSdkVersion
     buildToolsVersion androidCf.buildToolsVersion
@@ -17,9 +21,6 @@ android {
         versionName androidCf.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-
-        //使用butterknife:7.0.1需要添加,如下配置必须放在主模块中
-        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
 
         //配置支持java 1.8
         compileOptions {
@@ -46,6 +47,11 @@ android {
 //            // 设置支持的SO库架构
 //            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "mips", "mips64", "X86", "X86_64"
 //        }
+
+        ndk {
+            //设置支持的SO库架构
+            abiFilters 'armeabi'
+        }
     }
 
     //mvvp需要申明的地方
@@ -53,10 +59,24 @@ android {
         enabled true
     }
 
+    signingConfigs {
+        release {
+            storeFile file("TimesPraise.jks")
+            storePassword "timespraise"
+            keyAlias "timespraiseAPK"
+            keyPassword "timespraise"
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.release
         }
     }
 
@@ -69,25 +89,15 @@ android {
             exclude group: 'com.android.support', module: 'support-annotations'
         })
 
+        implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
         def dependenciesCf = rootProject.ext.dependencieslib
-        api dependenciesCf.annotations
+        api dependenciesCf.appcompatv7
 
         testCompile 'junit:junit:4.12'
+
         /*picasso图片缓存架包*/
         compile 'com.squareup.picasso:picasso:2.5.1'
-
-        /*glide图片缓存架包*/
-//        compile 'com.github.bumptech.glide:glide:3.5.2'
-//        compile 'com.android.support:support-v4:25.3.1'
-
-        /*Rxjava框架*/
-//        compile 'io.reactivex.rxjava2:rxjava:2.0.4'
-
-        /*Retrofit2.0框架*/
-//        compile 'com.squareup.retrofit2:retrofit:2.0.2'
-//        compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-//        compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
-//        compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
 
         //JSOUP 解析html使用
         compile 'org.jsoup:jsoup:1.10.2'
@@ -96,25 +106,25 @@ android {
         compile 'httpcomponents-httpcore:httpcore:4.0-alpha6'
 
         compile 'org.greenrobot:greendao:3.2.2' // add library
+
+
         compile project(path: ':baselib')
-
-//        compile project(path: ':dfu')
-
-        // The DFU Library is imported automatically from jcenter:
-//        implementation 'no.nordicsemi.android:dfu:1.6.1'
+//        compile project(path: ':dfu_lib')
+//        compile project(path: ':apkupdate_lib')
+//        compile project(path: ':video_lib')
+        compile project(path: ':audio')
 
         compile files('libs/sun.misc.BASE64Decoder.jar')
-
-        implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-//        compile project(path: ':apkupdatelib')
-        compile project(path: ':voice')
 
         //将最新的版本改为当前版本号，例如2.3.1(报错就填写固定的版本号)
         compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
         annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
 
+        debugCompile 'com.antfortune.freeline:runtime:0.8.8'
+
+        compile 'com.jakewharton:butterknife:8.8.1'
+        annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
     }
 }
-dependencies {
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-}
+

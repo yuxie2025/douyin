@@ -5,7 +5,7 @@ import android.content.Context;
 import com.baselib.baserx.RxManager;
 
 /**
- * Created by liuhuaqian on 2017/9/5.
+ * Created by llk on 2017/9/5.
  */
 
 public abstract class BasePresenter<T, E> {

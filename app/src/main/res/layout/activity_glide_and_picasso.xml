@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.yuxie.myapp.activity.GlideAndPicassoActivity">
+    tools:context="com.yuxie.demo.activity.GlideAndPicassoActivity">
 
     <ImageView
         android:id="@+id/iv_glide"

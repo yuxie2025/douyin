@@ -17,7 +17,7 @@ import java.net.SocketTimeoutException;
 import rx.Subscriber;
 
 /**
- * 作者: liuhuaqian on 2017/9/8.
+ * 作者: llk on 2017/9/8.
  * 订阅封装
  */
 
@@ -110,7 +110,7 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
                     _onError(err.getErrMsg());
                 }
             } else {
-                _onData(err.getErrMsg());
+                _onError(err.getErrMsg());
             }
         } else { //其它
             _onError("网络访问错误,请稍后再试!");
@@ -120,8 +120,6 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
     }
 
     protected abstract void _onNext(T t);
-
-    protected abstract void _onData(String message);
 
     protected abstract void _onError(String message);
 

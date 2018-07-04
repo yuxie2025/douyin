@@ -8,8 +8,8 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
-import com.yuxie.myapp.entity.SmsApi;
-import com.yuxie.myapp.entity.User;
+import com.yuxie.demo.entity.SmsApi;
+import com.yuxie.demo.entity.User;
 
 import com.yuxie.myapp.greendao.SmsApiDao;
 import com.yuxie.myapp.greendao.UserDao;

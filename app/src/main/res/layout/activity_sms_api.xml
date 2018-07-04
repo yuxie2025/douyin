@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="目标号码"
-            android:text="15622145861"
             android:inputType="number"
             android:singleLine="true" />
 

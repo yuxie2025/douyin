@@ -4,7 +4,7 @@ ext {
     android = [
             compileSdkVersion : 26,
             buildToolsVersion : "27.0.2",
-            applicationId     : "com.yuxie.myapp",
+            applicationId     : "com.yuxie.demo",
             minSdkVersion     : 18,
             targetSdkVersion  : 23,
             versionCode       : 2,
@@ -24,19 +24,19 @@ ext {
     retrofit_converter_gson_Version = '2.3.0'
 
 //    okhttp_Version          = '3.9.0'
-    butterknife_Version = '7.0.1'
-    eventbus_Version = '3.0.0-beta1'
-    ormlite_core_Version = '4.48'
+    butterknife_Version     = '7.0.1'
+    eventbus_Version        = '3.0.0-beta1'
+    ormlite_core_Version    = '4.48'
     ormlite_android_Version = '4.48'
-    autolayout_Version = '1.4.3'
-    imageloader_Version = '1.9.5'
-    glide_Version = '3.7.0'
+    autolayout_Version      = '1.4.3'
+    imageloader_Version     = '1.9.5'
+    glide_Version           = '3.7.0'
     bgarefreshlayout_Version = '1.1.4'
-    multiStateView_Version = '1.1.1'
-    picasso_Version = '2.5.2'
-    taggroup_Version = '1.4@aar'
-    photoview_Version = '1.2.3'
-    android_utils_Version = '1.0.0'
+    multiStateView_Version  = '1.1.1'
+    picasso_Version         = '2.5.2'
+    taggroup_Version        = '1.4@aar'
+    photoview_Version       = '1.2.3'
+    android_utils_Version   = '1.0.0'
     convenientbanner_Version = '2.0.5'
     swiperecyclerview_Version = '1.0.4'
     dependencieslib = [

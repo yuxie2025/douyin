@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
+import android.support.annotation.ColorInt;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -16,74 +18,147 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import com.blankj.utilcode.util.ToastUtils;
+
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baselib.R;
 import com.baselib.baseapp.AppManager;
 import com.baselib.baserx.RxManager;
 import com.baselib.commonutils.TUtil;
-import com.baselib.commonwidget.StatusBarCompat;
 import com.baselib.daynightmodeutils.ChangeModeController;
 import com.baselib.uitls.CommonUtils;
 import com.baselib.uitls.StatusBarUtil;
 import com.zhy.autolayout.AutoLayoutActivity;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import rx.Subscription;
 
 /**
  * 基类
- * Created by liuhuaqian on 2017/9/5.
+ * Created by luo on 2017/9/5.
  */
 
 public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel> extends AutoLayoutActivity {
     protected T mPresenter;
     protected E mModel;
-    protected Context context;
+    protected Context mContext;
     protected RxManager mRxManager;
     protected Subscription subscription;
     private AlertDialog mAlertDialog;
 
+    private Unbinder unbinder;
+
+    //分页,第几页
+    protected int page = 1;
+    protected int pageSize = 10;
+
+    /**
+     * 是否着色状态栏
+     */
     protected boolean isSetStatusBarColor = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
+        mContext = this;
         mRxManager = new RxManager();
         onBeforeSetContentView();
-        if (getLayoutId()!=0){
+
+        if (getLayoutId() != 0) {
             setContentView(getLayoutId());
         }
 
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
+
         mPresenter = TUtil.getT(this, 0);
         mModel = TUtil.getT(this, 1);
         initPresenter();
         initView(savedInstanceState);
+
+        //绑第二次是为了,兼容DataBindingUtil,否则点击事件将无效
+//        unbinder = ButterKnife.bind(this);
+
+        //销毁当前页面
+        back();
 
         if (isSetStatusBarColor) {
             // 默认着色状态栏
             setStatusBarColor();
         }
 
-//        //toolBar使用
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        if (toolbar != null) {
-//            setSupportActionBar(toolbar);
-//            // 默认不显示原生标题
-//            getSupportActionBar().setDisplayShowTitleEnabled(false);
-//            initToolbar(new ToolbarHelper(toolbar));
-//        }
     }
 
-//    protected abstract void initToolbar(ToolbarHelper toolbarHelper);
+    /**
+     * layoutResID to View
+     */
+    protected View parseLayoutResId(@LayoutRes final int layoutResID) {
+        return getLayoutInflater().inflate(layoutResID, null);
+    }
+
+    /**
+     * 如果有返回按钮,设置监听
+     */
+    protected void back() {
+        try {
+            findViewById(R.id.rl_left).setOnClickListener(view -> finish());
+        } catch (Exception e) {
+        }
+    }
+
+    /**
+     * 设置title
+     *
+     * @param title
+     */
+    protected void setTitle(String title) {
+        try {
+            ((TextView) findViewById(R.id.title)).setText(title);
+        } catch (Exception e) {
+        }
+    }
+
+    /**
+     * 设置右上角保存
+     *
+     * @param save
+     * @param res
+     * @param onClickListener
+     */
+    protected void setSave(String save, @ColorInt int res, View.OnClickListener onClickListener) {
+        try {
+            TextView saveText = ((TextView) findViewById(R.id.save));
+            saveText.setVisibility(View.VISIBLE);
+            if (res == 0) {
+                saveText.setTextColor(Color.parseColor("#1c1c1c"));
+            } else {
+                saveText.setTextColor(res);
+            }
+            saveText.setText(save);
+            saveText.setOnClickListener(onClickListener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 吐司
+     *
+     * @param msg
+     */
+    protected void showToast(String msg) {
+        ToastUtils.showShort(msg);
+    }
 
     //简单页面无需mvp就不用管此方法即可,完美兼容各种实际场景的变通
     protected void initPresenter() {
@@ -96,7 +171,7 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
      * 子类实现
      *****************************/
     //获取布局文件
-    public abstract int getLayoutId();
+    protected abstract int getLayoutId();
 
     //初始化view
     protected abstract void initView(Bundle savedInstanceState);
@@ -116,17 +191,10 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
 //        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         // 设置竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         //设置全屏
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
     }
-    /**
-     * 设置主题
-     */
-//    private void initTheme() {
-//        ChangeModeController.setTheme(this, R.style.DayTheme, R.style.NightTheme);
-//    }
 
     /**
      * 设置状态栏的颜色和透明度（4.4以上系统有效）
@@ -137,17 +205,22 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
     }
 
     /**
-     * 沉浸状态栏（4.4以上系统有效）
-     */
-    protected void translucentStatusBar() {
-        StatusBarCompat.translucentStatusBar(this);
-    }
-
-    /**
      * 通过Class跳转界面
      **/
     public void startActivity(Class<?> cls) {
         startActivity(cls, null);
+    }
+
+    /**
+     * 含有Bundle通过Class跳转界面
+     **/
+    public void startActivity(Class<?> cls, Bundle bundle) {
+        Intent intent = new Intent();
+        intent.setClass(this, cls);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
     }
 
     /**
@@ -168,18 +241,6 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
             intent.putExtras(bundle);
         }
         startActivityForResult(intent, requestCode);
-    }
-
-    /**
-     * 含有Bundle通过Class跳转界面
-     **/
-    public void startActivity(Class<?> cls, Bundle bundle) {
-        Intent intent = new Intent();
-        intent.setClass(this, cls);
-        if (bundle != null) {
-            intent.putExtras(bundle);
-        }
-        startActivity(intent);
     }
 
     protected void unsubscribe() {
@@ -298,19 +359,19 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
         }, "取消", false);
     }
 
-    protected void suggestSetting() {
-        suggestSetting("");
-    }
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mPresenter != null)
             mPresenter.onDestroy();
         mRxManager.clear();
-        ButterKnife.unbind(this);
         unsubscribe();
         AppManager.getAppManager().finishActivity(this);
+
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
+
     }
+
 }

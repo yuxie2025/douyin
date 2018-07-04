@@ -1,7 +1,7 @@
 package com.baselib.ui.widget.mydatepicker;
 
 /**
- * 作者: liuhuaqian on 2017/9/23.
+ * 作者: llk on 2017/9/23.
  *  天朝日历主题类
  * 其他国家的主题不需要这样去处理
  */

@@ -3,7 +3,7 @@ package com.baselib.commonutils;
 import android.content.Context;
 
 /**
- * 作者: liuhuaqian on 2017/9/23.
+ * 作者: llk on 2017/9/23.
  * 测量工具类
  */
 

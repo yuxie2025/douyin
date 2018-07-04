@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yuxie.myapp">
+    package="com.yuxie.demo">
 
     <!-- 添加读写权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -12,16 +12,13 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
+    <!-- begin: baidu speech sdk  权限 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- end: baidu speech sdk  权限 -->
 
     <application
         android:name=".application.App"
@@ -30,6 +27,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
 
         <!-- 横屏:landscape -->
         <!-- 竖屏:portrait -->
@@ -53,7 +51,7 @@
         <activity android:name=".activity.GlideAndPicassoActivity" />
         <activity android:name=".activity.ViewActivity" />
         <activity android:name=".mvp.view.UserActivity" />
-        <activity android:name=".Login.view.LoginActivity" />
+        <activity android:name=".login.view.LoginActivity" />
         <activity android:name=".activity.RxjavaActivity" />
         <activity android:name=".mvvp.MvvpActivity" />
         <activity android:name=".video.VideoListActivity" />
@@ -75,7 +73,45 @@
         <activity android:name=".controlpc.PcScreenActivity" />
         <activity android:name=".sms.SmsApiActivity" />
         <activity android:name=".sms.UpdateSmsApiActivity" />
-        <activity android:name=".activity.BleActivity"></activity>
+
+        <!--&lt;!&ndash; 微信支付 &ndash;&gt;-->
+        <!--<activity-->
+        <!--android:name=".wxapi.WXPayEntryActivity"-->
+        <!--android:exported="true"-->
+        <!--android:launchMode="singleTop"></activity>-->
+
+        <!--<receiver android:name=".wxapi.AppRegister">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />-->
+        <!--</intent-filter>-->
+        <!--</receiver>-->
+
+        <!--&lt;!&ndash; 微信 &ndash;&gt;-->
+        <!--<activity-->
+        <!--android:name=".wxapi.WXEntryActivity"-->
+        <!--android:configChanges="keyboardHidden|orientation|screenSize"-->
+        <!--android:exported="true"-->
+        <!--android:screenOrientation="portrait"-->
+        <!--android:theme="@android:style/Theme.Translucent.NoTitleBar" />-->
+        <!--&lt;!&ndash; 微信支付 &ndash;&gt;-->
+
+        <activity
+            android:name=".play.PalyActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Translucent"></activity>
+
+        <activity
+            android:name="com.audio.ActivityWakeUp"
+            android:configChanges="orientation|keyboardHidden|screenLayout"
+            android:label="唤醒词"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="com.baidu.speech.recognizerdemo.intent.category.SAMPLE_CODE" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

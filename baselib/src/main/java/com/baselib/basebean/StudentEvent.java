@@ -3,15 +3,15 @@ package com.baselib.basebean;
 import com.baselib.enums.StudentEnum;
 
 /**
- * 作者: liuhuaqian on 2017/9/8.
+ * 作者: llk on 2017/9/8.
  */
 
 public class StudentEvent<T> {
-  private T msgEntity;
+    private T msgEntity;
     private StudentEnum id;
     private int position;
 
-    public StudentEvent(StudentEnum id,int position) {
+    public StudentEvent(StudentEnum id, int position) {
         this.position = position;
         this.id = id;
     }
@@ -51,20 +51,24 @@ public class StudentEvent<T> {
         this.id = id;
         this.msgEntity = msgEntity;
     }
-    public StudentEvent(StudentEnum id,String message, T msgEntity) {
+
+    public StudentEvent(StudentEnum id, String message, T msgEntity) {
         this.id = id;
         this.msgEntity = msgEntity;
         this.message = message;
     }
+
     public StudentEvent(StudentEnum id, String message) {
         this.id = id;
         this.message = message;
     }
-    public StudentEvent(StudentEnum id, String message,String type) {
+
+    public StudentEvent(StudentEnum id, String message, String type) {
         this.id = id;
         this.message = message;
         this.type = type;
     }
+
     public StudentEvent(StudentEnum id) {
         this.id = id;
 

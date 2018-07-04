@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 /**
- * 作者: liuhuaqian on 2017/9/20.
+ * 作者: llk on 2017/9/20.
  */
 
 public class LoadingAnimatorView extends SurfaceView implements

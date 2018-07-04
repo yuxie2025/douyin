@@ -2,7 +2,7 @@ package com.baselib.commonutils;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 /**
- * Created by liuhuaqian on 2017/9/6.
+ * Created by llk on 2017/9/6.
  * 类转换初始化
  */
 

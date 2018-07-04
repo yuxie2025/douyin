@@ -8,7 +8,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 /**
- * Created by liuhuaqian on 2017/9/6.
+ * Created by llk on 2017/9/6.
  * 用于管理单个presenter的RxBus的事件和Rxjava相关代码的生命周期处理
  */
 

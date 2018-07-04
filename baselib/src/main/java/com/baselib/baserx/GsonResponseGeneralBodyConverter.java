@@ -1,7 +1,7 @@
 package com.baselib.baserx;
 
 /**
- * 作者: liuhuaqian on 2017/10/8.
+ * 作者: llk on 2017/10/8.
  */
 
 import com.baselib.basebean.BaseRespose;

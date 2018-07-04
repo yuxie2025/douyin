@@ -1,7 +1,7 @@
 package com.baselib.ui.widget.mydatepicker;
 
 /**
- * 作者: liuhuaqian on 2017/9/23.
+ * 作者: llk on 2017/9/23.
  * 主题抽象类
  * 你可以继承该类定制自己的颜色主题
  */

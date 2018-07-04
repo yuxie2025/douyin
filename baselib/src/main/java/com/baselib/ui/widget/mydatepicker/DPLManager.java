@@ -8,7 +8,7 @@ import java.util.Locale;
  * 如果你需要定义更多的语言可以新建自己的语言类并继承Language重写其方法即可
  * 同时你需要在Language的单例方法{@link #getInstance()}的分支语句中添加自己的语言类判断
  *
- * 作者: liuhuaqian on 2017/9/23.
+ * 作者: llk on 2017/9/23.
  */
 
 public abstract class DPLManager {

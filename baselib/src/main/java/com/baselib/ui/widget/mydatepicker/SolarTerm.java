@@ -1,7 +1,7 @@
 package com.baselib.ui.widget.mydatepicker;
 
 /**
- * 作者: liuhuaqian on 2017/9/23.
+ * 作者: llk on 2017/9/23.
  * 农历二十四节气算法
  * 该算法目前仅对外提供一个接口方法获取某年的节气数据{@link #buildSolarTerm(int)}
 
