@@ -1,0 +1,8 @@
+#ABNF 1.0 UTF-8;
+language zh-CN; 
+mode voice;
+
+root $main;
+$main = [$call] $name;
+$call = 讯飞语音|讯飞语点|叮咚叮咚;
+$name = 张三|李四|张海洋;

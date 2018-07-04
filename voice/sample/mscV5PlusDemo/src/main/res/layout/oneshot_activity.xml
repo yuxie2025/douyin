@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp" >
+   
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:gravity="center">
+        
+        <TextView 
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:gravity="center_horizontal"
+            android:text="唤醒+识别示例"/>
+       
+    </LinearLayout>
+    
+ 	<TextView
+ 	    android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/oneshot_demo_hint"
+        android:textSize="18sp" />
+ 	
+ 	<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/oneshot_resource_hint"
+        android:layout_gravity="left"
+        android:textSize="16sp" />
+ 	
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" 
+        android:layout_marginTop="10dip">
+        
+        <TextView
+            android:id="@+id/txt_thresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="门限值:"
+            android:textSize="18sp" />
+
+        <SeekBar
+            android:id="@+id/seekBar_thresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp" />
+
+    </LinearLayout>
+    
+  	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+        android:layout_marginTop="10dip">
+    
+	    <RadioGroup
+	        android:id="@+id/radioGroup"
+	        android:layout_width="0dip"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:contentDescription="识别类型"
+	        android:orientation="horizontal">
+	        
+		  	<RadioButton
+	            android:id="@+id/radioCloud"
+	            android:layout_width="0dip"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:checked="true"
+	            android:text="云端" >
+	        </RadioButton>
+
+	        <RadioButton
+	            android:id="@+id/radioLocal"
+	            android:layout_width="0dip"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:text="本地" >
+	        </RadioButton>
+	        
+    	</RadioGroup>
+    	
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+        android:layout_marginTop="10dip">
+	    
+        <Button
+	        android:id="@+id/btn_grammar"
+	        android:layout_width="0dip"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="构建语法" />
+    
+        <Button 
+	        android:id="@+id/btn_oneshot"
+	        android:layout_width="0dip"
+	        android:layout_weight="1"
+	        android:layout_height="wrap_content"
+	        android:text="唤醒+识别"/>
+    
+	    <Button 
+	        android:id="@+id/btn_stop"
+	        android:layout_width="0dip"
+	        android:layout_weight="1"
+	        android:layout_height="wrap_content"
+	        android:text="停止唤醒" />
+
+    </LinearLayout>
+    
+   
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp" >
+
+        <TextView
+            android:id="@+id/txt_show_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp" />
+    </ScrollView>
+
+</LinearLayout>

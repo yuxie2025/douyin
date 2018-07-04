@@ -1,29 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl_keyboard"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:gravity="center_vertical|center_horizontal"
-        android:layout_height="wrap_content">
+        android:gravity="center">
 
         <Button
             android:id="@+id/btn_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="←"/>
+            android:text="←" />
+
         <Button
             android:id="@+id/btn_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/btn_left"
-            android:text="→"/>
-    </RelativeLayout>
+            android:text="→" />
 
+        <TextView
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            android:dropDownVerticalOffset="40dp"
+            android:dropDownWidth="wrap_content"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            android:tooltipText="命令" />
 
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/panel"
@@ -31,15 +43,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_keyboard"
         android:layout_centerHorizontal="true"
-        android:maxHeight="96dp" >
+        android:maxHeight="96dp">
 
         <LinearLayout
             android:id="@+id/llAdvancedGroup"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:orientation="horizontal"
             android:scrollbarAlwaysDrawHorizontalTrack="true"
             android:scrollbarStyle="insideOverlay"
-            android:orientation="horizontal"
             android:scrollbars="horizontal" />
     </FrameLayout>
 

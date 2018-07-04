@@ -173,4 +173,7 @@ dependencies {
     compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
 
+    //ui库
+    api 'com.qmuiteam:qmui:1.1.5'
+
 }

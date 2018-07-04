@@ -3,19 +3,41 @@ package com.yuxie.myapp.controlpc;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatSpinner;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.PopupWindow;
+import android.widget.SimpleAdapter;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.baselib.commonutils.LogUtils;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogMenuItemView;
+import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
+import com.qmuiteam.qmui.widget.popup.QMUIPopup;
+import com.qmuiteam.qmui.widget.textview.QMUISpanTouchFixTextView;
 import com.yuxie.myapp.R;
+import com.yuxie.myapp.base.CommonAdapter;
+import com.yuxie.myapp.base.ViewHolder;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ControlActivity extends Activity {
 
@@ -31,26 +53,15 @@ public class ControlActivity extends Activity {
     private FrameLayout leftButton;
     private FrameLayout rightButton;
     private FrameLayout middleButton;
+    FrameLayout touch;
+    TextView spinner;
 
     private Button btn_left;
     private Button btn_right;
 
-    Handler handler = new Handler();
-    Runnable leftButtonDown;
-    Runnable leftButtonRealease;
-    Runnable rightButtonDown;
-    Runnable rightButtonRealease;
-
     private DatagramSocket socket;
-    private boolean isUSLR = true;
+    private QMUIListPopup mListPopup;
 
-    private int count = 0;
-    private long firClick = 0;
-    private long secClick = 0;
-    /**
-     * 两次点击时间间隔，单位毫秒
-     */
-    private final int interval = 150;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +76,6 @@ public class ControlActivity extends Activity {
         initTouch();
     }
 
-
     private void initTouch() {
 
         btn_left = (Button) findViewById(R.id.btn_left);
@@ -75,20 +85,21 @@ public class ControlActivity extends Activity {
         rightButton = (FrameLayout) findViewById(R.id.rightButton);
         middleButton = (FrameLayout) findViewById(R.id.middleButton);
 
-        FrameLayout touch = (FrameLayout) this.findViewById(R.id.touch);
+        touch = (FrameLayout) findViewById(R.id.touch);
+        spinner = (TextView) findViewById(R.id.spinner);
+
+        spinner.setText("桌面");
 
         // let's set up a touch listener
         touch.setOnTouchListener(new View.OnTouchListener() {
-            long hTime = 0L;
 
             public boolean onTouch(View v, MotionEvent ev) {
-                if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-                    onMouseDown(ev);
-                }
-                if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+                if (ev.getAction() == MotionEvent.ACTION_MOVE)
                     onMouseMove(ev);
-                }
-
+                if (ev.getAction() == MotionEvent.ACTION_DOWN)
+                    onMouseDown(ev);
+                if (ev.getAction() == MotionEvent.ACTION_UP)
+                    onMouseUp(ev);
                 return true;
             }
         });
@@ -97,13 +108,13 @@ public class ControlActivity extends Activity {
             public boolean onTouch(View v, MotionEvent ev) {
                 if (ev.getAction() == MotionEvent.ACTION_DOWN) {
                     onLeftButton("down");
-                    handler.post(leftButtonDown);
+                    leftButton.setBackgroundResource(R.drawable.zuoc);
                 }
                 if (ev.getAction() == MotionEvent.ACTION_UP) {
                     onLeftButton("release");
                     lbx = 0;
                     lby = 0;
-                    handler.post(leftButtonRealease);
+                    leftButton.setBackgroundResource(R.drawable.zuo);
                 }
                 if (ev.getAction() == MotionEvent.ACTION_MOVE)
                     moveMouseWithSecondFinger(ev);
@@ -115,11 +126,11 @@ public class ControlActivity extends Activity {
             public boolean onTouch(View v, MotionEvent ev) {
                 if (ev.getAction() == MotionEvent.ACTION_DOWN) {
                     onRightButton("down");
-                    handler.post(rightButtonDown);
+                    rightButton.setBackgroundResource(R.drawable.youc);
                 }
                 if (ev.getAction() == MotionEvent.ACTION_UP) {
                     onRightButton("release");
-                    handler.post(rightButtonRealease);
+                    rightButton.setBackgroundResource(R.drawable.you);
                 }
                 return true;
             }
@@ -132,50 +143,7 @@ public class ControlActivity extends Activity {
                     onMiddleButtonMove(ev);
                 return true;
             }
-
         });
-
-        this.leftButtonDown = new Runnable() {
-            public void run() {
-                drawLeftButtonDown(leftButton);
-            }
-
-            private void drawLeftButtonDown(FrameLayout fl) {
-                fl.setBackgroundResource(R.drawable.zuoc);
-            }
-        };
-
-        this.rightButtonDown = new Runnable() {
-            public void run() {
-                drawButtonDown(rightButton);
-            }
-
-            private void drawButtonDown(FrameLayout fl) {
-                fl.setBackgroundResource(R.drawable.youc);
-            }
-        };
-
-        this.leftButtonRealease = new Runnable() {
-            public void run() {
-                drawLeftButtonRealease(leftButton);
-            }
-
-            private void drawLeftButtonRealease(FrameLayout fl) {
-                fl.setBackgroundResource(R.drawable.zuo);
-
-            }
-        };
-
-        this.rightButtonRealease = new Runnable() {
-            public void run() {
-                drawButtonRealease(rightButton);
-            }
-
-            private void drawButtonRealease(FrameLayout fl) {
-                fl.setBackgroundResource(R.drawable.you);
-
-            }
-        };
 
         btn_left.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,7 +159,53 @@ public class ControlActivity extends Activity {
                 sendMessage("keyboard:key,Right,up");
             }
         });
+
+        spinner.setOnClickListener(view -> {
+            initListPopupIfNeed();
+            mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+            mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_TOP);
+            mListPopup.show(view);
+        });
+
     }
+
+    private void initListPopupIfNeed() {
+        if (mListPopup == null) {
+
+            List<String> datas = new ArrayList<>();
+            datas.add("关机");
+            datas.add("重启");
+            datas.add("1小时后关机");
+            datas.add("取消关机");
+            datas.add("空格");
+            datas.add("关闭页面");
+            datas.add("桌面");
+
+            List<String> cmds = new ArrayList<>();
+            cmds.add("cmd:shutdown -s -t 3");
+            cmds.add("cmd:shutdown -r -t 3");
+            cmds.add("cmd:shutdown -s -t 3600");
+            cmds.add("cmd:shutdown -a");
+            cmds.add("keyboard:key,Space,click");
+            cmds.add("keyboard:key,Alt,F4");
+            cmds.add("keyboard:key,Ctrl,E");
+
+            spinner.setText(datas.get(0));
+
+            ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, datas);
+
+            mListPopup = new QMUIListPopup(this, QMUIPopup.DIRECTION_NONE, adapter);
+            mListPopup.create(QMUIDisplayHelper.dp2px(this, 250), QMUIDisplayHelper.dp2px(this, 400), new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    spinner.setText(datas.get(i));
+                    sendMessage(cmds.get(i));
+                    mListPopup.dismiss();
+                }
+            });
+        }
+    }
+
 
     private void moveMouseWithSecondFinger(MotionEvent event) {
         int count = event.getPointerCount();
@@ -238,7 +252,6 @@ public class ControlActivity extends Activity {
             sendMessage("leftButton:down");
             sendMessage("leftButton:release");
         }
-
     }
 
     private void sendMouseEvent(String type, float x, float y) {
@@ -258,11 +271,12 @@ public class ControlActivity extends Activity {
     }
 
     private void sendMessage(final String str) {
-
-
         new Thread(new InnerRunnable(str)).start();
     }
 
+    /**
+     * 发送消息
+     */
     private class InnerRunnable implements Runnable {
 
         String str = "";
@@ -295,12 +309,9 @@ public class ControlActivity extends Activity {
 
     private void onMiddleButtonDown(MotionEvent ev) {
         ly = ev.getY();
-
     }
 
     private void onMiddleButtonMove(MotionEvent ev) {
-        // count++;
-
         float y = ev.getY();
         my = y - ly;
         ly = y;
@@ -322,11 +333,6 @@ public class ControlActivity extends Activity {
             sendMessage("keyboard:key,Up,up");
             return true;
         }
-//        else if( keyCode== KeyEvent.KEYCODE_HOME){
-//            return true;
-//        } else if( keyCode== KeyEvent.KEYCODE_BACK){
-//            return true;
-//        }
         return super.onKeyDown(keyCode, event);
     }
 

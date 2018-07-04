@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -16,8 +18,20 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.baselib.base.BaseActivity;
+import com.baselib.commonutils.LogUtils;
 import com.baselib.takephoto.app.SelectPhotoActivity;
 import com.baselib.utilcode.util.ToastUtils;
+import com.iflytek.cloud.ErrorCode;
+import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.RecognizerListener;
+import com.iflytek.cloud.RecognizerResult;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.SpeechEvent;
+import com.iflytek.cloud.VoiceWakeuper;
+import com.iflytek.cloud.WakeuperListener;
+import com.iflytek.cloud.WakeuperResult;
+import com.iflytek.cloud.util.ResourceUtil;
 import com.yuxie.myapp.R;
 import com.yuxie.myapp.controlpc.RemoteControlActivity;
 import com.yuxie.myapp.listandrecycler.ListAndRecyclerActivity;
@@ -27,7 +41,11 @@ import com.yuxie.myapp.sms.SmsApiActivity;
 import com.yuxie.myapp.txt.TxtActivity;
 import com.yuxie.myapp.video.VideoListActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.security.Signature;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +54,8 @@ import java.util.Map;
 import butterknife.Bind;
 
 public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+
+    private static String TAG = MainActivity.class.getSimpleName();
 
     ListView lv_test;
     Context mContext;
@@ -58,6 +78,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         rlLeft.setVisibility(View.INVISIBLE);
 
         init();
+
         //        long maxMemory=Runtime.getRuntime().maxMemory();
 //        LruCache<String,Bitmap> mLruCache=new LruCache<String,Bitmap>((int)maxMemory){
 //            @Override
@@ -193,6 +214,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 //        PerfectPopWindow popWindow = new PerfectPopWindow(MainActivity.this, MainActivity.class);
 //        popWindow.showPopupWindow();
 
+        voice();
+
     }
 
     // 返回电影列表信息
@@ -306,5 +329,102 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             }
         }
     }
+
+    private int curThresh = 1450;
+
+    private void voice() {
+
+        // 初始化识别对象
+        VoiceWakeuper mIvw = mIvw = VoiceWakeuper.createWakeuper(this, null);
+        mIvw = VoiceWakeuper.getWakeuper();
+
+        Log.d(TAG, "mIvw: " + mIvw);
+
+        if (mIvw != null) {
+            // 唤醒资源路径，需下载使用对应的语音唤醒SDK。
+            mIvw.setParameter(SpeechConstant.IVW_RES_PATH, getResource());
+            // 唤醒类型
+            String ivwSst = "wakeup";
+            mIvw.setParameter(SpeechConstant.IVW_SST, ivwSst);
+            // 唤醒门限
+            String threshold = "0:" + curThresh;
+            mIvw.setParameter(SpeechConstant.IVW_THRESHOLD, threshold);
+            // 持续唤醒
+            String keepAlive = "1";
+            mIvw.setParameter(SpeechConstant.KEEP_ALIVE, keepAlive);
+            mIvw.startListening(mWakeuperListener);
+        } else {
+            ToastUtils.showShort("未初始化");
+        }
+
+    }
+
+    private String getResource() {
+        String path = "";
+        final String resPath = ResourceUtil.generateResourcePath(mContext, ResourceUtil.RESOURCE_TYPE.assets, "ivw/" + getString(R.string.app_id) + ".jet");
+        Log.d(TAG, "path: " + path);
+        return path;
+    }
+
+    private WakeuperListener mWakeuperListener = new WakeuperListener() {
+
+        @Override
+        public void onResult(WakeuperResult result) {
+            Log.d(TAG, "onResult");
+//            if(!"1".equalsIgnoreCase(keep_alive)) {
+//                setRadioEnable(true);
+//            }
+            String resultString;
+            try {
+                String text = result.getResultString();
+                JSONObject object;
+                object = new JSONObject(text);
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("【RAW】 " + text);
+                buffer.append("\n");
+                buffer.append("【操作类型】" + object.optString("sst"));
+                buffer.append("\n");
+                buffer.append("【唤醒词id】" + object.optString("id"));
+                buffer.append("\n");
+                buffer.append("【得分】" + object.optString("score"));
+                buffer.append("\n");
+                buffer.append("【前端点】" + object.optString("bos"));
+                buffer.append("\n");
+                buffer.append("【尾端点】" + object.optString("eos"));
+                resultString = buffer.toString();
+            } catch (JSONException e) {
+                resultString = "结果解析出错";
+                e.printStackTrace();
+            }
+            ToastUtils.showShort(resultString);
+        }
+
+        @Override
+        public void onError(SpeechError speechError) {
+
+        }
+
+
+        @Override
+        public void onBeginOfSpeech() {
+        }
+
+
+        @Override
+        public void onEvent(int eventType, int isLast, int arg2, Bundle obj) {
+            switch (eventType) {
+                // EVENT_RECORD_DATA 事件仅在 NOTIFY_RECORD_DATA 参数值为 真 时返回
+                case SpeechEvent.EVENT_RECORD_DATA:
+                    final byte[] audio = obj.getByteArray(SpeechEvent.KEY_EVENT_RECORD_DATA);
+                    Log.i(TAG, "ivw audio length: " + audio.length);
+                    break;
+            }
+        }
+
+        @Override
+        public void onVolumeChanged(int volume) {
+
+        }
+    };
 
 }

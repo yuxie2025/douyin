@@ -1,14 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
-
 def androidCf = rootProject.ext.android
-
 greendao {
     schemaVersion 2
     daoPackage androidCf.applicationId + ".greendao"
     targetGenDir 'src/main/java'
 }
-
 android {
     compileSdkVersion androidCf.compileSdkVersion
     buildToolsVersion androidCf.buildToolsVersion
@@ -110,10 +107,14 @@ android {
 
         implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 //        compile project(path: ':apkupdatelib')
+        compile project(path: ':voice')
 
         //将最新的版本改为当前版本号，例如2.3.1(报错就填写固定的版本号)
         compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
         annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
 
     }
+}
+dependencies {
+    implementation 'com.android.support:appcompat-v7:27.0.2'
 }
