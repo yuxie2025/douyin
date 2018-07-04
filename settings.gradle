@@ -1,2 +1,4 @@
-include ':app', ':baselib'
+include ':app', ':baselib', ':audio'
+//,':audio_lib'
+//,':video_lib'
 //, ':alipay_lib', ':dfu_lib', ':apkupdate_lib', ':wechat_pay_lib'

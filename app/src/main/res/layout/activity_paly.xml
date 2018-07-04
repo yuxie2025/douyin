@@ -6,15 +6,5 @@
     android:background="#000000"
     android:orientation="vertical">
 
-    <com.yuxie.demo.play.SampleVideo
-        android:id="@+id/video_player"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"/>
-
-    <cn.jzvd.JZVideoPlayerStandard
-        android:id="@+id/videoplayer"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_centerInParent="true" />
 
 </LinearLayout>

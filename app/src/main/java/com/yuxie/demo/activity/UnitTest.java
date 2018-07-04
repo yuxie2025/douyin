@@ -1,11 +1,13 @@
 package com.yuxie.demo.activity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 
+import com.audio.ActivityWakeUp;
 import com.baselib.basebean.BaseRespose;
 import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
-import com.yuxie.demo.api.ServerApiService;
 import com.yuxie.demo.api.server.HostType;
 import com.yuxie.demo.api.server.ServerApi;
 
@@ -94,9 +96,12 @@ public class UnitTest {
 
     }
 
-    public static void test(Context context) {
+    public static void test(Activity context) {
 
-        testUrl(context);
+//        testUrl(context);
+
+        Intent intent = new Intent(context, ActivityWakeUp.class);
+        context.startActivity(intent);
 
     }
 

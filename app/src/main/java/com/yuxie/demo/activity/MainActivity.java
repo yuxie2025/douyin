@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     //测试方法
     private void test() {
         //测试方法
-        UnitTest.test(mContext);
+        UnitTest.test(this);
     }
 
     // 返回列表信息
@@ -135,10 +135,10 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 //        map12.put("testName", "手机控制pc");
 //        alist.add(RemoteControlActivity.class);
 //        data.add(map12);
-        Map<String, Object> map13 = new HashMap<String, Object>();
-        map13.put("testName", "短信轰炸");
-        alist.add(SmsApiActivity.class);
-        data.add(map13);
+//        Map<String, Object> map13 = new HashMap<String, Object>();
+//        map13.put("testName", "短信轰炸");
+//        alist.add(SmsApiActivity.class);
+//        data.add(map13);
 //        Map<String, Object> map14 = new HashMap<String, Object>();
 //        map14.put("testName", "视频播放");
 //        alist.add(PalyActivity.class);
