@@ -18,7 +18,7 @@ import com.yuxie.demo.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
@@ -29,7 +29,7 @@ import retrofit2.Retrofit;
 
 public class TxtActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView title;
     private ListView lv_musics;
     private TxtListAdapter txtListAdapter;
@@ -147,7 +147,7 @@ public class TxtActivity extends BaseActivity implements AdapterView.OnItemClick
         String txtContentUrl = data.get(i).getLatestUrl();
         String tag = data.get(i).getTag();
 
-        ReadTxtActivity.start(context, titleStr, txtContentUrl, tag);
+        ReadTxtActivity.start(mContext, titleStr, txtContentUrl, tag);
 
     }
 

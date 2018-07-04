@@ -1,5 +1,6 @@
 package com.baselib.base;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,11 +11,13 @@ import android.view.ViewGroup;
 
 import com.baselib.baserx.RxManager;
 import com.baselib.commonutils.TUtil;
+import com.blankj.utilcode.util.ToastUtils;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
- * 作者: liuhuaqian on 2017/9/19.
+ * 作者: llk on 2017/9/19.
  */
 
 public abstract class BaseFragment
@@ -25,14 +28,22 @@ public abstract class BaseFragment
     public E mModel;
     protected RxManager mRxManager;
 
+    protected Context mContext;
+
+    //分页,第几页
+    protected int page = 1;
+    protected int pageSize = 10;
+
+    Unbinder unbinder;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null)
             rootView = inflater.inflate(getLayoutResource(), container, false);
-
+        mContext = getActivity();
         mRxManager = new RxManager();
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
         mPresenter = TUtil.getT(this, 0);
         mModel = TUtil.getT(this, 1);
         initPresenter();
@@ -92,13 +103,26 @@ public abstract class BaseFragment
         startActivity(intent);
     }
 
+    /**
+     * 吐司
+     *
+     * @param msg
+     */
+    protected void showToast(String msg) {
+        ToastUtils.showShort(msg);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
-        if (mPresenter != null)
+        if (mPresenter != null) {
             mPresenter.onDestroy();
+        }
         mRxManager.clear();
+
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
     }
 
 }

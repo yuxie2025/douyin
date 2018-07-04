@@ -11,6 +11,10 @@ ext {
             versionName       : "1.2"
     ]
 
+
+    debug_host="\"47.96.168.44\""
+    release_host="\"47.96.168.44\""
+
     //Libraries variable
     supportv_Verion = '26.0.2'
 

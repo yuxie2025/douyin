@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:drawableTop="@drawable/ic_load_fail"
+        android:drawablePadding="15dp"
+        android:text="@string/no_data_empty_text"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/acbtn_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:text="@string/retry_text"
+        android:layout_marginTop="15dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/shape_rect_radius_red_3dp"
+        android:visibility="gone"/>
+</LinearLayout>

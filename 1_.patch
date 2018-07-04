@@ -36930,7 +36930,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 +import com.baselib.uitls.StatusBarUtil;
 +import com.zhy.autolayout.AutoLayoutActivity;
 +
-+import butterknife.Bind;
++import butterknife.BindView;
 +import butterknife.ButterKnife;
 +import rx.Subscription;
 +

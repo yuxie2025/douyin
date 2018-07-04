@@ -13,7 +13,7 @@ import android.widget.PopupWindow;
 import com.baselib.R;
 
 /**
- * 作者: liuhuaqian on 2017/9/10.
+ * 作者: llk on 2017/9/10.
  * 拍照PopupWindow
  */
 

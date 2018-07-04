@@ -1,7 +1,7 @@
 package com.baselib.baserx;
 
 /**
- * 作者: liuhuaqian on 2017/10/8.
+ * 作者: llk on 2017/10/8.
  */
 
 import android.util.Log;
@@ -9,9 +9,14 @@ import android.util.Log;
 import com.baselib.basebean.BaseRespose;
 import com.baselib.commonutils.LogUtils;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
@@ -19,6 +24,7 @@ import retrofit2.Converter;
 final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
     private final Gson gson;
     private final Type type;
+
 
     GsonResponseBodyConverter(Gson gson, Type type) {
         this.gson = gson;
@@ -32,15 +38,39 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
     public T convert(ResponseBody value) throws IOException {
         String response = value.string();
         try {
-            BaseRespose result = gson.fromJson(response, BaseRespose.class);
 
-            String rows = result.getRows().toString().trim();
+            Type typeToken = new TypeToken<BaseRespose>() {
+            }.getType();
 
-            if (result.success() && !"[]".equals(rows) && !"[{}]".contains(rows)) {
-                return gson.fromJson(response, type);
+            if (type == typeToken) {
+                BaseRespose baseRespose = gson.fromJson(response, type);
+                if (baseRespose.success()) {
+                    return gson.fromJson(response, type);
+                } else {
+                    throw new ResultException(baseRespose.getMessage(), !baseRespose.success());
+                }
             } else {
-                LogUtils.logd("HttpManager,返回err==：" + response);
-                throw new ResultException(result.getErrorMsg(), !result.success());
+
+                Type parametType = ((ParameterizedType) type).getActualTypeArguments()[0];
+
+                BaseRespose result = gson.fromJson(response, BaseRespose.class);
+                String rows = result.getData().toString().trim();
+
+                if (result.success() && "[]".equals(rows)) {
+                    if (parametType.toString().contains("List")) {
+                        return (T) result;
+                    } else {
+                        response = response.replace("[]", "null");
+                    }
+                    return (T) gson.fromJson(response, BaseRespose.class);
+                }
+
+                if (result.success()) {
+                    return gson.fromJson(response, type);
+                } else {
+                    LogUtils.logd("HttpManager,返回err==：" + response);
+                    throw new ResultException(result.getMessage(), !result.success());
+                }
             }
         } finally {
             value.close();

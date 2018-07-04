@@ -5,7 +5,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 /**
- * 作者: liuhuaqian on 2017/9/23.
+ * 作者: llk on 2017/9/23.
  * 月历装饰物类
  * Decor of Calendar
  *

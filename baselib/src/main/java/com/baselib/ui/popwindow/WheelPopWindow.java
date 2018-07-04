@@ -22,7 +22,7 @@ import com.wx.wheelview.widget.WheelView;
 import java.util.ArrayList;
 
 /**
- * 作者: liuhuaqian on 2017/9/9.
+ * 作者: llk on 2017/9/9.
  */
 
 public class WheelPopWindow implements View.OnClickListener{
@@ -99,8 +99,6 @@ public class WheelPopWindow implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.determine) {
-
-
             RxBus.getInstance().post(new StudentEvent(type, positions));
         }
         m_share_pop.dismiss();

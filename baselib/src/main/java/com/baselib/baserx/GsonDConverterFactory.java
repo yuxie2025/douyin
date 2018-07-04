@@ -15,7 +15,7 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 
 /**
- * 作者: liuhuaqian on 2017/10/8.
+ * 作者: llk on 2017/10/8.
  */
 
 public class GsonDConverterFactory extends Converter.Factory {

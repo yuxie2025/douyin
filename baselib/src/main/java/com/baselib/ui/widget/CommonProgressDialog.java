@@ -17,7 +17,7 @@ import com.baselib.R;
 import java.text.NumberFormat;
 
 /**
- * 作者: liuhuaqian on 2017/11/9.
+ * 作者: llk on 2017/11/9.
  * 自定义进度条
  */
 

@@ -1,0 +1,70 @@
+apply plugin: 'com.android.library'
+def androidCf = rootProject.ext.android
+
+android {
+    compileSdkVersion androidCf.compileSdkVersion
+    buildToolsVersion androidCf.buildToolsVersion
+
+
+
+    defaultConfig {
+        minSdkVersion androidCf.minSdkVersion
+        targetSdkVersion androidCf.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "arm64-v8a", "x86_64"
+        }
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    testImplementation 'junit:junit:4.12'
+
+//    使用说明
+//    在Project的build.gradle文件中配置repositories，添加maven或jcenter仓库地址
+//    Android Studio默认会在Project的build.gradle为所有module自动添加jcenter的仓库地址，如果已存在，则不需要重复添加。
+//    allprojects {
+//        repositories {
+//            jcenter() // 或者 mavenCentral()
+//        }
+//    }
+
+    //高德定位功能最新版本
+    //3D地图
+//    compile 'com.amap.api:3dmap:latest.integration'
+    //2D地图
+//    compile 'com.amap.api:map2d:latest.integration'
+    //导航
+//    compile 'com.amap.api:navi-3dmap:latest.integration'
+    //搜索
+//    compile 'com.amap.api:search:latest.integration'
+//    定位
+//     compile 'com.amap.api:location:latest.integration'
+
+//    参考版本
+//    compile 'com.amap.api:3dmap:5.0.0'
+//    compile 'com.amap.api:location:3.3.0'
+//    compile 'com.amap.api:search:5.0.0'
+
+
+//    指定版本
+//    compile 'com.amap.api:3dmap:6.1.0'
+//    compile 'com.amap.api:search:6.1.0'
+
+}

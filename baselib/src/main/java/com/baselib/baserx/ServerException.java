@@ -1,7 +1,7 @@
 package com.baselib.baserx;
 
 /**
- * 作者: liuhuaqian on 2017/9/8.
+ * 作者: llk on 2017/9/8.
  * 服务器请求异常
  */
 

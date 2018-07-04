@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="code_text">#F86E0C</color>
-    <color name="navigation_bar_bg">#222222</color>
-    <color name="colorPrimary">#ff2C2C2C</color>
-    <color name="colorPrimaryDark">#ff2C2C2C</color>
-    <color name="colorAccent">#ff2C2C2C</color>
+    <color name="navigation_bar_bg">#ffffff</color>
+    <color name="colorPrimary">#e83b2d</color>
+    <color name="colorPrimaryDark">#e83b2d</color>
+    <color name="colorAccent">#f8f8f8</color>
 
     <!--状态栏颜色-->
     <color name="status_bar_color">#ff2C2C2C</color>
@@ -20,7 +20,7 @@
     <color name="night_two_text_color">#8A9599</color>
     <color name="night_there_text_color">#8A9599</color>
     <!-- app主色调-->
-    <color name="main_color">@color/colorPrimary</color>
+    <!--<color name="main_color">@color/colorPrimary</color>-->
     <color name="orange">#FA8C20</color>
     <color name="wheel_divider_line_color">#FF000000</color>
     <color name="wheel_item_text_color_selected">#FF0288ce</color>
@@ -47,7 +47,6 @@
     <color name="blue_check">#3493d4</color>
     <color name="toast_white">#ffffff</color>
     <color name="toast_stroke_gray">#99d4d4d4</color>
-
 
     <color name="alpha_05_white">#0DFFFFFF</color>
     <color name="alpha_10_white">#1AFFFFFF</color>

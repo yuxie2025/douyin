@@ -22,9 +22,6 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
-        //使用butterknife:7.0.1需要添加,如下配置必须放在主模块中
-        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
-
         //配置支持java 1.8
         compileOptions {
             targetCompatibility JavaVersion.VERSION_1_8
@@ -120,9 +117,11 @@ android {
         compile 'httpcomponents-httpcore:httpcore:4.0-alpha6'
 
         compile 'org.greenrobot:greendao:3.2.2' // add library
-        compile project(path: ':baselib')
 
-        compile project(path: ':dfu_lib')
+
+        compile project(path: ':baselib')
+//        compile project(path: ':dfu_lib')
+//        ompile project(path: ':apkupdate_lib')
 
         // The DFU Library is imported automatically from jcenter:
 //        implementation 'no.nordicsemi.android:dfu:1.6.1'
@@ -130,7 +129,6 @@ android {
         compile files('libs/sun.misc.BASE64Decoder.jar')
 
         implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-        compile project(path: ':apkupdate_lib')
 
         //将最新的版本改为当前版本号，例如2.3.1(报错就填写固定的版本号)
         compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
@@ -144,9 +142,15 @@ android {
 
         debugCompile 'com.antfortune.freeline:runtime:0.8.8'
 
+        //ui库
+        api 'com.qmuiteam:qmui:1.0.6'
+
+        def dependenciesCf = rootProject.ext.dependencieslib
+        api dependenciesCf.appcompatv7
+
+        compile 'com.jakewharton:butterknife:8.8.1'
+        annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
     }
 }
-dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-    compile project(path: ':wechat_pay_lib')
-}
+

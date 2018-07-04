@@ -12,7 +12,7 @@ import android.view.View;
 import com.baselib.R;
 
 /**
- * 作者: liuhuaqian on 2017/10/7.
+ * 作者: llk on 2017/10/7.
  */
 
 public class LoadingRightView extends View {

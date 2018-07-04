@@ -3,7 +3,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 /**
  *
- * Created by liuhuaqian on 2017/9/6.
+ * Created by llk on 2017/9/6.
  * 夜间模式辅助类
  */
 

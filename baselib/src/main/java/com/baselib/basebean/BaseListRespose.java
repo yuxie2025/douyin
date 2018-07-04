@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 作者: liuhuaqian on 2017/9/23.
+ * 作者: llk on 2017/9/23.
  * 封装服务器返回数据 多个对象
  */
 
@@ -92,6 +92,4 @@ public class BaseListRespose<T> implements Serializable {
     public boolean success() {
         return "000000".equals(code);
     }
-
-
 }

@@ -3,7 +3,7 @@ package com.baselib.ui.widget.mydatepicker;
 /**
  * 中文的默认实现类
  * 如果你想实现更多的语言请参考Language{@link DPLManager}
- * 作者: liuhuaqian on 2017/9/23.
+ * 作者: llk on 2017/9/23.
  */
 
 public class CN extends DPLManager {

@@ -11,12 +11,12 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.baselib.R;
-import com.baselib.takephoto.app.SelectPhotoActivity;
+import com.baselib.takephoto.utils.SelectPhotoActivity;
 
 
 /**
  * 完善信息PopWindow
- * Created by liuhuaqian on 2017/9/7.
+ * Created by llk on 2017/9/7.
  */
 
 public class PerfectPopWindow implements View.OnClickListener {
@@ -34,9 +34,16 @@ public class PerfectPopWindow implements View.OnClickListener {
 
     private Class<?> mCls;
 
-    public PerfectPopWindow(Activity contex, Class<?> cls) {
-        m_activity = contex;
+    private String mItem;
+
+    public PerfectPopWindow(Activity context, Class<?> cls) {
+        this(context, cls, "item");
+    }
+
+    public PerfectPopWindow(Activity context, Class<?> cls, String item) {
+        m_activity = context;
         mCls = cls;
+        mItem = item;
     }
 
     /**
@@ -84,10 +91,10 @@ public class PerfectPopWindow implements View.OnClickListener {
     public void onClick(View view) {
 
         if (view.getId() == R.id.rl_no1) {
-            SelectPhotoActivity.start(m_activity, mCls, SelectPhotoActivity.CAMERA);
+            SelectPhotoActivity.start(m_activity, mCls, SelectPhotoActivity.CAMERA, mItem);
         }
         if (view.getId() == R.id.rl_no2) {
-            SelectPhotoActivity.start(m_activity, mCls, SelectPhotoActivity.PHOTO);
+            SelectPhotoActivity.start(m_activity, mCls, SelectPhotoActivity.PHOTO, mItem);
         }
         if (m_share_pop != null) {
             m_share_pop.dismiss();

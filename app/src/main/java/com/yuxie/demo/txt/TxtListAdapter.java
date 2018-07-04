@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.baselib.uitls.GlideUtil;
 import com.yuxie.demo.R;
 import com.yuxie.demo.base.CommonAdapter;
 import com.yuxie.demo.base.ViewHolder;
@@ -40,8 +41,7 @@ public class TxtListAdapter extends CommonAdapter<Txt> {
             }
         });
         ImageView iv_photo = holder.getView(R.id.iv_photo);
-        Glide.with(mContext)
-                .load(txt.getPhoto()).dontAnimate().placeholder(R.drawable.no_photo)//图片的下载地址
-                .into(iv_photo);//下载的图标加载到对应的ImageView
+
+        GlideUtil.showImageView(txt.getPhoto(), iv_photo);
     }
 }

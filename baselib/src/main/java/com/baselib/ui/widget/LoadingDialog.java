@@ -12,7 +12,7 @@ import com.baselib.baseapp.BaseApplication;
 
 /**
  * 弹窗浮动加载进度条
- * 作者: liuhuaqian on 2017/9/8.
+ * 作者: llk on 2017/9/8.
  */
 
 public class LoadingDialog {
@@ -41,7 +41,7 @@ public class LoadingDialog {
     }
 
     public static synchronized Dialog showDialogForLoading(Activity context) {
-        return showDialogForLoading(context, BaseApplication.getAppContext().getString(R.string.loading), true);
+        return showDialogForLoading(context, context.getString(R.string.loading), true);
     }
 
     /**

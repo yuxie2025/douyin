@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.baselib.base.BaseActivity;
 import com.baselib.commonutils.LogUtils;
 import com.baselib.uitls.CRequest;
-import com.baselib.utilcode.util.ToastUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yuxie.demo.R;
 import com.yuxie.demo.adapter.SmsApiAdapter;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -40,9 +40,9 @@ import rx.schedulers.Schedulers;
 
 public class SmsApiActivity extends BaseActivity {
 
-    @Bind(R.id.phone_number)
+    @BindView(R.id.phone_number)
     AppCompatEditText phoneNumber;
-    @Bind(R.id.recyclerView)
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
     SmsApiDao smsApiDao;
@@ -52,7 +52,7 @@ public class SmsApiActivity extends BaseActivity {
     int successTotol = 0;
 
     boolean isStop = false;
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView title;
 
     @Override
@@ -76,14 +76,14 @@ public class SmsApiActivity extends BaseActivity {
         List<SmsApi> data = smsApiDao.loadAll();
 
         adapter = new SmsApiAdapter(data);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter1, View view, int position) {
                 if (view.getId() == R.id.btn_update) {
-                    UpdateSmsApiActivity.start(context, adapter.getItem(position));
+                    UpdateSmsApiActivity.start(mContext, adapter.getItem(position));
                 }
                 if (view.getId() == R.id.btn_delete) {
                     smsApiDao.delete(adapter.getData().get(position));

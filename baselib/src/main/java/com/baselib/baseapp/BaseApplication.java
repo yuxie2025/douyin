@@ -3,20 +3,18 @@ package com.baselib.baseapp;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.Debug;
 import android.support.multidex.MultiDex;
-//import android.support.multidex.MultiDex;
 
 import com.baselib.R;
 import com.baselib.commonutils.LogUtils;
 
 import com.baselib.uitls.CommonUtils;
-import com.baselib.utilcode.util.Utils;
+import com.blankj.utilcode.util.Utils;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.zhy.autolayout.config.AutoLayoutConifg;
 
 /**
- * Created by liuhuaqian on 2017/9/8.
+ * Created by llk on 2017/9/8.
  */
 
 public class BaseApplication extends Application {

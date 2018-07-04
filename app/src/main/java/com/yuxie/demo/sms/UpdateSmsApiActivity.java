@@ -8,30 +8,30 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.baselib.base.BaseActivity;
-import com.baselib.utilcode.util.ToastUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.yuxie.demo.R;
 import com.yuxie.demo.entity.SmsApi;
 import com.yuxie.demo.greendao.SmsApiDao;
 import com.yuxie.demo.utils.db.EntityManager;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class UpdateSmsApiActivity extends BaseActivity {
 
     public static final String SMS_API = "smsApi";
-    @Bind(R.id.type)
+    @BindView(R.id.type)
     AppCompatEditText type;
-    @Bind(R.id.url)
+    @BindView(R.id.url)
     AppCompatEditText url;
-    @Bind(R.id.befor)
+    @BindView(R.id.befor)
     AppCompatEditText befor;
-    @Bind(R.id.after)
+    @BindView(R.id.after)
     AppCompatEditText after;
-    @Bind(R.id.result)
+    @BindView(R.id.result)
     AppCompatEditText result;
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView title;
 
     public static void start(Context context, SmsApi smsApi) {

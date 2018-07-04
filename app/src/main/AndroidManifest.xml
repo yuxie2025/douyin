@@ -86,7 +86,8 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- 微信支付 -->
 
-        <activity android:name=".play.PalyActivity"
+        <activity
+            android:name=".play.PalyActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent"></activity>

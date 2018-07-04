@@ -16,7 +16,7 @@ import com.yuxie.demo.entity.Musics;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
@@ -27,11 +27,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MusicActivity extends BaseActivity {
 
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView title;
-    @Bind(R.id.et_music_name)
+    @BindView(R.id.et_music_name)
     EditText etMusicName;
-    @Bind(R.id.lv_musics)
+    @BindView(R.id.lv_musics)
     ListView lvMusics;
     private MusicListAdapter musicsAdapter;
     private List<Musics.ResultBean.SongsBean> data = new ArrayList<Musics.ResultBean.SongsBean>();

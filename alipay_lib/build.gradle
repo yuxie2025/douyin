@@ -1,0 +1,37 @@
+apply plugin: 'com.android.library'
+
+android {
+    def androidCf = rootProject.ext.android
+
+    compileSdkVersion androidCf.compileSdkVersion
+    buildToolsVersion androidCf.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion androidCf.minSdkVersion
+        targetSdkVersion androidCf.targetSdkVersion
+        versionCode androidCf.versionCode
+        versionName androidCf.versionName
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    def dependenciesCf = rootProject.ext.dependencieslib
+    compile dependenciesCf.supportv4
+
+//    //将最新的版本改为当前版本号，例如2.3.1(报错就填写固定的版本号)
+//    compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
+//    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
+}

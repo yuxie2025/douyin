@@ -1,15 +1,15 @@
 package com.baselib.uitls;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.baselib.BuildConfig;
+import com.baselib.R;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 
 /**
  * Created by luo on 2018/1/16.
@@ -18,66 +18,39 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 public class GlideUtil {
 
+    public static final String URL_HEAD = "http://" + BuildConfig.HOST;
+
     /**
-     * 显示圆形头像
+     * 显示圆形头像(有默认图)
      *
      * @param url
      * @param imageView
      */
     public static void showHead(String url, ImageView imageView, int defaultPic) {
-        final Context context = imageView.getContext();
-        Uri uri = !TextUtils.isEmpty(url) ? Uri.parse(url) : null;
-        Glide.with(context).load(uri).asBitmap().thumbnail(0.6f).centerCrop().placeholder(defaultPic).into(new BitmapImageViewTarget(imageView) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                super.setResource(resource);
-
-                RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
-                roundedBitmapDrawable.setCircular(true);
-                getView().setImageDrawable(roundedBitmapDrawable);
-            }
-        });
+        initGlide(url, imageView, defaultPic);
     }
 
-    public static void showHead1(String url, ImageView imageView, int defaultPic) {
-        final Context context = imageView.getContext();
-        Glide.with(context).load(url).asBitmap().thumbnail(0.6f).centerCrop().placeholder(defaultPic).into(new BitmapImageViewTarget(imageView) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                super.setResource(resource);
+    private static String getUrl(String url) {
 
-                RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
-                roundedBitmapDrawable.setCircular(true);
-                getView().setImageDrawable(roundedBitmapDrawable);
-            }
-        });
+        if (TextUtils.isEmpty(url)) {
+            return URL_HEAD;
+        }
+
+        if (url.contains("http")) {
+            return url;
+        } else {
+            return URL_HEAD + url;
+        }
     }
 
-    public static void showHead1(int url, ImageView imageView) {
-        final Context context = imageView.getContext();
-        Glide.with(context).load(url).asBitmap().thumbnail(0.6f).centerCrop().into(new BitmapImageViewTarget(imageView) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                super.setResource(resource);
-
-                RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
-                roundedBitmapDrawable.setCircular(true);
-                getView().setImageDrawable(roundedBitmapDrawable);
-            }
-        });
-    }
-
-    public static void showHead(Uri uri, ImageView imageView, int defaultPic) {
-        final Context context = imageView.getContext();
-        Glide.with(context).load(uri).asBitmap().thumbnail(0.6f).centerCrop().placeholder(defaultPic).into(new BitmapImageViewTarget(imageView) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                super.setResource(resource);
-                RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
-                roundedBitmapDrawable.setCircular(true);
-                getView().setImageDrawable(roundedBitmapDrawable);
-            }
-        });
+    /**
+     * 显示圆形头像(无默认图)
+     *
+     * @param url
+     * @param imageView
+     */
+    public static void showHead(String url, ImageView imageView) {
+        initGlide(url, imageView, 0);
     }
 
     /**
@@ -87,14 +60,7 @@ public class GlideUtil {
      * @param imageView
      */
     public static void showRect(String url, ImageView imageView, int defaultPic) {
-        Context context = imageView.getContext();
-        Uri uri = !TextUtils.isEmpty(url) ? Uri.parse(url) : null;
-        Glide.with(context).load(uri).asBitmap().centerCrop().placeholder(defaultPic).into(new BitmapImageViewTarget(imageView) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                super.setResource(resource);
-            }
-        });
+        initGlide(url, imageView, defaultPic);
     }
 
     /**
@@ -104,9 +70,8 @@ public class GlideUtil {
      * @param imageView
      */
     public static void showRect(String url, ImageView imageView) {
-        Context context = imageView.getContext();
-        Uri uri = !TextUtils.isEmpty(url) ? Uri.parse(url) : null;
-        Glide.with(context).load(uri).fitCenter().into(imageView);
+        int defaultPic = R.drawable.list_empt_pic;
+        initGlide(url, imageView, defaultPic);
     }
 
     /**
@@ -117,11 +82,52 @@ public class GlideUtil {
      * @param defaultPic
      */
     public static void showImageView(String url, ImageView imageView, int defaultPic) {
+        initGlide(url, imageView, defaultPic);
+    }
 
-        Context context = imageView.getContext();
-        Uri uri = !TextUtils.isEmpty(url) ? Uri.parse(url) : null;
-        Glide.with(context).load(uri).centerCrop().dontAnimate().placeholder(defaultPic).into(imageView);
+    public static void showImageView(Object model, ImageView imageView) {
+        int defaultPic = R.drawable.list_empt_pic;
+        initGlides(model, imageView, defaultPic);
+    }
 
+    private static void initGlide(String url, ImageView imageView, int defaultPic) {
+        url = getUrl(url);
+        initGlides(url, imageView, defaultPic);
+    }
+
+    /**
+     * 初始化Glide
+     *
+     * @param model
+     * @param imageView
+     * @param defaultPic
+     */
+    private static void initGlides(Object model, ImageView imageView, int defaultPic) {
+
+        final Context context = imageView.getContext();
+
+        RequestOptions options;
+
+        if (defaultPic == 0) {
+            options = new RequestOptions()
+                    .centerCrop()
+                    .dontAnimate()
+                    .priority(Priority.HIGH)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+        } else {
+            options = new RequestOptions()
+                    .centerCrop()
+                    .dontAnimate()
+                    .placeholder(defaultPic)
+                    .error(defaultPic)
+                    .priority(Priority.HIGH)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+        }
+
+        Glide.with(context)
+                .load(model)
+                .apply(options)
+                .into(imageView);
     }
 
 }

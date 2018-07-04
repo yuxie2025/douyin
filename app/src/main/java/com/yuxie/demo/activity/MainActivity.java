@@ -21,18 +21,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
     ListView lv_test;
     Context mContext;
-    @Bind(R.id.rl_left)
-    RelativeLayout rlLeft;
-    @Bind(R.id.title)
-    TextView title;
+
 
     List<Map<String, Object>> data;
+    @BindView(R.id.rl_left)
+    RelativeLayout rlLeft;
+    @BindView(R.id.title)
+    TextView title;
 
     private List<Class<? extends Activity>> alist;
 

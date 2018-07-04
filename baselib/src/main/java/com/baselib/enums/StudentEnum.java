@@ -1,7 +1,7 @@
 package com.baselib.enums;
 
 /**
- * 作者: liuhuaqian on 2017/9/9.
+ * 作者: llk on 2017/9/9.
  */
 
 public enum StudentEnum {
@@ -23,7 +23,8 @@ public enum StudentEnum {
     ELECT_CAMERA,//选择拍照
     SELECT_PHOTO,//选择相册
     SELECT_M,//女
-    SELECT_F//男
-
+    SELECT_F,//男
+    TEMPLATE_AFTER_INDEX,//平台售后模板
+    SELECT_MOUTH,//选择月份
 
 }

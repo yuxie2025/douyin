@@ -8,8 +8,6 @@ import com.baselib.baserx.RxSubscriber;
 import com.yuxie.demo.api.ServerApiService;
 import com.yuxie.demo.api.server.HostType;
 import com.yuxie.demo.api.server.ServerApi;
-import com.yuxie.wechat_pay_lib.utils.WechatPayUtils;
-import com.yuxie.wechat_pay_lib.utils.WxBean;
 
 /**
  * @author llk
@@ -32,46 +30,6 @@ public class UnitTest {
 //        NdkJniUtils NdkJniUtils = new NdkJniUtils();
 //        NdkJniUtils.getCLanguageString();
 
-//        Utils.getInstance().getSignature();
-//
-//        String packageName="com.b3ad.marketing";
-//
-//        String md5=Utils.signatureMD5(Utils.getSignature(packageName));
-//        Log.i("TAG","md5:"+md5);
-//
-//        String sha1=Utils.signatureSHA1(Utils.getSignature(packageName));
-//        Log.i("TAG","sha1:"+sha1);
-//
-//        String sha256=Utils.signatureSHA256(Utils.getSignature(packageName));
-//        Log.i("TAG","sha256:"+sha256);
-
-//        List<String> list=new ArrayList<String>();
-//        list.add("123");
-//        list.add("789");
-//        list.add("456");
-//        list.add("000");
-//        Log.i("TAG","---list:"+list.toString());
-//
-////        Collections.sort(list);
-//
-//        Log.i("TAG","---list---:"+list.toString());
-//
-//        Collections.reverse(list);
-//
-//        Log.i("TAG","reverse---list---:"+list.toString());
-
-//        BaseDao baseDao= BaseDaoFactory.getInstall().getDataHelper(UserDao.class, User.class);
-//        User user=new User("admin","123456");
-//        baseDao.insert(user);
-
-//        BaseDao baseDao= BaseDaoFactory.getInstall().getDataHelper(FileDao.class, FileBean.class);
-//
-//        FileBean fileBean=new FileBean();
-//        fileBean.setTime("2017-09-11");
-//        fileBean.setPath("cd:");
-//        fileBean.setDecripte("今天天气真好!");
-//
-//        baseDao.insert(fileBean);
 
 //        String url = "http://v.juhe.cn/toutiao/index?type=top&key=29da5e8be9ba88b932394b7261092f71";
 //
@@ -90,23 +48,8 @@ public class UnitTest {
 //            });
 //        }
 
-//        UserDao userDao = EntityManager.getInstance().getUserDao();
-//        userDao.insertOrReplace(new User(1l, "小明", "123", "北京"));
-//
-//        List<User> list = userDao.loadAll();
-//
-//        Log.d("TAG", "list:" + list.toString());
-//        Log.d("TAG", "list:" + list.toString());
 
 //        update();
-
-//        Intent intent = new Intent(MainActivity.this, UpdateActivity.class);
-//        startActivity(intent);
-//        Intent intent = new Intent(MainActivity.this, DfuActivity.class);
-//        startActivity(intent);
-
-//        PerfectPopWindow popWindow = new PerfectPopWindow(MainActivity.this, MainActivity.class);
-//        popWindow.showPopupWindow();
 
 //        testWxPay();
     }
@@ -158,7 +101,6 @@ public class UnitTest {
     }
 
     public static void testUrl(Context context) {
-
 
         String accountId = "1248119110873466880";
         String token = "158949eb3716484bb1bee84149c02f1a";

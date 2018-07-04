@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
@@ -31,11 +31,11 @@ import retrofit2.Retrofit;
 
 public class TxtDirActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView title;
-    @Bind(R.id.lv_txt_dir)
+    @BindView(R.id.lv_txt_dir)
     ListView lv_txt_dir;
-    @Bind(R.id.btn_sort)
+    @BindView(R.id.btn_sort)
     Button btn_sort;
 
     private String TAG;
@@ -163,7 +163,7 @@ public class TxtDirActivity extends BaseActivity implements AdapterView.OnItemCl
             Toast.makeText(TxtDirActivity.this, "未获取到该章的内容地址...", Toast.LENGTH_SHORT).show();
             return;
         }
-        ReadTxtActivity.start(context, titleStr, txtContentUrl, TAG);
+        ReadTxtActivity.start(mContext, titleStr, txtContentUrl, TAG);
 
     }
 

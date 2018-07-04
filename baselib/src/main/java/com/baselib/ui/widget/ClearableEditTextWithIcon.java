@@ -13,7 +13,7 @@ import com.baselib.R;
 
 /**
  * 带有图标和删除符号的可编辑输入框，用户可以自定义传入的显示图标
- * Created by liuhuaqian on 2017/9/6.
+ * Created by llk on 2017/9/6.
  */
 
 public class ClearableEditTextWithIcon extends android.support.v7.widget.AppCompatEditText implements View.OnTouchListener, TextWatcher {

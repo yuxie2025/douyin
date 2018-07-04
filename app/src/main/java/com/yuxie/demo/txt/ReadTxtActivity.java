@@ -12,7 +12,7 @@ import com.baselib.base.BaseActivity;
 import com.yuxie.demo.R;
 import com.yuxie.demo.utils.Utils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
@@ -23,9 +23,9 @@ import retrofit2.Retrofit;
 
 public class ReadTxtActivity extends BaseActivity {
 
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView title;
-    @Bind(R.id.tv_txt_show)
+    @BindView(R.id.tv_txt_show)
     TextView tv_txt_show;
     private String TAG;
 

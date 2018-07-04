@@ -3,77 +3,82 @@ package com.baselib.basebean;
 import java.io.Serializable;
 
 /**
- * 作者: liuhuaqian on 2017/9/8.
+ * 作者: llk on 2017/9/8.
  * 封装服务器返回数据 单个对象
  */
 
 public class BaseRespose<T> implements Serializable {
-    //    字段说明：
-//    code：返回状态码。999999:错误，000000：正常返回
-//    errorMsg： 错误处理结果消息。
-//    total：返回记录条目
-//    rows：返回列表数据，JSON数组
+    /**
+     * status : success
+     * error_code : 0
+     * message : 操作成功
+     * data : {"user_name":"cs","nick_name":"","email":"","phone_mob":"13672511510","auth":"2"}
+     */
 
     /**
      * 返回状态码
      */
-    private String code;
+    private String error_code;
     /**
      * errorMsg
      */
-    private String errorMsg;
+    private String message;
     /**
      * 返回记录条目
      */
-    private String total;
+    private String status;
     /**
      * 返回列表数据，JSON数组
      */
-    private T rows;
+    private T data;
 
-    public String getCode() {
-        return code;
+
+    public String getError_code() {
+        return error_code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setError_code(String error_code) {
+        this.error_code = error_code;
     }
 
-    public String getErrorMsg() {
-        return errorMsg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public String getTotal() {
-        return total;
+    public String getStatus() {
+        return status;
     }
 
-    public void setTotal(String total) {
-        this.total = total;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public T getRows() {
-        return rows;
+    public T getData() {
+        return data;
     }
 
-    public void setRows(T rows) {
-        this.rows = rows;
+    public void setData(T data) {
+        this.data = data;
     }
 
     public boolean success() {
-        return "000000".equals(code);
+        return "0".equals(error_code);
     }
+
 
     @Override
     public String toString() {
-        return "BaseRespose{" +
-                "code='" + code + '\'' +
-                ", errorMsg='" + errorMsg + '\'' +
-                ", total='" + total + '\'' +
-                ", rows=" + rows +
+        return "BaseListRespose{" +
+                "error_code='" + error_code + '\'' +
+                ", message='" + message + '\'' +
+                ", status='" + status + '\'' +
+                ", data=" + data +
                 '}';
     }
+
+
 }

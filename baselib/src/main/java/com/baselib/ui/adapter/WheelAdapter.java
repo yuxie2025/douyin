@@ -10,7 +10,7 @@ import com.baselib.R;
 import com.wx.wheelview.adapter.BaseWheelAdapter;
 
 /**
- * 作者: liuhuaqian on 2017/9/9.
+ * 作者: llk on 2017/9/9.
  */
 
 public class WheelAdapter extends BaseWheelAdapter<String> {

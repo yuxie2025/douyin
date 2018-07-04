@@ -1,0 +1,55 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.greenrobot.greendao'
+
+def androidCf = rootProject.ext.android
+
+android {
+    compileSdkVersion androidCf.compileSdkVersion
+    buildToolsVersion androidCf.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion androidCf.minSdkVersion
+        targetSdkVersion androidCf.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    testImplementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    api 'junit:junit:4.12'
+
+//   1,使用说明，需要在build.gradle 中添加插件
+//    dependencies {
+//        //classpath 'com.android.tools.build:gradle:3.0.1'
+//        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add grenndao plugin
+//    }
+//   2,需要在主模块中添加初始化信息
+//    apply plugin: 'org.greenrobot.greendao'
+//    def androidCf = rootProject.ext.android
+//    greendao {
+//        schemaVersion 3
+//        daoPackage androidCf.applicationId + ".greendao"
+//        targetGenDir 'src/main/java'
+//    }
+
+    // greendao library
+    api 'org.greenrobot:greendao:3.2.2'
+
+    // 数据库加密时添加
+//    implementation 'net.zetetic:android-database-sqlcipher:3.5.1'
+
+    // 使用数据库升级辅助GreenDaoUpgradeHelper时添加
+//    implementation 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v1.2.0'
+
+
+}

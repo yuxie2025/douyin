@@ -4,7 +4,7 @@ import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
 /**
- * Created by liuhuaqian on 2017/9/8.
+ * Created by llk on 2017/9/8.
  *   如果用于android平台，将信息记录到“LogCat”。如果用于java平台，将信息记录到“Console”
  * 使用logger封装
  */

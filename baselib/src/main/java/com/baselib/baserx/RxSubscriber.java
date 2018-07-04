@@ -17,7 +17,7 @@ import java.net.SocketTimeoutException;
 import rx.Subscriber;
 
 /**
- * 作者: liuhuaqian on 2017/9/8.
+ * 作者: llk on 2017/9/8.
  * 订阅封装
  */
 
@@ -85,6 +85,7 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
         if (showDialog) {
             LoadingDialog.cancelDialogForLoading();
         }
+//        e.printStackTrace();
         //网络
         if (!NetWorkUtils.isNetConnected(BaseApplication.getAppContext())) {
             _onError(BaseApplication.getAppContext().getString(R.string.no_net));

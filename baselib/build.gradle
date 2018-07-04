@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
-
 def androidCf = rootProject.ext.android
+def debug_host = rootProject.ext.debug_host
+def release_host = rootProject.ext.release_host
 
 android {
     compileSdkVersion androidCf.compileSdkVersion
@@ -21,19 +22,18 @@ android {
         }
 
         //使用butterknife:7.0.1需要添加,如下配置必须放在主模块中
-        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+//        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
 
-//        manifestPlaceholders = [
-//                JPUSH_PKGNAME           : androidCf.applicationId,
-//                JPUSH_APPKEY            : "425522f68290bf67f1f390c9", //JPush上注册的包名对应的appkey.
-//                JPUSH_CHANNEL           : "developer-default", //暂时填写默认值即可.
-//                UMENG_APPKEY            : "5a4ae7c0b27b0a3aab000044",//友盟
-//                UMENG_CHANNEL           : "Channel ID",//友盟
-//                "com.amap.api.v2.apikey": "caa67d9f01219028370158753e1efce0",//设置高德Key
-//        ]
     }
     buildTypes {
+
+        debug {
+            buildConfigField "String", "HOST", debug_host
+            minifyEnabled false
+        }
+
         release {
+            buildConfigField "String", "HOST", release_host
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -42,14 +42,17 @@ android {
     //65535的方法限制分包处理
     dexOptions {
         javaMaxHeapSize "4g"
-        //打开dex增量编译新版默认打开的
-        // incremental true
     }
 
 }
 
 dependencies {
-    compile 'com.nineoldandroids:library:2.4.0'
+
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+
+    //NineOldAndroids是一个向下兼容的动画库，主要是使低于API 11的系统也能够使用View的属性动画。
+    api 'com.nineoldandroids:library:2.4.0'
 
     def dependenciesCf = rootProject.ext.dependencieslib
     api dependenciesCf.supportv4
@@ -66,116 +69,120 @@ dependencies {
 //            maven { url "https://jitpack.io" }
 //        }
 //    }
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
-    //蓝牙快速开发框架
-    //    compile 'com.clj.fastble:FastBleLib:1.2.1'
+
+    //侧滑删除
+    compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
+    //万能适配器
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     //圆形图片类
-    compile 'de.hdodenhof:circleimageview:2.1.0'
+    api 'de.hdodenhof:circleimageview:2.1.0'
     //图片加载
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    //Gif动画
-//    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.6'
+//    api 'com.github.bumptech.glide:glide:3.7.0'
+    api 'com.github.bumptech.glide:glide:4.3.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
     //rx
-    //    compile 'io.reactivex.rxjava2:rxjava:2.1.3'
-    //    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    //    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
-    compile 'io.reactivex:rxjava:1.0.1'
-    compile 'io.reactivex:rxandroid:1.0.1'
+    //    implementation 'io.reactivex.rxjava2:rxjava:2.1.3'
+    //    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    api 'io.reactivex:rxjava:1.3.0'
+    api 'io.reactivex:rxandroid:1.2.1'
     //retrofit2
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile 'com.squareup.okhttp3:okhttp-ws:3.4.1'
+    api 'com.squareup.okhttp3:okhttp:3.9.0'
 
-    compile 'com.squareup.retrofit2:retrofit:2.0.2'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
-    compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    api 'com.squareup.retrofit2:retrofit:2.3.0'
+    api 'com.squareup.retrofit2:converter-gson:2.3.0'
+    api 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
+    api 'com.squareup.retrofit2:converter-scalars:2.3.0'
+    api 'com.squareup.okhttp3:logging-interceptor:3.9.0'
 
-    //高德定位功能
-    //定位
-//    compile 'com.amap.api:location:latest.integration'
-    //2D地图
-    //    compile 'com.amap.api:map2d:latest.integration'
-    //3D地图so及jar
-//    compile 'com.amap.api:3dmap:latest.integration'
-    //搜索功能
-//    compile 'com.amap.api:search:latest.integration'
-
-
-    compile 'com.amap.api:3dmap:6.1.0'
-    compile 'com.amap.api:search:6.1.0'
-
-
-
-
-    //json 解析
-//    compile 'com.google.code.gson:gson:2.7'
     //开源框架查看日志
-    compile 'com.orhanobut:logger:1.13'
+    api 'com.orhanobut:logger:1.13'
     //WheelView滚轮控件
-    compile 'com.wx.wheelview:wheelview:1.3.3'
-    // MultiDex的依赖分包
-    compile 'com.android.support:multidex:1.0.2'
+    api 'com.wx.wheelview:wheelview:1.3.3'
+    // MultiDex的依赖分包 需要添加在模块中添加 multiDexEnabled true
+    api 'com.android.support:multidex:1.0.3'
     //百分比布局
-    compile 'com.zhy:autolayout:1.4.3'
-    // 图表蛛网图形
-    //    compile 'me.xiaopan:spiderwebscoreview:1.0.0'
-    //图表开源库
-    //    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    // 图像剪切
-    compile('com.kevin:crop:1.0.2') {
-        // 如果已经引入 support:appcompat-v7 可以加上这句话
-        exclude group: 'com.android.support', module: 'appcompat-v7'
-    }
-    testCompile 'junit:junit:4.12'
-    //TakePhoto使用包---
-    compile 'com.soundcloud.android.crop:lib_crop:1.0.0'
-    compile 'com.darsh.multipleimageselect:multipleimageselect:1.0.4'
-    compile 'me.shaohui.advancedluban:library:1.3.2'
-    //---TakePhoto使用包
-    //支付宝支付---
-    compile files('libs/alipaySdk-20160802.jar')
-    //---支付宝支付
+    api 'com.zhy:autolayout:1.4.3'
 
-    //微信支付---
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
-    //---微信支付
+    //使用butterknife:7.0.1需要在defaultConfig添加,如下配置必须放在主模块中
+    //javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+    //使用butterknife:8.8.1+需要在使用模块中也引用
+    //dependencies { classpath "com.jakewharton:butterknife-gradle-plugin:8.8.1" }
+    //butterknife注解工具
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     //---腾讯Bugly
-    compile 'com.tencent.bugly:crashreport:latest.release'
+    api 'com.tencent.bugly:crashreport:latest.release'
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
-    //compile 'com.tencent.bugly:nativecrashreport:latest.release'
+    //implementation 'com.tencent.bugly:nativecrashreport:latest.release'
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
     //---腾讯Bugly
 
-    //二维码扫描和生成
-    // compile 'cn.yipianfengye.android:zxing-library:2.2'
-
-    //友盟---
-    compile files('libs/open_sdk_r5788_lite.jar')
-    compile files('libs/SocialSDK_QQ_Simplify.jar')
-//    compile files('libs/SocialSDK_Sina_Simplify.jar')
-    compile files('libs/SocialSDK_WeChat_Simplify.jar')
-    compile files('libs/umeng_social_api.jar')
-    compile files('libs/umeng_social_net.jar')
-    compile files('libs/umeng_social_shareview.jar')
-    compile files('libs/umeng_social_tool.jar')
-    //友盟---
-
-    //极光推送--
-    compile 'cn.jiguang.sdk:jpush:3.0.9'
-    compile 'cn.jiguang.sdk:jcore:1.1.7'
-    //--极光推送
-
     //不同状态view
-    compile 'com.github.Kennyc1012:MultiStateView:1.1.1'
+    api 'com.github.Kennyc1012:MultiStateView:1.1.1'
+
+    //动态权限管理，将最新的版本改为当前版本号，例如2.3.0(报错就填写固定的版本号 latest.version)
+    //2.3.0 版本导入的26.0.2
+    //3.2.0 版本导入的27.0.2
+    api("com.github.hotchemi:permissionsdispatcher:2.3.0") {
+        // if you don't use android.app.Fragment you can exclude support for them
+        //exclude module: "support-v13"
+    }
+    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:2.3.0"
+
+    //ui库
+    api 'com.qmuiteam:qmui:1.0.6'
+
+    //工具类
+    api 'com.blankj:utilcode:1.16.4'
+
+    //TakePhoto使用包
+    //一款用于在Android设备上获取照片（拍照或从相册、文件中选择）、裁剪图片、压缩图片的开源工具库
+    compile 'com.jph.takephoto:takephoto_library:4.0.3'
+
+    //一个可回收的视图，它实现了下拉刷新、加载更多和header特性
+    compile 'com.jcodecraeer:xrecyclerview:1.5.9'
+
+//    -----以上是必选
+
+//    -----以下是可选
+    // 图像剪切
+//    api('com.kevin:crop:1.0.2') {
+//        // 如果已经引入 support:appcompat-v7 可以加上这句话
+//        exclude group: 'com.android.support', module: 'appcompat-v7'
+//    }
 
     //tabLayout
-    compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    api 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
 
-    //将最新的版本改为当前版本号，例如2.3.1(报错就填写固定的版本号)
-    compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
-    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
+    //Gif动画
+//    api 'pl.droidsonroids.gif:android-gif-drawable:1.2.6'
+
+    //蓝牙快速开发框架
+    //    api 'com.clj.fastble:FastBleLib:1.2.1'
+
+    // 图表蛛网图形
+    //    api 'me.xiaopan:spiderwebscoreview:1.0.0'
+    //图表开源库
+    api 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+
+    //二维码扫描和生成
+    // api 'cn.yipianfengye.android:zxing-library:2.2'
+
+    //表格
+    //api 'com.github.huangyanbin:SmartTable:2.2.0'
+
+    //轮播图
+    api 'com.youth.banner:banner:1.4.10'
+
+    //popup
+    api 'com.github.zyyoona7:EasyPopup:1.0.2'
+
+    //Android流式布局，支持单选、多选等，适合用于产品标签等。
+    api 'com.hyman:flowlayout-lib:1.1.2'
+
+    //封装了时间选择和选项选择这两种选择器
+    api 'com.contrarywind:Android-PickerView:4.1.3'
 
 }

@@ -1,7 +1,7 @@
 package com.baselib.ui.widget.mydatepicker;
 
 /**
- * 作者: liuhuaqian on 2017/9/23.
+ * 作者: llk on 2017/9/23.
  * 数组操作工具类
  */
 
