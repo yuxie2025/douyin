@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.baselib.base.BaseActivity;
 import com.yuxie.demo.R;
-import com.yuxie.myapp.controlpc.ControlActivity;
+import com.yuxie.demo.controlpc.ControlActivity;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;

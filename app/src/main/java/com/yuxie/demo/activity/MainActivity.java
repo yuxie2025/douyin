@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.baselib.base.BaseActivity;
 import com.yuxie.demo.R;
+import com.yuxie.demo.controlpc.RemoteControlActivity;
 import com.yuxie.demo.mvvp.MvvpActivity;
 import com.yuxie.demo.sms.SmsApiActivity;
 
@@ -131,10 +132,10 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 //        alist.add(MusicActivity.class);
 //        data.add(map1);
 
-//        Map<String, Object> map12 = new HashMap<String, Object>();
-//        map12.put("testName", "手机控制pc");
-//        alist.add(RemoteControlActivity.class);
-//        data.add(map12);
+        Map<String, Object> map12 = new HashMap<String, Object>();
+        map12.put("testName", "手机控制pc");
+        alist.add(RemoteControlActivity.class);
+        data.add(map12);
 //        Map<String, Object> map13 = new HashMap<String, Object>();
 //        map13.put("testName", "短信轰炸");
 //        alist.add(SmsApiActivity.class);

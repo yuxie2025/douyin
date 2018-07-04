@@ -1,7 +1,6 @@
-package com.yuxie.myapp.controlpc;
+package com.yuxie.demo.controlpc;
 
 import android.app.Activity;
-import android.os.Handler;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -13,18 +12,24 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.audio.control.MyWakeup;
+import com.audio.util.Logger;
+import com.audio.wakeup.IWakeupListener;
+import com.audio.wakeup.WakeUpResult;
+import com.baidu.speech.asr.SpeechConstant;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.yuxie.demo.R;
-import com.yuxie.demo.controlpc.Settings;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ControlActivity extends Activity {
 
@@ -49,6 +54,8 @@ public class ControlActivity extends Activity {
     private DatagramSocket socket;
     private QMUIListPopup mListPopup;
 
+    protected MyWakeup myWakeup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +70,37 @@ public class ControlActivity extends Activity {
         initTouch();
     }
 
+    private void start() {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put(SpeechConstant.WP_WORDS_FILE, "assets:///WakeUp.bin");
+        // "assets:///WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
+
+        // params.put(SpeechConstant.ACCEPT_AUDIO_DATA,true);
+        // params.put(SpeechConstant.ACCEPT_AUDIO_VOLUME,true);
+        // params.put(SpeechConstant.IN_FILE,"res:///com/baidu/android/voicedemo/wakeup.pcm");
+        // params里 "assets:///WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
+        myWakeup.start(params);
+    }
+
+    protected void stop() {
+        myWakeup.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        stop();
+        myWakeup.release();
+        super.onDestroy();
+    }
+
 
     private void initTouch() {
+
+        SimpleWakeupListener listener = new SimpleWakeupListener();
+        // 改为 SimpleWakeupListener 后，不依赖handler，但将不会在UI界面上显示
+        myWakeup = new MyWakeup(this, listener);
+
+        start();
 
         btn_left = (Button) findViewById(R.id.btn_left);
         btn_right = (Button) findViewById(R.id.btn_right);
@@ -260,8 +296,6 @@ public class ControlActivity extends Activity {
     }
 
     private void sendMessage(final String str) {
-
-
         new Thread(new InnerRunnable(str)).start();
     }
 
@@ -291,8 +325,8 @@ public class ControlActivity extends Activity {
                 socket.send(packet);
                 Log.i("TAG", "sendMessage: Srt:" + str);
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.i("TAG", "sendMessage: e:" + e.toString());
+                //e.printStackTrace();
+                //Log.i("TAG", "sendMessage: e:" + e.toString());
             }
         }
     }
@@ -329,5 +363,69 @@ public class ControlActivity extends Activity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    public class SimpleWakeupListener implements IWakeupListener {
+
+        private static final String TAG = "SimpleWakeupListener";
+
+        @Override
+        public void onSuccess(String word, WakeUpResult result) {
+            Logger.info(TAG, "唤醒成功，唤醒词：" + word);
+
+            switch (word) {
+                case "上一首":
+                    sendMessage("keyboard:key,Alt,Left");
+                    break;
+                case "下一首":
+                    sendMessage("keyboard:key,Alt,Right");
+                    break;
+                case "播放":
+                    sendMessage("keyboard:key,Space,click");
+                    break;
+                case "暂停":
+                    sendMessage("keyboard:key,Space,click");
+                    break;
+                case "停止":
+                    sendMessage("keyboard:key,Space,click");
+                    break;
+                case "马上关机":
+                    sendMessage("cmd:shutdown -s -t 3");
+                    break;
+                case "重启电脑":
+                    sendMessage("cmd:shutdown -r -t 3");
+                    break;
+                case "返回桌面":
+                    sendMessage("keyboard:key,Ctrl,E");
+                    break;
+                case "增大音量":
+                    sendMessage("keyboard:key,Up,down");
+                    sendMessage("keyboard:key,Up,up");
+                    break;
+                case "减小音量":
+                    sendMessage("keyboard:key,Down,down");
+                    sendMessage("keyboard:key,Down,up");
+                    break;
+            }
+
+
+        }
+
+        @Override
+        public void onStop() {
+            Logger.info(TAG, "唤醒词识别结束：");
+        }
+
+        @Override
+        public void onError(int errorCode, String errorMessge, WakeUpResult result) {
+            Logger.info(TAG, "唤醒错误：" + errorCode + ";错误消息：" + errorMessge + "; 原始返回" + result.getOrigalJson());
+        }
+
+        @Override
+        public void onASrAudio(byte[] data, int offset, int length) {
+            Logger.error(TAG, "audio data： " + data.length);
+        }
+
+    }
+
 
 }
