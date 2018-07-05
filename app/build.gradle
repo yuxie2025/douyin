@@ -61,7 +61,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("TimesPraise.jks")
+            storeFile file("keystore/TimesPraise.jks")
             storePassword "timespraise"
             keyAlias "timespraiseAPK"
             keyPassword "timespraise"
@@ -77,6 +77,14 @@ android {
         }
         debug {
             signingConfig signingConfigs.release
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            // 输出apk名称为great_v1.0_wandoujia.apk
+            def fileName = "weitingting_v${defaultConfig.versionName}.apk"
+            outputFileName = fileName
         }
     }
 
