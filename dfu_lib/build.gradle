@@ -62,15 +62,15 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-core-utils:26.0.2'
-    compile 'com.google.code.gson:gson:2.8.0'
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api 'com.android.support:support-core-utils:26.0.2'
+    api 'com.google.code.gson:gson:2.8.0'
 
     def dependenciesCf = rootProject.ext.dependencieslib
-    compile dependenciesCf.appcompatv7
+    api dependenciesCf.appcompatv7
 
     //将最新的版本改为当前版本号，例如2.3.1(报错就填写固定的版本号)
-    compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
+    api 'com.github.hotchemi:permissionsdispatcher:2.3.1'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
 }
 /*

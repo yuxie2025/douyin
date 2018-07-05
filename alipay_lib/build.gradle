@@ -29,6 +29,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     def dependenciesCf = rootProject.ext.dependencieslib
-    compile dependenciesCf.supportv4
+    api dependenciesCf.supportv4
 
 }

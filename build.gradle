@@ -4,7 +4,7 @@ apply from: 'buildsystem/cf.gradle'
 buildscript {
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.3'
         classpath 'com.antfortune.freeline:gradle:0.8.8'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin
         classpath "com.jakewharton:butterknife-gradle-plugin:8.8.1"

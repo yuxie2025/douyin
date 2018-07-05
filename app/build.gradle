@@ -84,45 +84,49 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     dependencies {
-        compile fileTree(dir: 'libs', include: ['*.jar'])
-        androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        api fileTree(dir: 'libs', include: ['*.jar'])
+        androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
             exclude group: 'com.android.support', module: 'support-annotations'
         })
 
-        implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+        api 'com.android.support.constraint:constraint-layout:1.0.2'
 
         def dependenciesCf = rootProject.ext.dependencieslib
         api dependenciesCf.appcompatv7
 
-        testCompile 'junit:junit:4.12'
+        testImplementation 'junit:junit:4.12'
 
         /*picasso图片缓存架包*/
-        compile 'com.squareup.picasso:picasso:2.5.1'
+        api 'com.squareup.picasso:picasso:2.5.1'
 
         //JSOUP 解析html使用
-        compile 'org.jsoup:jsoup:1.10.2'
+        api 'org.jsoup:jsoup:1.10.2'
 
-        compile 'com.alibaba:fastjson:1.2.23'
-        compile 'httpcomponents-httpcore:httpcore:4.0-alpha6'
+        api 'com.alibaba:fastjson:1.2.23'
+        api 'httpcomponents-httpcore:httpcore:4.0-alpha6'
 
-        compile 'org.greenrobot:greendao:3.2.2' // add library
-
-
-        compile project(path: ':baselib')
-//        compile project(path: ':dfu_lib')
+        api project(path: ':baselib')
+//        compile project(path: ':alipay_lib')
+//        compile project(path: ':amap_lib')
 //        compile project(path: ':apkupdate_lib')
+//        compile project(path: ':dfu_lib')
 //        compile project(path: ':video_lib')
-        compile project(path: ':audio')
+//        compile project(path: ':wechat_pay_lib')
+        api project(path: ':audio_lib')
+        api project(path: ':greendao_lib')
 
-        compile files('libs/sun.misc.BASE64Decoder.jar')
+        //base64架包
+        api files('libs/sun.misc.BASE64Decoder.jar')
 
         //将最新的版本改为当前版本号，例如2.3.1(报错就填写固定的版本号)
-        compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
+        api 'com.github.hotchemi:permissionsdispatcher:2.3.1'
         annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
 
-        debugCompile 'com.antfortune.freeline:runtime:0.8.8'
+        //阿里快速编译
+        debugApi 'com.antfortune.freeline:runtime:0.8.8'
 
-        compile 'com.jakewharton:butterknife:8.8.1'
+        //注解butterknife
+        api 'com.jakewharton:butterknife:8.8.1'
         annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     }

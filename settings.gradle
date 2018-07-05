@@ -1,2 +1,1 @@
-include ':app', ':voice', 'baselib', ':library_alipay', ':audio'
-//, ':apkupdatelib'
+include ':app', 'baselib', ':audio_lib', ':greendao_lib'

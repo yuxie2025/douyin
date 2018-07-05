@@ -3,7 +3,7 @@ ext {
     //android
     android = [
             compileSdkVersion : 26,
-            buildToolsVersion : "27.0.2",
+            buildToolsVersion : "27.0.3",
             applicationId     : "com.yuxie.demo",
             minSdkVersion     : 18,
             targetSdkVersion  : 23,

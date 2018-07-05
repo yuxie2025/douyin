@@ -56,7 +56,6 @@ public class ControlActivity extends Activity {
 
     protected MyWakeup myWakeup;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -330,7 +329,6 @@ public class ControlActivity extends Activity {
             }
         }
     }
-
 
     private void onMiddleButtonDown(MotionEvent ev) {
         ly = ev.getY();
