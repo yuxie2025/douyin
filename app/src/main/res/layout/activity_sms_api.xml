@@ -28,13 +28,13 @@
             android:id="@+id/start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="开火" />
+            android:text="开始" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="停火" />
+            android:text="停止" />
 
     </LinearLayout>
 

@@ -4,6 +4,9 @@ import android.util.SparseArray;
 
 import com.yuxie.demo.api.ServerApiService;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 
 /**
  * 作者: llk on 2017/9/8.
@@ -19,6 +22,10 @@ public class ServerApi extends Api<ServerApiService> {
         super(HostType.getHost(type));
     }
 
+    private ServerApi(String url) {
+        super(url);
+    }
+
     public static ServerApi getInstance(int type) {
         ServerApi api = apis.get(type);
         if (api == null) {
@@ -30,6 +37,10 @@ public class ServerApi extends Api<ServerApiService> {
 
     public static ServerApiService getInstance() {
         return getInstance(HostType.HOST_TYPE_COMMON_FLAG).getApiService();
+    }
+
+    public static ServerApiService getInstance(String url) {
+        return new ServerApi(url).getApiService();
     }
 
     /**

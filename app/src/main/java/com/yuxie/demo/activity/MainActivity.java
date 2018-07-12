@@ -14,8 +14,13 @@ import android.widget.TextView;
 import com.baselib.base.BaseActivity;
 import com.yuxie.demo.R;
 import com.yuxie.demo.controlpc.RemoteControlActivity;
+import com.yuxie.demo.music.MusicActivity;
 import com.yuxie.demo.mvvp.MvvpActivity;
+import com.yuxie.demo.net.NetActivity;
+import com.yuxie.demo.play.PalyActivity;
 import com.yuxie.demo.sms.SmsApiActivity;
+import com.yuxie.demo.txt.TxtActivity;
+import com.yuxie.demo.video.VideoListActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,34 +121,39 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         map100.put("testName", "------test方法------");
         alist.add(MvvpActivity.class);
         data.add(map100);
-//
-//        Map<String, Object> map10 = new HashMap<String, Object>();
-//        map10.put("testName", "Txt阅读");
-//        alist.add(TxtActivity.class);
-//        data.add(map10);
-//
-//        Map<String, Object> map0 = new HashMap<String, Object>();
-//        map0.put("testName", "Vip视频播放");
-//        alist.add(VideoListActivity.class);
-//        data.add(map0);
-//
-//        Map<String, Object> map1 = new HashMap<String, Object>();
-//        map1.put("testName", "网易音乐");
-//        alist.add(MusicActivity.class);
-//        data.add(map1);
+
+        Map<String, Object> map10 = new HashMap<String, Object>();
+        map10.put("testName", "Txt阅读");
+        alist.add(TxtActivity.class);
+        data.add(map10);
+
+        Map<String, Object> map0 = new HashMap<String, Object>();
+        map0.put("testName", "Vip视频播放");
+        alist.add(VideoListActivity.class);
+        data.add(map0);
+
+        Map<String, Object> map1 = new HashMap<String, Object>();
+        map1.put("testName", "网易音乐");
+        alist.add(MusicActivity.class);
+        data.add(map1);
 
         Map<String, Object> map12 = new HashMap<String, Object>();
         map12.put("testName", "手机控制pc");
         alist.add(RemoteControlActivity.class);
         data.add(map12);
-//        Map<String, Object> map13 = new HashMap<String, Object>();
-//        map13.put("testName", "短信轰炸");
-//        alist.add(SmsApiActivity.class);
-//        data.add(map13);
+        Map<String, Object> map13 = new HashMap<String, Object>();
+        map13.put("testName", "短信");
+        alist.add(SmsApiActivity.class);
+        data.add(map13);
 //        Map<String, Object> map14 = new HashMap<String, Object>();
 //        map14.put("testName", "视频播放");
 //        alist.add(PalyActivity.class);
 //        data.add(map14);
+        Map<String, Object> map15 = new HashMap<String, Object>();
+        map15.put("testName", "网络请求");
+        alist.add(NetActivity.class);
+        data.add(map15);
+
 
         return data;
     }
