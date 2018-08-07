@@ -159,7 +159,7 @@ dependencies {
 //    }
 
     //tabLayout
-    api 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+//    api 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
 
     //Gif动画
 //    api 'pl.droidsonroids.gif:android-gif-drawable:1.2.6'
@@ -170,7 +170,7 @@ dependencies {
     // 图表蛛网图形
     //    api 'me.xiaopan:spiderwebscoreview:1.0.0'
     //图表开源库
-    api 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+//    api 'com.github.PhilJay:MPAndroidChart:v3.0.2'
 
     //二维码扫描和生成
     // api 'cn.yipianfengye.android:zxing-library:2.2'
@@ -179,15 +179,15 @@ dependencies {
     //api 'com.github.huangyanbin:SmartTable:2.2.0'
 
     //轮播图
-    api 'com.youth.banner:banner:1.4.10'
+//    api 'com.youth.banner:banner:1.4.10'
 
     //popup
-    api 'com.github.zyyoona7:EasyPopup:1.0.2'
+//    api 'com.github.zyyoona7:EasyPopup:1.0.2'
 
     //Android流式布局，支持单选、多选等，适合用于产品标签等。
-    api 'com.hyman:flowlayout-lib:1.1.2'
+//    api 'com.hyman:flowlayout-lib:1.1.2'
 
     //封装了时间选择和选项选择这两种选择器
-    api 'com.contrarywind:Android-PickerView:4.1.3'
+//    api 'com.contrarywind:Android-PickerView:4.1.3'
 
 }

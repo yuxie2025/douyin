@@ -8,6 +8,7 @@ buildscript {
         classpath 'com.antfortune.freeline:gradle:0.8.8'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin
         classpath "com.jakewharton:butterknife-gradle-plugin:8.8.1"
+        classpath 'com.qihoo360.replugin:replugin-plugin-gradle:2.2.4'
     }
 
     repositories {

@@ -138,5 +138,17 @@ android {
         annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     }
+
+//    // 这个plugin需要放在android配置之后，因为需要读取android中的配置项
+//    apply plugin: 'replugin-plugin-gradle'
+//    repluginPluginConfig {
+//
+//        //插件名
+//        pluginName = "demo1"
+//        //宿主app的包名
+//        hostApplicationId = "com.qihoo360.replugin.sample.host"
+//        //宿主app的启动activity
+//        hostAppLauncherActivity = "com.qihoo360.replugin.sample.host.MainActivity"
+//    }
 }
 
