@@ -23,11 +23,11 @@ public interface ServerApiService {
     @POST("")
     Observable<Result<String>> getSmsApi(@Url String url, @FieldMap Map<String, String> options);
 
-//    @POST("")
-//    Observable<Result<String>> getSmsApi(@Url String url, @Body String options);
-
     @GET("")
     Observable<Result<String>> getSmsApi(@Url String url);
+
+    @GET("")
+    Observable<String> getUrl(@Url String url);
 
 
     //    http://49.4.70.94:8080/globestart/app/vehicle/vehicleList.mvc

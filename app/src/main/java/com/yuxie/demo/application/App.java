@@ -4,6 +4,10 @@ import android.content.Context;
 import android.os.Environment;
 
 import com.baselib.baseapp.BaseApplication;
+import com.baselib.uitls.GlideUtil;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.lqr.emoji.LQREmotionKit;
 
 import java.io.File;
 
@@ -18,6 +22,9 @@ public class App extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+
+        //初始化表情控件
+        LQREmotionKit.init(this, (context, path, imageView) -> GlideUtil.showImageView(path, imageView));
 
         //初始化工具类
 //        Utils utils=new Utils(getApplicationContext());

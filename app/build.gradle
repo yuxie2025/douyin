@@ -137,6 +137,9 @@ android {
         api 'com.jakewharton:butterknife:8.8.1'
         annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
+
+        api 'com.lqr.emoji:library:1.0.2'
+
     }
 
 //    // 这个plugin需要放在android配置之后，因为需要读取android中的配置项
@@ -152,3 +155,6 @@ android {
 //    }
 }
 
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
+}
