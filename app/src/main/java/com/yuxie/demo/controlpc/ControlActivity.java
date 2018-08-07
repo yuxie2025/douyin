@@ -1,7 +1,11 @@
 package com.yuxie.demo.controlpc;
 
+import android.Manifest;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -12,11 +16,17 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.audio.control.MyRecognizer;
 import com.audio.control.MyWakeup;
+import com.audio.recognization.IStatus;
+import com.audio.recognization.MessageStatusRecogListener;
+import com.audio.recognization.StatusRecogListener;
 import com.audio.util.Logger;
 import com.audio.wakeup.IWakeupListener;
+import com.audio.wakeup.RecogWakeupListener;
 import com.audio.wakeup.WakeUpResult;
 import com.baidu.speech.asr.SpeechConstant;
+import com.baselib.base.BaseActivity;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
@@ -28,10 +38,16 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ControlActivity extends Activity {
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.RuntimePermissions;
+
+@RuntimePermissions
+public class ControlActivity extends BaseActivity implements IStatus {
 
     private static float mx = 0; // 发送的鼠标移动的差值
     private static float my = 0;
@@ -56,10 +72,15 @@ public class ControlActivity extends Activity {
 
     protected MyWakeup myWakeup;
 
+    private static final String TAG = "ControlActivity";
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_control);
+    protected int getLayoutId() {
+        return R.layout.activity_control;
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState) {
         try {
             socket = new DatagramSocket();
         } catch (SocketException e) {
@@ -69,37 +90,10 @@ public class ControlActivity extends Activity {
         initTouch();
     }
 
-    private void start() {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put(SpeechConstant.WP_WORDS_FILE, "assets:///WakeUp.bin");
-        // "assets:///WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
-
-        // params.put(SpeechConstant.ACCEPT_AUDIO_DATA,true);
-        // params.put(SpeechConstant.ACCEPT_AUDIO_VOLUME,true);
-        // params.put(SpeechConstant.IN_FILE,"res:///com/baidu/android/voicedemo/wakeup.pcm");
-        // params里 "assets:///WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
-        myWakeup.start(params);
-    }
-
-    protected void stop() {
-        myWakeup.stop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        stop();
-        myWakeup.release();
-        super.onDestroy();
-    }
-
 
     private void initTouch() {
 
-        SimpleWakeupListener listener = new SimpleWakeupListener();
-        // 改为 SimpleWakeupListener 后，不依赖handler，但将不会在UI界面上显示
-        myWakeup = new MyWakeup(this, listener);
-
-        start();
+        ControlActivityPermissionsDispatcher.audioNeedsWithCheck(this);
 
         btn_left = (Button) findViewById(R.id.btn_left);
         btn_right = (Button) findViewById(R.id.btn_right);
@@ -298,6 +292,22 @@ public class ControlActivity extends Activity {
         new Thread(new InnerRunnable(str)).start();
     }
 
+    @NeedsPermission(Manifest.permission.RECORD_AUDIO)
+    void audioNeeds() {
+        start();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        ControlActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @OnPermissionDenied(Manifest.permission.RECORD_AUDIO)
+    void audioDenied() {
+        showToast("请开启语音权限,去开启");
+    }
+
     /**
      * 发送消息
      */
@@ -362,6 +372,18 @@ public class ControlActivity extends Activity {
         return super.onKeyDown(keyCode, event);
     }
 
+
+    /**
+     * 0: 方案1， 唤醒词说完后，直接接句子，中间没有停顿。
+     * >0 : 方案2： 唤醒词说完后，中间有停顿，然后接句子。推荐4个字 1500ms
+     * <p>
+     * backTrackInMs 最大 15000，即15s
+     */
+    private int backTrackInMs = 1500;
+
+    /**
+     * 唤醒监听
+     */
     public class SimpleWakeupListener implements IWakeupListener {
 
         private static final String TAG = "SimpleWakeupListener";
@@ -405,6 +427,18 @@ public class ControlActivity extends Activity {
                     break;
             }
 
+            // 此处 开始正常识别流程
+            Map<String, Object> params = new LinkedHashMap<String, Object>();
+            params.put(SpeechConstant.ACCEPT_AUDIO_VOLUME, false);
+            params.put(SpeechConstant.VAD, SpeechConstant.VAD_DNN);
+            // 如识别短句，不需要需要逗号，使用1536搜索模型。其它PID参数请看文档
+            params.put(SpeechConstant.PID, 1536);
+            if (backTrackInMs > 0) { // 方案1， 唤醒词说完后，直接接句子，中间没有停顿。
+                params.put(SpeechConstant.AUDIO_MILLS, System.currentTimeMillis() - backTrackInMs);
+
+            }
+            myRecognizer.cancel();
+            myRecognizer.start(params);
 
         }
 
@@ -423,6 +457,76 @@ public class ControlActivity extends Activity {
             Logger.error(TAG, "audio data： " + data.length);
         }
 
+    }
+
+    protected Handler handler;
+
+    /**
+     * 识别控制器，使用MyRecognizer控制识别的流程
+     */
+    protected MyRecognizer myRecognizer;
+
+    private void start() {
+
+        handler = new Handler() {
+
+            /*
+             * @param msg
+             */
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                Log.i(TAG, "handleMessage: msg" + msg);
+            }
+        };
+
+//        SimpleWakeupListener listener = new SimpleWakeupListener();
+//        // 改为 SimpleWakeupListener 后，不依赖handler，但将不会在UI界面上显示
+//        myWakeup = new MyWakeup(this, listener);
+//
+//        Map<String, Object> params = new HashMap<String, Object>();
+//        params.put(SpeechConstant.WP_WORDS_FILE, "assets:///WakeUp.bin");
+//        // "assets:///WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
+//
+//        // params.put(SpeechConstant.ACCEPT_AUDIO_DATA,true);
+//        // params.put(SpeechConstant.ACCEPT_AUDIO_VOLUME,true);
+//        // params.put(SpeechConstant.IN_FILE,"res:///com/baidu/android/voicedemo/wakeup.pcm");
+//        // params里 "assets:///WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
+//        myWakeup.start(params);
+
+
+        // 初始化识别引擎
+
+        StatusRecogListener recogListener = new MessageStatusRecogListener(handler);
+        // 改为 SimpleWakeupListener 后，不依赖handler，但将不会在UI界面上显示
+        myRecognizer = new MyRecognizer(this, recogListener);
+
+        SimpleWakeupListener listener = new SimpleWakeupListener();
+        myWakeup = new MyWakeup(this, listener);
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put(SpeechConstant.WP_WORDS_FILE, "assets:///WakeUp.bin");
+        // "assets:///WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
+
+        // params.put(SpeechConstant.ACCEPT_AUDIO_DATA,true);
+        // params.put(SpeechConstant.ACCEPT_AUDIO_VOLUME,true);
+        // params.put(SpeechConstant.IN_FILE,"res:///com/baidu/android/voicedemo/wakeup.pcm");
+        // params里 "assets:///WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
+        myWakeup.start(params);
+
+
+    }
+
+    protected void stop() {
+        myWakeup.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        stop();
+        myRecognizer.stop();
+        myWakeup.release();
+        super.onDestroy();
     }
 
 
