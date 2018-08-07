@@ -100,7 +100,9 @@ public class UnitTest {
 
 //        testUrl(context);
 
-        Intent intent = new Intent(context, ActivityWakeUp.class);
+//        Intent intent = new Intent(context, ActivityWakeUp.class);
+//        context.startActivity(intent);
+        Intent intent = new Intent(context, TestActivity.class);
         context.startActivity(intent);
 
     }

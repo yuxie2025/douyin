@@ -27,7 +27,7 @@ public interface ServerApiService {
     Observable<Result<String>> getSmsApi(@Url String url);
 
     @GET("")
-    Observable<Result<String>> getUrl(@Url String url);
+    Observable<String> getUrl(@Url String url);
 
 
     //    http://49.4.70.94:8080/globestart/app/vehicle/vehicleList.mvc

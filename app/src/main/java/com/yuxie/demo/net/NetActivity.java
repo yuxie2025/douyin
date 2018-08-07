@@ -7,6 +7,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.baselib.base.BaseActivity;
+import com.baselib.baserx.RxSchedulers;
+import com.baselib.baserx.RxSubscriber;
 import com.baselib.commonutils.LogUtils;
 import com.baselib.uitls.CommonUtils;
 import com.yuxie.demo.R;
@@ -21,9 +23,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.adapter.rxjava.Result;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class NetActivity extends BaseActivity {
 
@@ -115,50 +114,41 @@ public class NetActivity extends BaseActivity {
 
         @Override
         public void run() {
-            net(url);
+
+            try {
+                net(url);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
     private void net(String url) {
         String[] urls = UrlUtils.string2Url(url);
 
-        ServerApi.getInstance(urls[0]).getUrl(urls[1]).subscribeOn(Schedulers.io()).subscribe(new Subscriber<Result<String>>() {
-            @Override
-            public void onCompleted() {
-
-            }
+        mRxManager.add(ServerApi.getInstance(urls[0]).getUrl(urls[1]).compose(RxSchedulers.io_main()).subscribe(new RxSubscriber<String>(mContext, false) {
 
             @Override
-            public void onError(Throwable e) {
-                LogUtils.logd("e:" + e.getMessage());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (tvRecord != null) {
-                            //设置ScrollView滚动到顶部
-                            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                            tvRecord.append("失败一次:" + e.getMessage() + "\n");
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void onNext(Result<String> stringResult) {
+            protected void _onNext(String stringResult) {
                 LogUtils.logd("stringResult:" + stringResult);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (tvRecord != null) {
-                            //设置ScrollView滚动到顶部
-                            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                            tvRecord.append("成功一次!" + "\n");
-                        }
-                    }
-                });
-
+                if (tvRecord != null) {
+                    //设置ScrollView滚动到顶部
+                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    tvRecord.append("成功一次!\n");
+                }
             }
-        });
+
+            @Override
+            protected void _onError(String message) {
+                LogUtils.logd("e:" + message);
+                if (tvRecord != null) {
+                    //设置ScrollView滚动到顶部
+                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    tvRecord.append("失败一次:" + message + "\n");
+                }
+            }
+        }));
     }
 
 

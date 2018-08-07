@@ -112,7 +112,8 @@
                 <category android:name="com.baidu.speech.recognizerdemo.intent.category.SAMPLE_CODE" />
             </intent-filter>
         </activity>
-        <activity android:name=".net.NetActivity"></activity>
+        <activity android:name=".net.NetActivity" />
+        <activity android:name=".activity.TestActivity"></activity>
     </application>
 
 </manifest>

@@ -1,5 +1,7 @@
 package com.yuxie.demo.api;
 
+import android.util.Log;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -10,12 +12,14 @@ import java.net.URL;
  */
 public class UrlUtils {
 
+    private static final String TAG = "UrlUtils";
+
     public static String[] string2Url(String url) {
         String[] urls = new String[2];
 
         URL urlHost = null;
         String host = "http://www.baidu.com";
-        String path = "";
+        String path = url;
         try {
             urlHost = new URL(url);
             if (url.contains("https")) {
@@ -23,7 +27,19 @@ public class UrlUtils {
             } else {
                 host = "http://" + urlHost.getHost();
             }
-            path = urlHost.getPath();
+
+            if (path.contains("https://")) {
+                path = path.replaceFirst("https://", "");
+            }
+            if (path.contains("http://")) {
+                path = path.replaceFirst("http://", "");
+            }
+
+            if (path.contains("/")) {
+                path = path.substring(path.indexOf("/"), path.length());
+            } else {
+                path = "";
+            }
         } catch (MalformedURLException e) {
             //e.printStackTrace();
         }

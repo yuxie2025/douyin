@@ -90,4 +90,17 @@
     <string name="about_text">The nRF Toolbox is a container application that stores your Nordic Semiconductor apps in one location.</string>
 
 
+    <!--会话界面-->
+    <string name="please_to_talk">按住 说话</string>
+    <string name="shot">拍摄</string>
+    <string name="location">位置</string>
+    <string name="red_pack">红包</string>
+    <string name="wx_red_pack">微信红包</string>
+    <string name="file_out_of_date">文件已过期</string>
+    <string name="SET_TEXT_TYPING_TITLE">对方正在输入</string>
+    <string name="SET_VOICE_TYPING_TITLE">对方正在讲话</string>
+    <string name="send">发送</string>
+    <string name="album">相册</string>
+
+
 </resources>
