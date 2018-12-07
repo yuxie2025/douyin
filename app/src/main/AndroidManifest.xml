@@ -113,7 +113,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".net.NetActivity" />
-        <activity android:name=".activity.TestActivity"></activity>
+        <activity android:name=".activity.TestActivity" />
+        <activity android:name=".dq.DqActivity"></activity>
     </application>
 
 </manifest>

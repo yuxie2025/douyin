@@ -8,9 +8,11 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
+import com.yuxie.demo.dq.UserBean;
 import com.yuxie.demo.entity.SmsApi;
 import com.yuxie.demo.entity.User;
 
+import com.yuxie.demo.greendao.UserBeanDao;
 import com.yuxie.demo.greendao.SmsApiDao;
 import com.yuxie.demo.greendao.UserDao;
 
@@ -23,9 +25,11 @@ import com.yuxie.demo.greendao.UserDao;
  */
 public class DaoSession extends AbstractDaoSession {
 
+    private final DaoConfig userBeanDaoConfig;
     private final DaoConfig smsApiDaoConfig;
     private final DaoConfig userDaoConfig;
 
+    private final UserBeanDao userBeanDao;
     private final SmsApiDao smsApiDao;
     private final UserDao userDao;
 
@@ -33,22 +37,32 @@ public class DaoSession extends AbstractDaoSession {
             daoConfigMap) {
         super(db);
 
+        userBeanDaoConfig = daoConfigMap.get(UserBeanDao.class).clone();
+        userBeanDaoConfig.initIdentityScope(type);
+
         smsApiDaoConfig = daoConfigMap.get(SmsApiDao.class).clone();
         smsApiDaoConfig.initIdentityScope(type);
 
         userDaoConfig = daoConfigMap.get(UserDao.class).clone();
         userDaoConfig.initIdentityScope(type);
 
+        userBeanDao = new UserBeanDao(userBeanDaoConfig, this);
         smsApiDao = new SmsApiDao(smsApiDaoConfig, this);
         userDao = new UserDao(userDaoConfig, this);
 
+        registerDao(UserBean.class, userBeanDao);
         registerDao(SmsApi.class, smsApiDao);
         registerDao(User.class, userDao);
     }
     
     public void clear() {
+        userBeanDaoConfig.clearIdentityScope();
         smsApiDaoConfig.clearIdentityScope();
         userDaoConfig.clearIdentityScope();
+    }
+
+    public UserBeanDao getUserBeanDao() {
+        return userBeanDao;
     }
 
     public SmsApiDao getSmsApiDao() {

@@ -2,6 +2,7 @@ package com.yuxie.demo.utils.db;
 
 
 import com.yuxie.demo.greendao.SmsApiDao;
+import com.yuxie.demo.greendao.UserBeanDao;
 import com.yuxie.demo.greendao.UserDao;
 
 /**
@@ -11,6 +12,18 @@ import com.yuxie.demo.greendao.UserDao;
 public class EntityManager {
 
     private static EntityManager entityManager;
+
+    /**
+     * 创建单例
+     *
+     * @return
+     */
+    public static EntityManager getInstance() {
+        if (entityManager == null) {
+            entityManager = new EntityManager();
+        }
+        return entityManager;
+    }
 
     /**
      * 创建User表实例
@@ -25,15 +38,7 @@ public class EntityManager {
         return DaoManager.getInstance().getSession().getSmsApiDao();
     }
 
-    /**
-     * 创建单例
-     *
-     * @return
-     */
-    public static EntityManager getInstance() {
-        if (entityManager == null) {
-            entityManager = new EntityManager();
-        }
-        return entityManager;
+    public UserBeanDao getUserBeanDao() {
+        return DaoManager.getInstance().getSession().getUserBeanDao();
     }
 }

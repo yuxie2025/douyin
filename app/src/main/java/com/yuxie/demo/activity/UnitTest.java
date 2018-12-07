@@ -8,6 +8,7 @@ import com.audio.ActivityWakeUp;
 import com.baselib.basebean.BaseRespose;
 import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
+import com.baselib.ui.WebViewActivity;
 import com.yuxie.demo.api.server.HostType;
 import com.yuxie.demo.api.server.ServerApi;
 
@@ -102,8 +103,10 @@ public class UnitTest {
 
 //        Intent intent = new Intent(context, ActivityWakeUp.class);
 //        context.startActivity(intent);
-        Intent intent = new Intent(context, TestActivity.class);
-        context.startActivity(intent);
+//        Intent intent = new Intent(context, TestActivity.class);
+//        context.startActivity(intent);
+
+        WebViewActivity.start(context,"百度一下","http://www.baidu.com");
 
     }
 

@@ -1,9 +1,11 @@
 package com.yuxie.demo.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import com.baselib.base.BaseActivity;
 import com.yuxie.demo.R;
 import com.yuxie.demo.controlpc.RemoteControlActivity;
+import com.yuxie.demo.dq.DqActivity;
 import com.yuxie.demo.music.MusicActivity;
 import com.yuxie.demo.mvvp.MvvpActivity;
 import com.yuxie.demo.net.NetActivity;
@@ -29,7 +32,11 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
     ListView lv_test;
@@ -56,6 +63,12 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
         init();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        MainActivityPermissionsDispatcher.storageNeedWithCheck(this);
     }
 
     private void init() {
@@ -154,6 +167,11 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         alist.add(NetActivity.class);
         data.add(map15);
 
+        Map<String, Object> map16 = new HashMap<String, Object>();
+        map16.put("testName", "多奇视频");
+        alist.add(DqActivity.class);
+        data.add(map16);
+
 
         return data;
     }
@@ -170,4 +188,19 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         startActivity(intent);
     }
 
+
+    @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    void storageNeed() {
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @OnPermissionDenied({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    void storageDenied() {
+        mustSetting("应用需要存储权限,去设置?");
+    }
 }
