@@ -13,6 +13,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.google.gson.Gson;
 import com.yuxie.demo.R;
+import com.yuxie.demo.greendao.LikeReBeanDao;
 import com.yuxie.demo.greendao.UserBeanDao;
 import com.yuxie.demo.utils.db.EntityManager;
 
@@ -32,6 +33,7 @@ public class DqActivity extends BaseActivity {
     AppCompatButton exeTask;
 
     UserBeanDao userBeanDao = EntityManager.getInstance().getUserBeanDao();
+    LikeReBeanDao likeReDao = EntityManager.getInstance().getLikeReBeanDao();
     @BindView(R.id.number)
     AppCompatEditText number;
 
@@ -145,11 +147,10 @@ public class DqActivity extends BaseActivity {
 
         //http://mz.qiaosong.net:8080/sheding/shareVideo?videoId=901770&userId=4bf4e573e0064f2d9c1642c5bf8a20cd&from=singlemessage
         if (videoIdStr.contains("videoId=")) {
-            List<String> str = RegexUtils.getMatches("videoId=(.*)&", videoIdStr);
-            videoIdStr = str.get(0);
+            videoIdStr = CommonUtils.getMatches(videoIdStr, "videoId=(.+?)&");
         }
 
-        List<User> users = getRandomUser(CommonUtils.string2Int(numberStr));
+        List<User> users = getRandomUser(videoIdStr, CommonUtils.string2Int(numberStr));
 
         for (int i = 0; i < users.size(); i++) {
             if (!isTask) {
@@ -159,7 +160,10 @@ public class DqActivity extends BaseActivity {
                 });
                 return;
             }
-            DqTest.exeDianZanTask(i, users.get(i), videoIdStr);
+            boolean re = DqTest.exeDianZanTask(i, users.get(i), videoIdStr);
+            if (re) {
+                likeReDao.insert(new LikeReBean(null, videoIdStr, users.get(i).getData().getToken()));
+            }
         }
         runOnUiThread(() -> {
             showToast("任务完成");
@@ -168,22 +172,27 @@ public class DqActivity extends BaseActivity {
         });
     }
 
-    private List<User> getRandomUser(int number) {
+    private List<User> getRandomUser(String videoIdStr, int number) {
         List<User> re = new ArrayList<>();
         List<User> allUser = getAllUser();
         Collections.shuffle(allUser);//随机排序
 
-        int total;
-        if (allUser.size() >= number) {
-            total = number;
-        } else {
-            total = allUser.size();
-        }
+        int addNumber = 0;
+        for (int i = 0; i < allUser.size(); i++) {
 
-        for (int i = 0; i < total; i++) {
-            re.add(allUser.get(i));
-        }
+            if (addNumber == number) {
+                break;
+            }
 
+            User user = allUser.get(i);
+            Long count = likeReDao.queryBuilder().where(LikeReBeanDao.Properties.VoideoId.eq(videoIdStr),
+                    LikeReBeanDao.Properties.Token.eq(user.getData().getToken())).count();
+            if (count != 0) {
+                continue;
+            }
+            addNumber++;
+            re.add(user);
+        }
         return re;
     }
 

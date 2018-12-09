@@ -41,7 +41,7 @@ public class DqTest {
         // isNew = true;
 
         // 从第多少个账号开始执行(账号行数减一)
-//		 startAcount = 178;
+		 startAcount = 148;
 
         // 登录账号
         // login();
@@ -56,8 +56,8 @@ public class DqTest {
 //		 exeShouQubiTask();
 
         // 指定视频点赞任务
-        String videoId = "894930";
-        exeDianZanTask(videoId);
+//        String videoId = "894930";
+//        exeDianZanTask(videoId);
 
         // 注册账号并登陆
 //		regAccount();
@@ -195,7 +195,7 @@ public class DqTest {
         System.out.println("------执行点赞任务完成------");
     }
 
-    public static void exeDianZanTask(int i, User user, String videoId) {
+    public static boolean exeDianZanTask(int i, User user, String videoId) {
 
         addReadRecord(user, videoId);
 
@@ -221,6 +221,7 @@ public class DqTest {
                     + " 账号,执行点赞成功";
         }
         ToastUtils.showShort(msg);
+        return isSucced;
     }
 
     /**
@@ -436,20 +437,25 @@ public class DqTest {
 
     public static void addReadRecord(User user, String videoId) {
 
-        // user_id=c215d19d355249f19f61e3c1d7a0a109&token=36048e26db7f38af245007c47bc101e5bbd76746d2cf14e98612a3d2
-        // &videoId=702902&readTime=156823&duration=11.355&currentPlaybackTime=7.105
-        // &state=1&platform=Android&imei=1a0b4b013c72aa2a&version=1.2.2
-
         int time = new Random().nextInt(1000);
         int timeT = (new Random().nextInt(20) + 10) * 1000;
 
         String readTime = timeT + time + "";
 
-        String params = getCommonParams(user) + "&state=1&videoId=" + videoId
-                + "&readTime=" + readTime;
-        String re = Utils.post(addReadRecordUrl, params);
+        double durationD=(new Random().nextInt(3) + 10)+new Random().nextDouble();
+        String duration=String.format("%.3f", durationD);
+        System.out.println("duration:"+duration);
 
-        // System.out.println("addReadRecord---re:" + re);
+        double currentPlaybackTimeD=(new Random().nextInt(10))+new Random().nextDouble();
+        String currentPlaybackTime=String.format("%.3f", currentPlaybackTimeD);
+        System.out.println("currentPlaybackTime:"+currentPlaybackTime);
+
+        String params = getCommonParams(user) + "&state=1&duration="+duration+"&currentPlaybackTime="+currentPlaybackTime+"&videoId=" + videoId
+                + "&readTime=" + readTime;
+
+        String re = Utils.post(addReadRecordUrl, params);
+//
+        System.out.println("addReadRecord---re:" + re);
 
     }
 
@@ -458,7 +464,7 @@ public class DqTest {
         String params = getCommonParams(user) + "videoId=" + videoId;
         String re = Utils.post(dianZanUrl, params);
 
-        // System.out.println("dianZan--re:" + re);
+         System.out.println("dianZan--re:" + re);
 
         if (re.contains("1002")) {
             return false;
@@ -538,7 +544,7 @@ public class DqTest {
         String params = getCommonParams(user);
         String re = Utils.post(addZanUrl, params);
 
-        // System.out.println("shouquDaibi--re:" + re);
+         System.out.println("shouquDaibi--re:" + re);
 
     }
 

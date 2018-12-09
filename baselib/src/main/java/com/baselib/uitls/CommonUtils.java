@@ -34,6 +34,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -594,6 +596,17 @@ public class CommonUtils {
     public static String time2String(String timeString) {
         long timeLong = string2Long(timeString) * 1000;
         return TimeUtils.millis2String(timeLong, ConstantUtils.YMDHM_FORMAT);
+    }
+
+    public static String getMatches(String content,String regex) {
+        Pattern pattern = Pattern.compile(regex);//匹配的模式
+        //通配符中也要加入转移字符 (.+?)代表要查找的内容
+        Matcher matcher = pattern.matcher(content);
+        while (matcher.find()){
+            return matcher.group(1); //每次返回第一个即可 可用groupcount()方法来查看捕获的组数 个数
+        }
+        return "";
+
     }
 
 }

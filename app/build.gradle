@@ -5,7 +5,7 @@ apply plugin: 'com.antfortune.freeline'
 def androidCf = rootProject.ext.android
 
 greendao {
-    schemaVersion 2
+    schemaVersion 4
     daoPackage androidCf.applicationId + ".greendao"
     targetGenDir 'src/main/java'
 }

@@ -1,6 +1,7 @@
 package com.yuxie.demo.utils.db;
 
 
+import com.yuxie.demo.greendao.LikeReBeanDao;
 import com.yuxie.demo.greendao.SmsApiDao;
 import com.yuxie.demo.greendao.UserBeanDao;
 import com.yuxie.demo.greendao.UserDao;
@@ -40,5 +41,8 @@ public class EntityManager {
 
     public UserBeanDao getUserBeanDao() {
         return DaoManager.getInstance().getSession().getUserBeanDao();
+    }
+    public LikeReBeanDao getLikeReBeanDao() {
+        return DaoManager.getInstance().getSession().getLikeReBeanDao();
     }
 }
