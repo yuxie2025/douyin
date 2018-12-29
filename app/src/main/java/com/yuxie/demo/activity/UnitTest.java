@@ -106,7 +106,13 @@ public class UnitTest {
 //        Intent intent = new Intent(context, TestActivity.class);
 //        context.startActivity(intent);
 
-        WebViewActivity.start(context,"百度一下","http://www.baidu.com");
+//        WebViewActivity.start(context,"百度一下","http://www.baidu.com");
+
+        Intent imageIntent = new Intent(Intent.ACTION_SEND);
+        imageIntent.setType("text/plain");
+        imageIntent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+        imageIntent.putExtra(Intent.EXTRA_TEXT, "赶紧做项目了");
+        context.startActivity(Intent.createChooser(imageIntent, "分享"));
 
     }
 

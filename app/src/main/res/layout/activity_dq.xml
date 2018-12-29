@@ -8,27 +8,33 @@
 
     <include layout="@layout/navigation_bar" />
 
-    <android.support.v7.widget.AppCompatEditText
+    <com.baselib.ui.widget.ClearableEditTextWithIcon
         android:id="@+id/videoId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="视频url"
         android:singleLine="true" />
 
-    <android.support.v7.widget.AppCompatEditText
+    <com.baselib.ui.widget.ClearableEditTextWithIcon
         android:id="@+id/number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="点赞数量"
         android:inputType="number"
         android:singleLine="true"
-        android:text="100" />
+        android:text="500" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/exeTask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="开始" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/addUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="添加url" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/importToken"

@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.baselib.base.BaseActivity;
+import com.baselib.ui.widget.ClearableEditTextWithIcon;
 import com.baselib.uitls.CommonUtils;
 import com.blankj.utilcode.util.FileIOUtils;
 import com.blankj.utilcode.util.LogUtils;
@@ -28,14 +30,17 @@ import butterknife.OnClick;
 public class DqActivity extends BaseActivity {
 
     @BindView(R.id.videoId)
-    AppCompatEditText videoId;
+    ClearableEditTextWithIcon videoId;
+    @BindView(R.id.number)
+    ClearableEditTextWithIcon number;
+
     @BindView(R.id.exeTask)
     AppCompatButton exeTask;
 
     UserBeanDao userBeanDao = EntityManager.getInstance().getUserBeanDao();
     LikeReBeanDao likeReDao = EntityManager.getInstance().getLikeReBeanDao();
-    @BindView(R.id.number)
-    AppCompatEditText number;
+
+    List<String> urls = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -49,7 +54,7 @@ public class DqActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.exeTask, R.id.importToken, R.id.clearToken})
+    @OnClick({R.id.exeTask, R.id.importToken, R.id.clearToken, R.id.addUrl})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.exeTask:
@@ -61,7 +66,43 @@ public class DqActivity extends BaseActivity {
             case R.id.clearToken:
                 clearToken();
                 break;
+            case R.id.addUrl:
+                addUrl();
+                break;
         }
+    }
+
+    private void addUrl() {
+
+        String videoIdStr = CommonUtils.getViewContent(videoId);
+
+        if (TextUtils.isEmpty(videoIdStr)) {
+            showToast("请输入url");
+            return;
+        }
+
+        //http://mz.qiaosong.net:8080/sheding/shareVideo?videoId=901770&userId=4bf4e573e0064f2d9c1642c5bf8a20cd&from=singlemessage
+        if (videoIdStr.contains("videoId=")) {
+            videoIdStr = CommonUtils.getMatches(videoIdStr, "videoId=(.+?)&");
+        }
+
+        if (!isAdd(videoIdStr)) {
+            urls.add(videoIdStr);
+            showToast("添加成功:" + videoIdStr);
+        } else {
+            showToast("已添加过");
+        }
+
+    }
+
+    private boolean isAdd(String url) {
+        boolean re = false;
+        for (int i = 0; i < urls.size(); i++) {
+            if (urls.get(i).equals(url)) {
+                return true;
+            }
+        }
+        return re;
     }
 
     //导入token
@@ -127,13 +168,25 @@ public class DqActivity extends BaseActivity {
 
         String numberStr = CommonUtils.getViewContent(number);
 
-        String videoIdStr = CommonUtils.getViewContent(videoId);
+        if (urls.size() == 0) {
+            showToast("请先添加视频url");
+            return;
+        }
 
         isTask = !isTask;
         if (isTask) {
             exeTask.setText("结束任务");
             Thread thread = new Thread(() -> {
-                exeLikeTask(numberStr, videoIdStr);
+                String videoIdStr;
+                for (int i = 0; i < urls.size(); i++) {
+                    videoIdStr = urls.get(i);
+                    exeLikeTask(numberStr, videoIdStr);
+                }
+                runOnUiThread(() -> {
+                    showToast("任务完成");
+                    isTask = false;
+                    exeTask.setText("开始任务");
+                });
             });
             thread.start();
         } else {
@@ -144,11 +197,6 @@ public class DqActivity extends BaseActivity {
     boolean isTask = false;
 
     private void exeLikeTask(String numberStr, String videoIdStr) {
-
-        //http://mz.qiaosong.net:8080/sheding/shareVideo?videoId=901770&userId=4bf4e573e0064f2d9c1642c5bf8a20cd&from=singlemessage
-        if (videoIdStr.contains("videoId=")) {
-            videoIdStr = CommonUtils.getMatches(videoIdStr, "videoId=(.+?)&");
-        }
 
         List<User> users = getRandomUser(videoIdStr, CommonUtils.string2Int(numberStr));
 
@@ -165,11 +213,6 @@ public class DqActivity extends BaseActivity {
                 likeReDao.insert(new LikeReBean(null, videoIdStr, users.get(i).getData().getToken()));
             }
         }
-        runOnUiThread(() -> {
-            showToast("任务完成");
-            isTask = false;
-            exeTask.setText("开始任务");
-        });
     }
 
     private List<User> getRandomUser(String videoIdStr, int number) {
