@@ -52,6 +52,11 @@ android {
             //设置支持的SO库架构
             abiFilters 'armeabi'
         }
+
+        lintOptions {
+            disable 'GoogleAppIndexingWarning'
+            baseline file("lint-baseline.xml")
+        }
     }
 
     //mvvp需要申明的地方
@@ -86,6 +91,13 @@ android {
             def fileName = "weitingting_v${defaultConfig.versionName}.apk"
             outputFileName = fileName
         }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
     }
 
     //Android 6.0不再支持 Apache HTTP client 使用许添加
@@ -127,8 +139,8 @@ android {
         api files('libs/sun.misc.BASE64Decoder.jar')
 
         //将最新的版本改为当前版本号，例如2.3.1(报错就填写固定的版本号)
-        api 'com.github.hotchemi:permissionsdispatcher:2.3.1'
-        annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
+        api 'com.github.hotchemi:permissionsdispatcher:3.1.0'
+        annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:3.1.0'
 
         //阿里快速编译
         debugApi 'com.antfortune.freeline:runtime:0.8.8'

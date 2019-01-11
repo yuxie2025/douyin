@@ -1,26 +1,21 @@
 package com.baselib.baserx;
 
-/**
- * 作者: llk on 2017/10/8.
- */
-
-import android.util.Log;
 
 import com.baselib.basebean.BaseRespose;
-import com.baselib.commonutils.LogUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 
+/**
+ * 作者: llk on 2017/10/8.
+ */
 final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
     private final Gson gson;
     private final Type type;
@@ -68,7 +63,7 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
                 if (result.success()) {
                     return gson.fromJson(response, type);
                 } else {
-                    LogUtils.logd("HttpManager,返回err==：" + response);
+                    LogUtils.d("HttpManager,返回err==：" + response);
                     throw new ResultException(result.getMessage(), !result.success());
                 }
             }

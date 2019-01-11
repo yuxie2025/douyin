@@ -17,11 +17,11 @@ import com.jph.takephoto.model.TakePhotoOptions;
 import java.io.File;
 
 /**
- * 选择头像中间页面
- * 传入值为 Type
- * CAMERA 调用相机
- * PHOTO 调用相册
+ * desc: 选择图片专用 一张
+ * 选择头像中间页面,传入值为 Type,CAMERA 调用相机,PHOTO 调用相册
+ * Created by Lankun on 2018/10/29/029
  */
+@SuppressWarnings("unused")
 public class SelectPhotoActivity extends TakePhotoActivity {
 
     /**
@@ -47,27 +47,31 @@ public class SelectPhotoActivity extends TakePhotoActivity {
     public static final String PATH = "path";
 
     /**
-     * 图片
-     */
-    public static final String ITEM = "item";
-
-    /**
      * 类型相册或相机
      */
     public static final String TYPE = "type";
+
+    public static final String KEY_IS_COMPRESS = "isCompress";
+
+    public static final String KEY_IS_CROP = "isCrop";
+
+    boolean isCompress;
+
+    boolean isCrop;
 
     private static Class<?> mCls;
 
     File file;
 
     public static void start(Activity activity, Class<?> cls, String type) {
-        start(activity, cls, type, "item");
+        start(activity, cls, type, false, true);
     }
 
-    public static void start(Activity activity, Class<?> cls, String Type, String item) {
+    public static void start(Activity activity, Class<?> cls, String Type, boolean isCompress, boolean isCrop) {
         Intent intent = new Intent(activity, SelectPhotoActivity.class);
         intent.putExtra(TYPE, Type);
-        intent.putExtra(ITEM, item);
+        intent.putExtra(KEY_IS_COMPRESS, isCompress);
+        intent.putExtra(KEY_IS_CROP, isCrop);
         mCls = cls;
         activity.startActivityForResult(intent, REQUEST_CODE);
     }
@@ -95,27 +99,36 @@ public class SelectPhotoActivity extends TakePhotoActivity {
     @Override
     public void takeSuccess(TResult result) {
         super.takeSuccess(result);
-        if (result != null) {
-            //这里是设置返回页面
-            Intent intent = new Intent(SelectPhotoActivity.this, mCls);
-            intent.putExtra(PATH, result.getImage().getCompressPath());
-            intent.putExtra(ITEM, getIntent().getStringExtra(ITEM));
-            setResult(RESULT_CODE, intent);
-        }
+        //这里是设置返回页面
+        Intent intent = new Intent(SelectPhotoActivity.this, mCls);
+        intent.putExtra(PATH, result.getImage().getCompressPath());
+        setResult(RESULT_CODE, intent);
         finish();
     }
 
     private void selectPhoto(TakePhoto takePhoto) {
+
+        String type = getIntent().getStringExtra(TYPE);
+        isCompress = getIntent().getBooleanExtra(KEY_IS_COMPRESS, true);
+        isCrop = getIntent().getBooleanExtra(KEY_IS_CROP, true);
+
         file = new File(Environment.getExternalStorageDirectory(), "/temp/" + System.currentTimeMillis() + ".jpg");
-        if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
         Uri imageUri = Uri.fromFile(file);
 
         //压缩参数
-        CompressConfig config = new CompressConfig.Builder()
-                .setMaxSize(50 * 1024)//尺寸
-                .setMaxPixel(800)//最大像素
-                .enableReserveRaw(false)//是否保留原文件
-                .create();
+        CompressConfig config;
+        if (isCompress) {
+            config = new CompressConfig.Builder()
+                    .setMaxSize(50 * 1024)//尺寸
+                    .setMaxPixel(800)//最大像素
+                    .enableReserveRaw(false)//是否保留原文件
+                    .create();
+        } else {
+            config = new CompressConfig.Builder().create();
+        }
         takePhoto.onEnableCompress(config, false);//压缩是对话框
 
         //是否使用自带相册
@@ -128,20 +141,24 @@ public class SelectPhotoActivity extends TakePhotoActivity {
         builder.setOutputX(400).setOutputY(400);//剪切大小设置
         builder.setWithOwnCrop(true);
 
-        String type = getIntent().getStringExtra(TYPE);
         if (CAMERA.equals(type)) {
-            takePhoto.onPickFromCaptureWithCrop(imageUri, builder.create());
+            if (isCrop) {
+                takePhoto.onPickFromCaptureWithCrop(imageUri, builder.create());
+            } else {
+                takePhoto.onPickFromCapture(imageUri);
+            }
         } else if (PHOTO.equals(type)) {
-            takePhoto.onPickFromGalleryWithCrop(imageUri, builder.create());
+            if (isCrop) {
+                takePhoto.onPickFromGalleryWithCrop(imageUri, builder.create());
+            } else {
+                takePhoto.onPickFromCapture(imageUri);
+            }
         } else {
             Toast.makeText(this, "缺少Type请用意图传入...", Toast.LENGTH_SHORT).show();
         }
 
     }
-
-//    /**
-//     * 回调选择头像地址
-//     */
+//        //回调选择头像地址
 //        if (resultCode == SelectPhotoActivity.RESULT_CODE) {
 //        switch (requestCode) {
 //            case SelectPhotoActivity.REQUEST_CODE:   // 调用相机拍照

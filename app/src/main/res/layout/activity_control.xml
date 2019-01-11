@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    style="@style/MM.BaseLlVertical">
 
     <LinearLayout
         android:id="@+id/rl_keyboard"
@@ -29,8 +28,8 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_weight="1"
-            android:dropDownVerticalOffset="40dp"
             android:dropDownWidth="wrap_content"
+            android:dropDownVerticalOffset="40dp"
             android:gravity="center"
             android:spinnerMode="dropdown"
             android:tooltipText="命令" />
@@ -62,17 +61,17 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/wheel"
-        android:maxHeight="120dp"
         android:maxWidth="60dp"
-        android:minHeight="120dp"
-        android:minWidth="60dp" />
+        android:maxHeight="120dp"
+        android:minWidth="60dp"
+        android:minHeight="120dp" />
 
     <FrameLayout
         android:id="@+id/leftButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@id/middleButton"
         android:background="@drawable/zuo"
         android:maxHeight="120dp"
@@ -82,8 +81,8 @@
         android:id="@+id/rightButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/middleButton"
         android:background="@drawable/you"
         android:maxHeight="120dp"
@@ -94,9 +93,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/middleButton"
+        android:layout_below="@+id/panel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/panel"
         android:background="@drawable/dragon1" />
 
 </RelativeLayout>

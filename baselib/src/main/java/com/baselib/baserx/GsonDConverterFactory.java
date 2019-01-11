@@ -1,7 +1,5 @@
 package com.baselib.baserx;
 
-import com.baselib.basebean.BaseListRespose;
-import com.baselib.basebean.BaseRespose;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
@@ -31,7 +29,9 @@ public class GsonDConverterFactory extends Converter.Factory {
     private final Gson gson;
 
     private GsonDConverterFactory(Gson gson) {
-        if (gson == null) throw new NullPointerException("gson == null");
+        if (gson == null) {
+            throw new NullPointerException("gson == null");
+        }
         this.gson = gson;
     }
 

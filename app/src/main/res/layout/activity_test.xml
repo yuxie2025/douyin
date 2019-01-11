@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/llRoot"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    style="@style/MM.BaseLlVertical">
 
     <include layout="@layout/navigation_bar" />
 
@@ -60,7 +58,7 @@
                     android:layout_height="80px"
                     android:background="@drawable/shape_session_btn_voice_normal"
                     android:text="@string/please_to_talk"
-                    android:textColor="@color/gray1"
+                    android:textColor="@color/gray"
                     android:visibility="gone" />
 
             </RelativeLayout>

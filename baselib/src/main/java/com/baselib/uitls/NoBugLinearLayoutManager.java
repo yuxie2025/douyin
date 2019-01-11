@@ -11,7 +11,7 @@ import android.util.AttributeSet;
  * bug原因,就是说Adapter有个size，你的集合有个size。这两个size，在调用Adapter的notifyxxxx时候必须保持相同。
  * 需调用三个参数的才有用
  */
-
+@SuppressWarnings("unused")
 public class NoBugLinearLayoutManager extends LinearLayoutManager {
 
     public NoBugLinearLayoutManager(Context context) {
@@ -31,10 +31,19 @@ public class NoBugLinearLayoutManager extends LinearLayoutManager {
         try {
             //try catch一下
             super.onLayoutChildren(recycler, state);
-        } catch (IndexOutOfBoundsException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    @Override
+    public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State state) {
+        try {
+            return super.scrollVerticallyBy(dy, recycler, state);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }

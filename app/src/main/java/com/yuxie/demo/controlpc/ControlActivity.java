@@ -93,7 +93,7 @@ public class ControlActivity extends BaseActivity implements IStatus {
 
     private void initTouch() {
 
-        ControlActivityPermissionsDispatcher.audioNeedsWithCheck(this);
+        ControlActivityPermissionsDispatcher.audioNeedsWithPermissionCheck(this);
 
         btn_left = (Button) findViewById(R.id.btn_left);
         btn_right = (Button) findViewById(R.id.btn_right);

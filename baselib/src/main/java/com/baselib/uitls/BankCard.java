@@ -1,7 +1,5 @@
 package com.baselib.uitls;
 
-import retrofit2.http.Query;
-
 /**
  * Created by luo on 2018/3/30.
  */

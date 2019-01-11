@@ -1,19 +1,23 @@
 package com.baselib.uitls;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Display;
+import android.view.KeyCharacterMap;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -25,14 +29,15 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,35 +48,45 @@ import okhttp3.RequestBody;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Func1;
 
 /**
  * Created by luo on 2017/11/26.
+ * 常用工具集
  */
-
+@SuppressWarnings("unused")
 public class CommonUtils {
 
     /**
      * 判断集合是否不为空
      *
-     * @param list
-     * @return
+     * @param list 集合
+     * @return 是否是集合
      */
     public static boolean isNoEmpty(List list) {
+        boolean re;
         if (list == null || list.size() == 0) {
-            return false;
+            re = false;
         } else {
-            return true;
+            re = true;
         }
+        return re;
     }
 
+    /**
+     * 判断集合是否为空
+     *
+     * @param list 集合
+     * @return 是否为空
+     */
+    public static boolean isEmpty(List list) {
+        return !isNoEmpty(list);
+    }
 
     /**
      * 判断是否是正确的json格式数据
      *
-     * @param json
-     * @return
+     * @param json json数据
+     * @return 结果
      */
     public static boolean isGoodJson(String json) {
         if (TextUtils.isEmpty(json)) {
@@ -86,10 +101,10 @@ public class CommonUtils {
     }
 
     /**
-     * 判断是否是坏的json
+     * 判断是否是坏的json json数据
      *
-     * @param json
-     * @return
+     * @param json json数据
+     * @return 结果
      */
     public static boolean isBadJson(String json) {
         return !isGoodJson(json);
@@ -98,8 +113,8 @@ public class CommonUtils {
     /**
      * 判断是否是double字符串
      *
-     * @param doubleString
-     * @return
+     * @param doubleString double字符串
+     * @return 结果
      */
     public static boolean isDouble(String doubleString) {
         if (TextUtils.isEmpty(doubleString)) {
@@ -116,8 +131,8 @@ public class CommonUtils {
     /**
      * 判断是否是int字符串
      *
-     * @param intString
-     * @return
+     * @param intString int字符串
+     * @return 结果
      */
     public static boolean isInteger(String intString) {
         if (TextUtils.isEmpty(intString)) {
@@ -131,11 +146,23 @@ public class CommonUtils {
         }
     }
 
+    public static boolean isFloat(String floatString) {
+        if (TextUtils.isEmpty(floatString)) {
+            return false;
+        }
+        try {
+            Float.parseFloat(floatString);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     /**
      * 判断是否是long字符串
      *
-     * @param longString
-     * @return
+     * @param longString long字符串
+     * @return 结果
      */
     public static boolean isLong(String longString) {
         if (TextUtils.isEmpty(longString)) {
@@ -152,8 +179,8 @@ public class CommonUtils {
     /**
      * 字符串转int
      *
-     * @param intString
-     * @return
+     * @param intString int字符串
+     * @return 结果
      */
     public static int string2Int(String intString) {
         try {
@@ -166,8 +193,8 @@ public class CommonUtils {
     /**
      * 字符串转double
      *
-     * @param doubleString
-     * @return
+     * @param doubleString double字符串
+     * @return 结果
      */
     public static double string2Double(String doubleString) {
         try {
@@ -180,14 +207,22 @@ public class CommonUtils {
     /**
      * 字符串转long
      *
-     * @param longString
-     * @return
+     * @param longString 字符串
+     * @return 结果
      */
     public static long string2Long(String longString) {
         try {
             return Long.parseLong(longString);
         } catch (Exception e) {
-            return 0l;
+            return 0L;
+        }
+    }
+
+    public static float string2Float(String floatString) {
+        try {
+            return Float.parseFloat(floatString);
+        } catch (Exception e) {
+            return 0f;
         }
     }
 
@@ -205,19 +240,15 @@ public class CommonUtils {
     /**
      * 蓝牙是否可用
      *
-     * @return
+     * @return 结果
      */
     public static boolean isBluetoothEnabled() {
         //获取蓝牙适配器
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
-        if (null == adapter) {
+        if (adapter == null) {
             return false;
         } else {
-            if (!adapter.isEnabled()) {
-                return false;
-            } else {
-                return true;
-            }
+            return adapter.isEnabled();
         }
     }
 
@@ -229,22 +260,19 @@ public class CommonUtils {
     /**
      * 检测是连续点击,连续点击事件间隔太小不处理
      *
-     * @return
+     * @return 结果
      */
     public static boolean isDoubleClick() {
-        /**
-         * 最小间隔时间
-         */
-        int MIN_CLICK_DELAY_TIME = 5000;
+        int MIN_CLICK_DELAY_TIME = 500;
         return isDoubleClick(MIN_CLICK_DELAY_TIME);
     }
 
     /**
      * @param delayTime 间隔时间(自定义间隔时间)
-     * @return
+     * @return 结果
      */
     public static boolean isDoubleClick(long delayTime) {
-        long currentTime = Calendar.getInstance().getTimeInMillis();
+        long currentTime = System.currentTimeMillis();
         if (currentTime - lastClickTime > delayTime || currentTime - lastClickTime < 0) {
             lastClickTime = currentTime;
             return false;
@@ -258,13 +286,13 @@ public class CommonUtils {
      * 在使用ant打包时，其值就取决于ant的打包参数是release还是debug.
      * 因此在AndroidMainifest.xml中最好不设置android:debuggable属性置，而是由打包方式来决定其值.
      *
-     * @return
+     * @return 返回是否调试版本
      */
     public static boolean isApkDebugable() {
         try {
             ApplicationInfo info = BaseApplication.getAppContext().getApplicationInfo();
             return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         return false;
     }
@@ -272,7 +300,7 @@ public class CommonUtils {
     /**
      * 是否是发布版
      *
-     * @return
+     * @return 是否发布
      */
     public static boolean isRelease() {
         return !isApkDebugable();
@@ -289,8 +317,8 @@ public class CommonUtils {
     public static String stringPattern(String date, String oldPattern, String newPattern) {
         if (date == null || oldPattern == null || newPattern == null)
             return "";
-        SimpleDateFormat sdf1 = new SimpleDateFormat(oldPattern);        // 实例化模板对象
-        SimpleDateFormat sdf2 = new SimpleDateFormat(newPattern);        // 实例化模板对象
+        SimpleDateFormat sdf1 = new SimpleDateFormat(oldPattern, Locale.getDefault());        // 实例化模板对象
+        SimpleDateFormat sdf2 = new SimpleDateFormat(newPattern, Locale.getDefault());        // 实例化模板对象
         Date d = null;
         try {
             d = sdf1.parse(date);   // 将给定的字符串中的日期提取出来
@@ -306,23 +334,17 @@ public class CommonUtils {
     public static void toSelfSetting() {
         Intent mIntent = new Intent();
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (Build.VERSION.SDK_INT >= 9) {
-            mIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-            mIntent.setData(Uri.fromParts("package", BaseApplication.getAppContext().getPackageName(), null));
-        } else if (Build.VERSION.SDK_INT <= 8) {
-            mIntent.setAction(Intent.ACTION_VIEW);
-            mIntent.setClassName("com.android.settings", "com.android.setting.InstalledAppDetails");
-            mIntent.putExtra("com.android.settings.ApplicationPkgName", BaseApplication.getAppContext().getPackageName());
-        }
+        mIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+        mIntent.setData(Uri.fromParts("package", BaseApplication.getAppContext().getPackageName(), null));
         BaseApplication.getAppContext().startActivity(mIntent);
     }
 
     /**
      * 跳转到百度导航
      *
-     * @param latitude
-     * @param longitude
-     * @param addrees
+     * @param latitude  纬度
+     * @param longitude 经度
+     * @param addrees   地址
      */
     public static void baiduGuide(String latitude, String longitude, String addrees) {
         try {
@@ -333,18 +355,18 @@ public class CommonUtils {
                     "region=北京" +           //
                     "&src=" + AppUtils.getAppName() + "#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end");
             BaseApplication.getAppContext().startActivity(intent); //启动调用
-        } catch (URISyntaxException e) {
+        } catch (URISyntaxException ignored) {
         }
     }
 
     /**
      * 跳转到高德导航
      *
-     * @param latitudeStr
-     * @param longitudeStr
-     * @param addrees
-     * @param latitudeStart
-     * @param longitudeStart
+     * @param latitudeStr    终点纬度
+     * @param longitudeStr   终点经度
+     * @param addrees        终点地址
+     * @param latitudeStart  开始纬度
+     * @param longitudeStart 开始经度
      */
     public static void gaodeGuide(String latitudeStr, String longitudeStr, String addrees, String latitudeStart, String longitudeStart) {
 
@@ -373,15 +395,15 @@ public class CommonUtils {
             intent.setPackage("com.autonavi.minimap");
             BaseApplication.getAppContext().startActivity(intent);
 
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
     /**
      * 获取view的内容
      *
-     * @param view
-     * @return
+     * @param view 需要获取的内容的View
+     * @return 控件内容
      */
     public static String getViewContent(View view) {
         if (view instanceof TextView) {
@@ -392,6 +414,13 @@ public class CommonUtils {
         return "";
     }
 
+    /**
+     * 上传多文件参数构建
+     *
+     * @param files      文件列表
+     * @param paramNames 文件名列表
+     * @return 构建后文本参数
+     */
     public static List<MultipartBody.Part> filesToMultipartBodyParts(List<File> files, List<String> paramNames) {
         List<MultipartBody.Part> parts = new ArrayList<>(files.size());
 
@@ -403,6 +432,12 @@ public class CommonUtils {
         return parts;
     }
 
+    /**
+     * 参数构建
+     *
+     * @param param 文本参数构建
+     * @return RequestBody
+     */
     public static RequestBody convertToRequestBody(String param) {
         RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), param);
         return requestBody;
@@ -412,8 +447,8 @@ public class CommonUtils {
      * 替换手机号码中间4位
      * 括号表示组，被替换的部分$n表示第n组的内容
      *
-     * @param number
-     * @return
+     * @param number 手机号
+     * @return 替换后的手机号
      */
     public static String phoneNumberReplace(String number) {
         String result = "";
@@ -427,9 +462,10 @@ public class CommonUtils {
     /**
      * 隐藏身份证中间部分,仅首位可见
      *
-     * @param cardId
-     * @return
+     * @param cardId 身份证号
+     * @return 隐藏后的身份证号
      */
+    @SuppressWarnings("Annotator")
     public static String hiddenCardId(String cardId) {
         String result = "";
         if (TextUtils.isEmpty(cardId)) {
@@ -443,25 +479,23 @@ public class CommonUtils {
         return result;
     }
 
-    //验证码倒计时
+    /**
+     * //验证码倒计时
+     *
+     * @param tvGetPhoneCode 发送验证码控件
+     */
     public static void theCountdownCode(TextView tvGetPhoneCode) {
 
         final int count = 60;
 
         Observable.interval(0, 1, TimeUnit.SECONDS)//设置0延迟，每隔一秒发送一条数据
                 .take(count + 1) //设置循环11次
-                .map(new Func1<Long, Long>() {
-                    @Override
-                    public Long call(Long aLong) {
-                        return count - aLong; //
-                    }
+                .map(aLong -> {
+                    return count - aLong; //
                 })
-                .doOnSubscribe(new Action0() {
-                    @Override
-                    public void call() {
-                        tvGetPhoneCode.setEnabled(false);//在发送数据的时候设置为不能点击#c02826
-                        tvGetPhoneCode.setTextColor(Color.parseColor("#555555"));
-                    }
+                .doOnSubscribe(() -> {
+                    tvGetPhoneCode.setEnabled(false);//在发送数据的时候设置为不能点击#c02826
+                    tvGetPhoneCode.setTextColor(Color.parseColor("#555555"));
                 })
                 .observeOn(AndroidSchedulers.mainThread())//操作UI主要在UI线程
                 .subscribe(new Observer<Long>() {
@@ -479,7 +513,8 @@ public class CommonUtils {
 
                     @Override
                     public void onNext(Long aLong) { //接受到一条就是会操作一次UI
-                        tvGetPhoneCode.setText("获取验证码(" + aLong + ")");
+                        String str = "获取验证码(" + aLong + ")";
+                        tvGetPhoneCode.setText(str);
                     }
                 });
     }
@@ -487,8 +522,8 @@ public class CommonUtils {
     /**
      * 4位分组,隐藏银行卡,(仅显示后面几位),不能不4整除的位数
      *
-     * @param bankNumber
-     * @return
+     * @param bankNumber 银行卡号
+     * @return 隐藏后的银行卡号
      */
     public static String hiddenBankNumber(String bankNumber) {
 
@@ -502,7 +537,7 @@ public class CommonUtils {
         }
 
         //根据已知字符串的长度,参数信号,字符串,4个字符一个空格
-        StringBuffer emptyString = new StringBuffer();
+        StringBuilder emptyString = new StringBuilder();
 
         for (int i = 0; i < bankNumber.length(); i++) {
             emptyString.append("*");
@@ -514,7 +549,7 @@ public class CommonUtils {
                 }
             }
         }
-        int showLength = 0;
+        int showLength;
         int lastLength = bankNumber.length() % 4;
         if (lastLength == 0) {
             showLength = 4;
@@ -532,8 +567,8 @@ public class CommonUtils {
     /**
      * 获取测试数据
      *
-     * @param number
-     * @return
+     * @param number 测试数据数量
+     * @return List<String>
      */
     public static List<String> getList(int number) {
         List<String> strings = new ArrayList<>();
@@ -546,15 +581,17 @@ public class CommonUtils {
     /**
      * 限制输入框限制工具
      *
-     * @param editText
-     * @param tip
-     * @param charMaxNum
+     * @param editText   编辑
+     * @param tip        显示1/200 控件
+     * @param charMaxNum 最大允许的数量
      */
     public static void ediTextSize(EditText editText, TextView tip, int charMaxNum) {
 
         //EditText手动设置值处理
         String etString = editText.getText().toString();
-        tip.setText((etString.length()) + "/" + charMaxNum);
+
+        String tipString = etString.length() + "/" + charMaxNum;
+        tip.setText(tipString);
 
         editText.addTextChangedListener(new TextWatcher() {
 
@@ -569,12 +606,13 @@ public class CommonUtils {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                tip.setText((s.length()) + "/" + charMaxNum);
+                String tipString = s.length() + "/" + charMaxNum;
+                tip.setText(tipString);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                /** 得到光标开始和结束位置 ,超过最大数后记录刚超出的数字索引进行控制 */
+                /* 得到光标开始和结束位置 ,超过最大数后记录刚超出的数字索引进行控制 */
                 editStart = editText.getSelectionStart();
                 editEnd = editText.getSelectionEnd();
                 if (temp.length() > charMaxNum) {
@@ -584,8 +622,101 @@ public class CommonUtils {
                 }
             }
         });
-
     }
+
+    /**
+     * 文本输入内容,判断按钮是否可用
+     *
+     * @param editText 编辑框
+     * @param view     按钮
+     */
+    public static void ediTextChanged(EditText editText, View view) {
+        editText.addTextChangedListener(new MyTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (TextUtils.isEmpty(s)) {
+                    view.setEnabled(false);
+                } else {
+                    view.setEnabled(true);
+                }
+            }
+        });
+    }
+
+    /**
+     * 所有的输入框有输入,按钮可用
+     *
+     * @param view 按钮
+     * @param args 输入框
+     */
+    public static void ediTextChanged(View view, EditText... args) {
+
+        List<Boolean> list = new ArrayList<>();
+        EditText editText;
+        for (int i = 0; i < args.length; i++) {
+            editText = args[i];
+
+            String content = getViewContent(editText);
+            if (TextUtils.isEmpty(content)) {
+                list.add(false);
+            } else {
+                list.add(true);
+            }
+            editText.addTextChangedListener(new EditextTextWatcher(list, i, view));
+        }
+
+        boolean isNoEmpty = false;
+        for (int j = 0; j < list.size(); j++) {
+            if (!list.get(j)) {
+                isNoEmpty = true;
+            }
+        }
+
+        if (isNoEmpty) {
+            view.setEnabled(false);
+        } else {
+            view.setEnabled(true);
+        }
+    }
+
+    /**
+     * Editext内容改变监听
+     */
+    public static class EditextTextWatcher extends MyTextWatcher {
+
+        int i;
+        List<Boolean> list;
+        View view;
+
+        private EditextTextWatcher(List<Boolean> list, int i, View view) {
+            this.list = list;
+            this.i = i;
+            this.view = view;
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (TextUtils.isEmpty(s)) {
+                list.set(i, false);
+            } else {
+                list.set(i, true);
+            }
+
+            boolean isNoEmpty = false;
+            for (int j = 0; j < list.size(); j++) {
+                if (!list.get(j)) {
+                    isNoEmpty = true;
+                }
+            }
+
+            if (isNoEmpty) {
+                view.setEnabled(false);
+            } else {
+                view.setEnabled(true);
+            }
+        }
+    }
+
 
     /**
      * 字符串转对应时间格式
@@ -594,8 +725,62 @@ public class CommonUtils {
      * @return "yyyy-MM-dd HH:mm"
      */
     public static String time2String(String timeString) {
-        long timeLong = string2Long(timeString) * 1000;
+        long timeLong = string2Long(timeString);
         return TimeUtils.millis2String(timeLong, ConstantUtils.YMDHM_FORMAT);
+    }
+
+    /**
+     * 判断虚拟按键是否存在
+     *
+     * @param activity
+     * @return
+     */
+    public static boolean isNavigationBarShow(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            Display display = activity.getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            Point realSize = new Point();
+            display.getSize(size);
+            display.getRealSize(realSize);
+            return realSize.y != size.y;
+        } else {
+            boolean menu = ViewConfiguration.get(activity).hasPermanentMenuKey();
+            boolean back = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
+            if (menu || back) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    /**
+     * 获取文件扩展名
+     *
+     * @return
+     */
+    public static String getFileExt(String filename) {
+        int index = filename.lastIndexOf(".");
+        if (index == -1) {
+            return "";
+        }
+        String result = filename.substring(index + 1);
+        return result;
+    }
+
+    /**
+     * 解码url
+     *
+     * @param content
+     * @return
+     */
+    public static String urlDecode(String content) {
+        try {
+            return URLDecoder.decode(content, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     public static String getMatches(String content,String regex) {

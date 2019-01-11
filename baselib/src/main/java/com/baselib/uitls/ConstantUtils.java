@@ -4,10 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-/**
- * Created by luo on 2018/3/29.
- */
-
+@SuppressWarnings("unused")
 public class ConstantUtils {
 
     /**
@@ -36,4 +33,9 @@ public class ConstantUtils {
      * 年月日
      */
     public static final DateFormat YMD_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+    /**
+     * 年月日时分秒(文件名)
+     */
+    public static final DateFormat DATE_FILE = new SimpleDateFormat("yyyy_MM_dd HH_mm_ss", Locale.getDefault());
 }

@@ -26,6 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Subscription;
 
 public class DqActivity extends BaseActivity {
 
@@ -99,7 +100,8 @@ public class DqActivity extends BaseActivity {
         boolean re = false;
         for (int i = 0; i < urls.size(); i++) {
             if (urls.get(i).equals(url)) {
-                return true;
+                re = true;
+                break;
             }
         }
         return re;
@@ -123,7 +125,7 @@ public class DqActivity extends BaseActivity {
                 }
             }
             if (!isEqual) {
-                insertData.add(new UserBean(null, users.get(i).toString()));
+                insertData.add(new UserBean(null, users.get(i)));
             }
         }
         userBeanDao.insertInTx(insertData);
@@ -182,11 +184,7 @@ public class DqActivity extends BaseActivity {
                     videoIdStr = urls.get(i);
                     exeLikeTask(numberStr, videoIdStr);
                 }
-                runOnUiThread(() -> {
-                    showToast("任务完成");
-                    isTask = false;
-                    exeTask.setText("开始任务");
-                });
+                stopTask();
             });
             thread.start();
         } else {
@@ -202,10 +200,7 @@ public class DqActivity extends BaseActivity {
 
         for (int i = 0; i < users.size(); i++) {
             if (!isTask) {
-                runOnUiThread(() -> {
-                    showToast("任务提前结束");
-                    exeTask.setText("开始任务");
-                });
+                interruptTask();
                 return;
             }
             boolean re = DqTest.exeDianZanTask(i, users.get(i), videoIdStr);
@@ -213,6 +208,27 @@ public class DqActivity extends BaseActivity {
                 likeReDao.insert(new LikeReBean(null, videoIdStr, users.get(i).getData().getToken()));
             }
         }
+    }
+
+    private void interruptTask() {
+        runOnUiThread(() -> {
+            showToast("任务提前结束");
+            if (exeTask != null) {
+                exeTask.setText("开始任务");
+            }
+        });
+
+    }
+
+    private void stopTask() {
+        runOnUiThread(() -> {
+            showToast("任务完成");
+            isTask = false;
+            if (exeTask != null) {
+                exeTask.setText("开始任务");
+            }
+        });
+
     }
 
     private List<User> getRandomUser(String videoIdStr, int number) {

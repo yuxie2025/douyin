@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+@SuppressWarnings("ALL")
 public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     protected Context mContext;
     protected List<T> mDatas;
@@ -33,12 +34,12 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
         ItemViewDelegate itemViewDelegate = mItemViewDelegateManager.getItemViewDelegate(viewType);
         int layoutId = itemViewDelegate.getItemViewLayoutId();
         ViewHolder holder = ViewHolder.createViewHolder(mContext, parent, layoutId);
-        onViewHolderCreated(holder,holder.getConvertView());
+        onViewHolderCreated(holder, holder.getConvertView());
         setListener(parent, holder, viewType);
         return holder;
     }
 
-    public void onViewHolderCreated(ViewHolder holder,View itemView){
+    public void onViewHolderCreated(ViewHolder holder, View itemView) {
 
     }
 
@@ -53,25 +54,19 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
 
     protected void setListener(final ViewGroup parent, final ViewHolder viewHolder, int viewType) {
         if (!isEnabled(viewType)) return;
-        viewHolder.getConvertView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnItemClickListener != null) {
-                    int position = viewHolder.getAdapterPosition();
-                    mOnItemClickListener.onItemClick(v, viewHolder , position);
-                }
+        viewHolder.getConvertView().setOnClickListener(v -> {
+            if (mOnItemClickListener != null) {
+                int position = viewHolder.getAdapterPosition();
+                mOnItemClickListener.onItemClick(v, viewHolder, position);
             }
         });
 
-        viewHolder.getConvertView().setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (mOnItemClickListener != null) {
-                    int position = viewHolder.getAdapterPosition();
-                    return mOnItemClickListener.onItemLongClick(v, viewHolder, position);
-                }
-                return false;
+        viewHolder.getConvertView().setOnLongClickListener(v -> {
+            if (mOnItemClickListener != null) {
+                int position = viewHolder.getAdapterPosition();
+                return mOnItemClickListener.onItemLongClick(v, viewHolder, position);
             }
+            return false;
         });
     }
 

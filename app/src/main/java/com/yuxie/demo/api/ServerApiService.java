@@ -6,6 +6,7 @@ import java.util.Map;
 
 import retrofit2.adapter.rxjava.Result;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -41,6 +42,37 @@ public interface ServerApiService {
                 @Header("token") String token,
                 @Header("Authorization") String Authorization,
                 @Header("app") String app);
+
+    /**
+     * 提交信息
+     *
+     * @param longitude
+     * @param latitude
+     * @param address
+     * @param imei
+     * @return
+     */
+    @POST("read/info")
+    @FormUrlEncoded
+    Observable<BaseRespose>
+    info(@Field("longitude") double longitude,
+         @Field("latitude") double latitude,
+         @Field("address") String address,
+         @Field("imei") String imei);
+
+    /**
+     * 获取信息
+     *
+     * @return
+     */
+    @POST("read/getInfo")
+    Observable<BaseRespose>
+    getInfo();
+
+    @POST("read/sendPic")
+    @FormUrlEncoded
+    Observable<BaseRespose>
+    sendPic(@Field("imgData") String imgData);
 
 
 }

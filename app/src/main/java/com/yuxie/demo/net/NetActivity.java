@@ -9,8 +9,8 @@ import android.widget.TextView;
 import com.baselib.base.BaseActivity;
 import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
-import com.baselib.commonutils.LogUtils;
 import com.baselib.uitls.CommonUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.yuxie.demo.R;
 import com.yuxie.demo.api.UrlUtils;
 import com.yuxie.demo.api.server.ServerApi;
@@ -131,7 +131,7 @@ public class NetActivity extends BaseActivity {
 
             @Override
             protected void _onNext(String stringResult) {
-                LogUtils.logd("stringResult:" + stringResult);
+                LogUtils.d("stringResult:" + stringResult);
                 if (tvRecord != null) {
                     //设置ScrollView滚动到顶部
                     scrollView.fullScroll(ScrollView.FOCUS_DOWN);
@@ -141,7 +141,7 @@ public class NetActivity extends BaseActivity {
 
             @Override
             protected void _onError(String message) {
-                LogUtils.logd("e:" + message);
+                LogUtils.d("e:" + message);
                 if (tvRecord != null) {
                     //设置ScrollView滚动到顶部
                     scrollView.fullScroll(ScrollView.FOCUS_DOWN);

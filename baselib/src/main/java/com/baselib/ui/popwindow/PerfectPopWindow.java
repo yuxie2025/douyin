@@ -1,7 +1,8 @@
 package com.baselib.ui.popwindow;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,27 +38,21 @@ public class PerfectPopWindow implements View.OnClickListener {
     private String mItem;
 
     public PerfectPopWindow(Activity context, Class<?> cls) {
-        this(context, cls, "item");
-    }
-
-    public PerfectPopWindow(Activity context, Class<?> cls, String item) {
         m_activity = context;
         mCls = cls;
-        mItem = item;
     }
 
     /**
      * 显示popupWindow
-     *
-     * @param
      */
     public void showPopupWindow() {
         m_share_pop = new PopupWindow(m_activity);
+        @SuppressLint("InflateParams")
         View view = m_activity.getLayoutInflater().inflate(R.layout.popwindow_perfect, null);
-        RelativeLayout rl_no = (RelativeLayout) view.findViewById(R.id.rl_no);
-        RelativeLayout rl_no1 = (RelativeLayout) view.findViewById(R.id.rl_no1);
-        RelativeLayout rl_no2 = (RelativeLayout) view.findViewById(R.id.rl_no2);
-        Button btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
+        RelativeLayout rl_no = view.findViewById(R.id.rl_no);
+        RelativeLayout rl_no1 = view.findViewById(R.id.rl_no1);
+        RelativeLayout rl_no2 = view.findViewById(R.id.rl_no2);
+        Button btn_confirm = view.findViewById(R.id.btn_confirm);
         rl_no.setOnClickListener(this);
         rl_no1.setOnClickListener(this);
         rl_no2.setOnClickListener(this);
@@ -68,22 +63,19 @@ public class PerfectPopWindow implements View.OnClickListener {
         m_share_pop.setFocusable(true);
         m_share_pop.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
         m_share_pop.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
-        m_share_pop.setBackgroundDrawable(new BitmapDrawable());
+        m_share_pop.setBackgroundDrawable(ContextCompat.getDrawable(m_activity, 0));
         m_share_pop.setContentView(view);
         m_share_pop.showAtLocation(view, Gravity.BOTTOM, 0, 0);
         // 重写onKeyListener
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (m_share_pop != null) {
-                        m_share_pop.dismiss();
-                        m_share_pop = null;
-                        return true;
-                    }
+        view.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                if (m_share_pop != null) {
+                    m_share_pop.dismiss();
+                    m_share_pop = null;
+                    return true;
                 }
-                return false;
             }
+            return false;
         });
     }
 
@@ -91,10 +83,10 @@ public class PerfectPopWindow implements View.OnClickListener {
     public void onClick(View view) {
 
         if (view.getId() == R.id.rl_no1) {
-            SelectPhotoActivity.start(m_activity, mCls, SelectPhotoActivity.CAMERA, mItem);
+            SelectPhotoActivity.start(m_activity, mCls, SelectPhotoActivity.CAMERA);
         }
         if (view.getId() == R.id.rl_no2) {
-            SelectPhotoActivity.start(m_activity, mCls, SelectPhotoActivity.PHOTO, mItem);
+            SelectPhotoActivity.start(m_activity, mCls, SelectPhotoActivity.PHOTO);
         }
         if (m_share_pop != null) {
             m_share_pop.dismiss();

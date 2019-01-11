@@ -5,9 +5,9 @@ package com.baselib.baserx;
  * 服务器请求异常
  */
 
-public class ServerException  extends Exception{
+public class ServerException extends Exception {
 
-    public ServerException(String msg){
+    public ServerException(String msg) {
         super(msg);
     }
 

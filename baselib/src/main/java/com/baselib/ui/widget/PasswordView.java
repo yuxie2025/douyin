@@ -1,5 +1,6 @@
 package com.baselib.ui.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -15,7 +16,7 @@ import com.baselib.R;
  * Created by luo on 2018/3/16.
  * 支付密码输入6位
  */
-
+@SuppressWarnings("unused")
 public class PasswordView extends View {
 
     private int passwordCount;
@@ -40,13 +41,13 @@ public class PasswordView extends View {
 
     public PasswordView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.inputBox);
+        @SuppressLint("CustomViewStyleable") TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.InputBox);
         //支持某些属性设置,比如密码位数,边框颜色、宽度,"●"的颜色、大小
-        passwordCount = ta.getInteger(R.styleable.inputBox_passwordCount, 6);
-        strokeColor = ta.getColor(R.styleable.inputBox_stokeColor, Color.GRAY);
-        symbolColor = ta.getColor(R.styleable.inputBox_symbolColor, Color.BLACK);
-        mRadius = ta.getDimension(R.styleable.inputBox_symbolRadius, 12);
-        inputBoxStroke = ta.getDimension(R.styleable.inputBox_inputBoxStroke, 1f);
+        passwordCount = ta.getInteger(R.styleable.InputBox_passwordCount, 6);
+        strokeColor = ta.getColor(R.styleable.InputBox_stokeColor, Color.GRAY);
+        symbolColor = ta.getColor(R.styleable.InputBox_symbolColor, Color.BLACK);
+        mRadius = ta.getDimension(R.styleable.InputBox_symbolRadius, 12);
+        inputBoxStroke = ta.getDimension(R.styleable.InputBox_inputBoxStroke, 1f);
         //设置输入框圆角边框
         GradientDrawable gd = new GradientDrawable();
         gd.setColor(Color.WHITE);

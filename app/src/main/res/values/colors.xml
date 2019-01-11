@@ -1,83 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="windowBackground">#f7f7f7</color>
+    <color name="colorPrimary">#3b9dff</color>
+    <color name="colorPrimaryDark">#3b9dff</color>
+    <color name="colorAccent">#3b9dff</color>
 
-    <color name="featureTitleColor">#939597</color>
-    <color name="actionBarColor">#009CDE</color>
-    <color name="actionBarColorDark">#0081B7</color>
-    <color name="nordicBackground">#FFF5F5F5</color>
-    <color name="backgroundColor">#E6E7E8</color>
-    <color name="orange">#DC582A</color>
-    <color name="dark_orange">#9E3F1E</color>
-    <color name="light_orange">#EFB5A0</color>
-    <color name="headerBackgroundColor">#009ada</color>
-    <color name="headerBackgroundColorDark">#0081B7</color>
-    <color name="headerTextColor">#FFFFFF</color>
-    <color name="actionBarMenuTextColor">#FFFFFF</color>
+    <color name="windowBackground">#ffffff</color>
 
-    <color name="darkGray">#AAABAF</color>
+    <color name="main_color">#3b9dff</color>
 
+    <color name="textColorPrimary">#222222</color>
 
-    <color name="white">#ffffff</color>
-    <color name="line">#D2D2D2</color>
+    <!--title字体颜色-->
+    <color name="title_color">#ffffff</color>
+    <!--navigation_bar背景-->
+    <color name="navigation_bar_bg">#3b9dff</color>
+    <!--状态栏颜色-->
+    <color name="status_bar_color">#3b9dff</color>
 
-    <color name="main">#26AAFD</color>
-    <color name="main_bg0">#f0f0f0</color>
-    <color name="main_bg1">#f8f8f8</color>
-    <color name="main_bg3">#FEB838</color>
-    <color name="main_bg4">#F6F5F5</color>
-    <color name="main_bg5">#E6E6E6</color>
-
-    <color name="assist_red">#ff6d6d</color>
-    <color name="assist_blue">#64a4f4</color>
-    <color name="assist_blue_down">#3489ff</color>
-    <color name="assist_green">#6ae068</color>
-    <color name="assist_yellow">#fcce0b</color>
-
-    <color name="gray0">#464646</color>
-    <color name="gray1">#7e7e7e</color>
-    <color name="gray2">#969696</color>
-    <color name="gray3">#c8969696</color>
-    <color name="gray4">#F5F5F5</color>
-    <color name="gray5">#EBEBEB</color>
-    <color name="gray6">#FBFBFB</color>
-    <color name="gray7">#999999</color>
-    <color name="gray8">#D9D9D9</color>
-    <color name="gray9">#DBDFE0</color>
-
-    <color name="red0">#ff0000</color>
-    <color name="red1">#D84E43</color>
-    <color name="red2">#F08B88</color>
-    <color name="red3">#FFFAF5</color>
-    <color name="red4">#823026</color>
-    <color name="red5">#FA6F5F</color>
-    <color name="red6">#D54A47</color>
-    <color name="red7">#E64340</color>
-    <color name="red8">#FF3E3E</color>
-
-    <color name="green0">#45C01A</color>
-    <color name="green1">#45C01A</color>
-    <color name="green2">#A3DEA3</color>
-    <color name="green3">#1AAD19</color>
-
-    <color name="blue0">#576B95</color>
-
-    <color name="black0">#000000</color>
-    <color name="black1">#99000000</color>
-
-    <color name="yellow0">#FFC51B</color>
-    <color name="yellow1">#E5A134</color>
+    <color name="bg_color_gray">#eeeeee</color>
 
 
-    <!--遮盖层颜色-->
-    <color name="mask">#32000000</color>
-
-    <!--快速索引bar颜色-->
-    <color name="side_bar">#919091</color>
-    <color name="side_bar_pressed">#BFBFBF</color>
-
+    <color name="text_color_green">#00ff00</color>
+    <color name="text_color_red">#ff0000</color>
 
 </resources>

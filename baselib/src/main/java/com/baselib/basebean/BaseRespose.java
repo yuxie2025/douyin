@@ -6,15 +6,8 @@ import java.io.Serializable;
  * 作者: llk on 2017/9/8.
  * 封装服务器返回数据 单个对象
  */
-
+@SuppressWarnings("unused")
 public class BaseRespose<T> implements Serializable {
-    /**
-     * status : success
-     * error_code : 0
-     * message : 操作成功
-     * data : {"user_name":"cs","nick_name":"","email":"","phone_mob":"13672511510","auth":"2"}
-     */
-
     /**
      * 返回状态码
      */
@@ -72,13 +65,11 @@ public class BaseRespose<T> implements Serializable {
 
     @Override
     public String toString() {
-        return "BaseListRespose{" +
+        return "BaseRespose{" +
                 "error_code='" + error_code + '\'' +
                 ", message='" + message + '\'' +
                 ", status='" + status + '\'' +
                 ", data=" + data +
                 '}';
     }
-
-
 }

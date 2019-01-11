@@ -76,7 +76,7 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
      * @param dividerColor  分割线颜色
      */
     public DividerDecoration(Context context, int orientation,
-                                 int dividerHeight, int dividerColor) {
+                             int dividerHeight, int dividerColor) {
         this.setOrientation(orientation);
         mDividerHeight = dividerHeight;
         Log.e("mDividerHeight", mDividerHeight + "===================");
@@ -90,7 +90,7 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
     /**
      * 设置方向
      *
-     * @param orientation
+     * @param orientation 方向
      */
     public void setOrientation(int orientation) {
         if (orientation < 0 || orientation > 2)
@@ -105,7 +105,7 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
      * @param outRect outRect.set(0, 0, 0, 0);的四个参数理解成margin就好了
      * @param view    视图
      * @param parent  父级view
-     * @param state
+     * @param state   状态
      */
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -146,10 +146,6 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
 
     /**
      * 绘制分割线
-     *
-     * @param c
-     * @param parent
-     * @param state
      */
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
@@ -197,9 +193,6 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
 
     /**
      * 绘制纵向 item 分割线
-     *
-     * @param canvas
-     * @param parent
      */
     private void drawVertical(Canvas canvas, RecyclerView parent) {
         final int top = parent.getPaddingTop();
@@ -223,9 +216,6 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
 
     /**
      * 获取列数
-     *
-     * @param parent
-     * @return
      */
     private int getSpanCount(RecyclerView parent) {
         int spanCount = -1;
@@ -273,6 +263,7 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
         return false;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     private boolean isLastRaw(RecyclerView parent, int pos, int spanCount,
                               int childCount) {
         int orientation;
@@ -301,6 +292,7 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
                     return true;
             } else {// StaggeredGridLayoutManager 横向滚动
                 // 如果是最后一行，则不需要绘制底部
+                //noinspection RedundantIfStatement
                 if ((pos + 1) % spanCount == 0)
                     return true;
             }

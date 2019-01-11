@@ -1,7 +1,7 @@
 package com.baselib.recycleview.wrapper;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -73,17 +73,14 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        WrapperUtils.onAttachedToRecyclerView(mInnerAdapter, recyclerView, new WrapperUtils.SpanSizeCallback() {
-            @Override
-            public int getSpanSize(GridLayoutManager layoutManager, GridLayoutManager.SpanSizeLookup oldLookup, int position) {
-                if (isShowLoadMore(position)) {
-                    return layoutManager.getSpanCount();
-                }
-                if (oldLookup != null) {
-                    return oldLookup.getSpanSize(position);
-                }
-                return 1;
+        WrapperUtils.onAttachedToRecyclerView(mInnerAdapter, recyclerView, (layoutManager, oldLookup, position) -> {
+            if (isShowLoadMore(position)) {
+                return layoutManager.getSpanCount();
             }
+            if (oldLookup != null) {
+                return oldLookup.getSpanSize(position);
+            }
+            return 1;
         });
     }
 
@@ -135,18 +132,19 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     /**
      * 设置默认加载更多视图
      *
-     * @param context
-     * @return
+     * @param context 上下文
+     * @return LoadMoreWrapper
      */
+    @SuppressLint("InflateParams")
     public LoadMoreWrapper setLoadMoreDefaultView(Context context) {
 
-        View loadMoreView = LayoutInflater.from(context).inflate(R.layout.default_loading, null, false);
+        @SuppressLint("InflateParams") View loadMoreView = LayoutInflater.from(context).inflate(R.layout.default_loading, null, false);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 120);
         lp.setMargins(0, 10, 0, 10);
         loadMoreView.setLayoutParams(lp);
 
-        tvFooter = (TextView) loadMoreView.findViewById(R.id.tv_loading_text);
-        pbLoading = (ProgressBar) loadMoreView.findViewById(R.id.pb_loading);
+        tvFooter = loadMoreView.findViewById(R.id.tv_loading_text);
+        pbLoading = loadMoreView.findViewById(R.id.pb_loading);
 
         mLoadMoreView = loadMoreView;
         mLoadMoreView.setVisibility(View.GONE);

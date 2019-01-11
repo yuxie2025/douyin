@@ -34,9 +34,6 @@
         <!-- 竖屏：setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); -->
         <!-- android:configChanges="orientation|keyboardHidden|screenSize">切换横竖屏,不从新执行生命周期,执行onConfigurationChanged 方法 -->
         <activity android:name=".activity.MainActivity">
-
-            <!-- android:configChanges="orientation|keyboardHidden|screenSize" -->
-            <!-- android:screenOrientation="portrait"> -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -114,7 +111,8 @@
         </activity>
         <activity android:name=".net.NetActivity" />
         <activity android:name=".activity.TestActivity" />
-        <activity android:name=".dq.DqActivity"></activity>
+        <activity android:name=".dq.DqActivity" />
+        <activity android:name=".novel.SearchNovelActivity"/>
     </application>
 
 </manifest>

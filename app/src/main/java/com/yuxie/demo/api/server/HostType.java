@@ -22,10 +22,8 @@ public class HostType {
      */
     public final static String ITEM = "";
     public final static String HOST_TYPE_WEIXIN = "https://api.weixin.qq.com/sns/";
-    public final static String HOST_TYPE_COMMON = "http://47.96.168.44/";//正式环境
+    public final static String HOST_TYPE_COMMON = "http://yuxie.vipgz1.idcfengye.com/";//正式环境
 
-//    public final static String HOST_TYPE_COMMON = "http://192.168.0.33:8080/";//非式环境
-//    public final static String HOST_TYPE_COMMON = "http://192.168.0.19:8080/";//非式环境
 
 //      public final static String HOST_TYPE_COMMON = "http://192.168.0.33:8080";//非正式环境
 

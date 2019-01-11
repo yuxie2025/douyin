@@ -1,11 +1,13 @@
 package com.baselib.commonutils;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-/**
- * Created by llk on 2017/9/6.
- * 类转换初始化
- */
 
+/**
+ * desc:类转换初始化
+ * Created by Lankun on 2018/10/29/029
+ */
+@SuppressWarnings("unused")
 public class TUtil {
     public static <T> T getT(Object o, int i) {
         Type type = o.getClass().getGenericSuperclass();

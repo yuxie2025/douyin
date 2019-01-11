@@ -2,15 +2,17 @@ package com.yuxie.demo.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.os.Environment;
+import android.util.Base64;
 
-import com.audio.ActivityWakeUp;
 import com.baselib.basebean.BaseRespose;
 import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
-import com.baselib.ui.WebViewActivity;
+import com.blankj.utilcode.util.FileIOUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.yuxie.demo.api.server.HostType;
 import com.yuxie.demo.api.server.ServerApi;
+
 
 /**
  * @author llk
@@ -108,11 +110,44 @@ public class UnitTest {
 
 //        WebViewActivity.start(context,"百度一下","http://www.baidu.com");
 
-        Intent imageIntent = new Intent(Intent.ACTION_SEND);
-        imageIntent.setType("text/plain");
-        imageIntent.putExtra(Intent.EXTRA_SUBJECT, "分享");
-        imageIntent.putExtra(Intent.EXTRA_TEXT, "赶紧做项目了");
-        context.startActivity(Intent.createChooser(imageIntent, "分享"));
+//        Intent imageIntent = new Intent(Intent.ACTION_SEND);
+//        imageIntent.setType("text/plain");
+//        imageIntent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+//        imageIntent.putExtra(Intent.EXTRA_TEXT, "赶紧做项目了");
+//        context.startActivity(Intent.createChooser(imageIntent, "分享"));
+
+//        ServerApi.getInstance().getInfo()
+//                .compose(RxSchedulers.io_main())
+//                .subscribe(new RxSubscriber<BaseRespose>(context) {
+//                    @Override
+//                    protected void _onNext(BaseRespose baseRespose) {
+//                        LogUtils.logd("baseRespose:" + baseRespose);
+//                    }
+//
+//                    @Override
+//                    protected void _onError(String message) {
+//                        LogUtils.logd("message:" + message);
+//                    }
+//                });
+
+
+        String picPath = Environment.getExternalStorageDirectory() + "/1.png";
+        String imgData = Base64.encodeToString(FileIOUtils.readFile2BytesByStream(picPath), Base64.DEFAULT).toString();
+
+        ServerApi.getInstance().sendPic(imgData)
+                .compose(RxSchedulers.io_main())
+                .subscribe(new RxSubscriber<BaseRespose>(context) {
+                    @Override
+                    protected void _onNext(BaseRespose baseRespose) {
+                        LogUtils.d("baseRespose:" + baseRespose);
+                    }
+
+                    @Override
+                    protected void _onError(String message) {
+                        LogUtils.d("message:" + message);
+                    }
+                });
+
 
     }
 

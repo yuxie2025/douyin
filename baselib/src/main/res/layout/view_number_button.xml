@@ -1,10 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_number_button_bg"
     android:orientation="horizontal"
     android:showDividers="middle"
-    android:weightSum="4">
+    android:weightSum="4"
+    tools:ignore="HardcodedText">
 
     <TextView
         android:id="@+id/button_sub"
@@ -58,5 +60,6 @@
         android:minWidth="25dp"
         android:text="+"
         android:textColor="#000000"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        tools:ignore="HardcodedText" />
 </LinearLayout>

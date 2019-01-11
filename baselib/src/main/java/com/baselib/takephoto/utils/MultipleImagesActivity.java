@@ -11,6 +11,11 @@ import com.jph.takephoto.model.TResult;
 
 import java.io.File;
 
+/**
+ * desc: 多图片选择
+ * Created by Lankun on 2018/10/29/029
+ */
+@SuppressWarnings("unused")
 public class MultipleImagesActivity extends TakePhotoActivity {
 
     /**

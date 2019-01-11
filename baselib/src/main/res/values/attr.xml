@@ -9,7 +9,7 @@
     </declare-styleable>
 
     <!--PasswordView-->
-    <declare-styleable name="inputBox">
+    <declare-styleable name="InputBox">
         <attr name="passwordCount" format="integer" />
         <attr name="stokeColor" format="color" />
         <attr name="symbolColor" format="color" />
@@ -52,6 +52,13 @@
         <attr name="apv_stepCount" format="integer" />
         <!--步骤提示 -->
         <attr name="apv_text" format="string|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="Loading">
+        <!--大小 -->
+        <attr name="loading_view_size" format="integer" />
+        <!--颜色-->
+        <attr name="loading_view_color" format="color" />
     </declare-styleable>
 
 </resources>

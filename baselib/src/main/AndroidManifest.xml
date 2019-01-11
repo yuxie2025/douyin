@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.baselib">
-    //地图SDK（包含其搜索功能）需要的基础权限
 
+    <!-- 地图SDK（包含其搜索功能）需要的基础权限 -->
     <!-- 允许程序打开网络套接字 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -24,13 +24,18 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-     
+
+    <!-- android:resizeableActivity="false"  禁止分屏 -->
+    <!-- android:hardwareAccelerated="true"  硬加速 -->
+    <!-- android:supportsRtl="true"  是否支持从右到左(原来RTL就是right-to-left 的缩写...)的布局 -->
+    <!-- suppress CheckTagEmptyBody -->
     <application
         android:allowBackup="true"
-        android:hardwareAccelerated="true"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:supportsRtl="true">
+        android:resizeableActivity="false"
+        android:supportsRtl="true"
+        tools:ignore="UnusedAttribute">
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
 
         <provider
@@ -38,26 +43,36 @@
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-            <!--第三方库使用了FileProvider,1.在manifest节点中加入命名空间xmlns:tools="http://schemas.android.com/tools"-->
-            <!--2.需要增加,tools:replace="android:resource"-->
-            <!--tools:replace="android:authorities"-->
+
+            <!-- 第三方库使用了FileProvider,1.在manifest节点中加入命名空间xmlns:tools="http://schemas.android.com/tools" -->
+            <!-- 2.需要增加,tools:replace="android:resource" -->
+            <!-- tools:replace="android:authorities" -->
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <!-- 编译版本24,Android 7.0以上Google默认支持了分屏模式 -->
+        <!-- android:resizeableActivity默认属性为true(分屏属性) -->
+        <!-- 全面屏适配:默认不需要加以下代码适配,当resizeableActivity为false是才需要 -->
         <meta-data
-            android:name="design_width"
-            android:value="750" />
-        <meta-data
-            android:name="design_height"
-            android:value="1334" />
+            android:name="android.max_aspect"
+            android:value="2.1" />
+        <!-- 选择图片 -->
+        <activity
+            android:name=".takephoto.utils.SelectPhotoActivity"
+            android:theme="@style/AlertNoActionBar" />
 
-        <!--<activity-->
-            <!--android:name=".takephoto.utils.SelectPhotoActivity"-->
-            <!--android:theme="@style/AlertNoActionBar" />-->
-        <activity android:name=".ui.WebViewActivity" />
-        <activity android:name=".takephoto.utils.MultipleImagesActivity"></activity>
+        <!-- 选择图标多张 -->
+        <activity android:name=".takephoto.utils.MultipleImagesActivity" />
+
+        <!-- 在AndroidManifest.xml中增加内核首次加载时优化Service声明； -->
+        <!-- 该Service仅在TBS内核首次Dex加载时触发并执行dex2oat任务，任务完成后自动结束。 -->
+        <service
+            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+            android:label="dexopt"
+            android:process=":dexopt" />
+
     </application>
 
 </manifest>

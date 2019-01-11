@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class MultiItemTypeAdapter<T> extends BaseAdapter {
     protected Context mContext;
     protected List<T> mDatas;
@@ -50,16 +51,14 @@ public class MultiItemTypeAdapter<T> extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ItemViewDelegate itemViewDelegate = mItemViewDelegateManager.getItemViewDelegate(mDatas.get(position), position);
         int layoutId = itemViewDelegate.getItemViewLayoutId();
-        ViewHolder viewHolder = null ;
-        if (convertView == null)
-        {
+        ViewHolder viewHolder;
+        if (convertView == null) {
             View itemView = LayoutInflater.from(mContext).inflate(layoutId, parent,
                     false);
             viewHolder = new ViewHolder(mContext, itemView, parent, position);
             viewHolder.mLayoutId = layoutId;
-            onViewHolderCreated(viewHolder,viewHolder.getConvertView());
-        } else
-        {
+            onViewHolderCreated(viewHolder, viewHolder.getConvertView());
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
             viewHolder.mPosition = position;
         }
@@ -73,8 +72,8 @@ public class MultiItemTypeAdapter<T> extends BaseAdapter {
         mItemViewDelegateManager.convert(viewHolder, item, position);
     }
 
-    public void onViewHolderCreated(ViewHolder holder , View itemView )
-    {}
+    public void onViewHolderCreated(ViewHolder holder, View itemView) {
+    }
 
     @Override
     public int getCount() {

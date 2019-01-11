@@ -2,7 +2,6 @@ package com.baselib.listener;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 
 /**
  * Created by luo on 2018/3/29.

@@ -9,8 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.baselib.base.BaseActivity;
-import com.baselib.commonutils.LogUtils;
-import com.baselib.uitls.CRequest;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yuxie.demo.R;
@@ -18,6 +17,7 @@ import com.yuxie.demo.adapter.SmsApiAdapter;
 import com.yuxie.demo.api.ServerApiService;
 import com.yuxie.demo.entity.SmsApi;
 import com.yuxie.demo.greendao.SmsApiDao;
+import com.yuxie.demo.utils.CRequest;
 import com.yuxie.demo.utils.db.EntityManager;
 
 import java.net.MalformedURLException;
@@ -202,18 +202,18 @@ public class SmsApiActivity extends BaseActivity {
 
                         @Override
                         public void onError(Throwable e) {
-                            LogUtils.logd("string--onError()---" + e.toString());
+                            LogUtils.d("string--onError()---" + e.toString());
                         }
 
                         @Override
                         public void onNext(Result<String> stringResult) {
                             String body = stringResult.response().body();
                             if (!TextUtils.isEmpty(body) && body.contains(smsApi.getResultOk())) {
-                                LogUtils.logd("发送成功!");
+                                LogUtils.d("发送成功!");
                                 ++successTotol;
                                 ToastUtils.showShort("成功:" + successTotol);
                             } else {
-                                LogUtils.logd("发送失败!");
+                                LogUtils.d("发送失败!");
                             }
                         }
                     });
@@ -233,7 +233,7 @@ public class SmsApiActivity extends BaseActivity {
 
                         @Override
                         public void onError(Throwable e) {
-                            LogUtils.logd("string--onError()---" + e.toString());
+                            LogUtils.d("string--onError()---" + e.toString());
                         }
 
                         @Override
@@ -242,11 +242,11 @@ public class SmsApiActivity extends BaseActivity {
                             String body = stringResult.response().body();
 
                             if (!TextUtils.isEmpty(body) && body.contains(smsApi.getResultOk())) {
-                                LogUtils.logd("发送成功!");
+                                LogUtils.d("发送成功!");
                                 ++successTotol;
                                 ToastUtils.showShort("成功:" + successTotol);
                             } else {
-                                LogUtils.logd("发送失败!");
+                                LogUtils.d("发送失败!");
                             }
                         }
                     });

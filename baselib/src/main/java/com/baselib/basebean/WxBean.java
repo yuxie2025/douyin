@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by luo on 2017/12/20.
  */
 
+@SuppressWarnings("ALL")
 public class WxBean {
 
 

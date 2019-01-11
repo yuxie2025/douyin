@@ -1,7 +1,6 @@
 package com.baselib.recycleview;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -34,9 +33,6 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
 
     /**
      * 获取列数
-     *
-     * @param parent
-     * @return
      */
     private int getSpanCount(RecyclerView parent) {
         // 列数
@@ -54,9 +50,6 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
 
     /**
      * 行与行直接画间隔线
-     *
-     * @param c
-     * @param parent
      */
     public void drawVertical(Canvas c, RecyclerView parent) {
         final int childCount = parent.getChildCount();

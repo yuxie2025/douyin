@@ -1,29 +1,30 @@
 package com.baselib.baseapp;
+
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 
 import java.util.Stack;
+
 /**
- *
  * Created by llk on 2017/9/6.
  * activity管理
  */
 
+@SuppressWarnings("unused")
 public class AppManager {
+
     private static Stack<Activity> activityStack;
+
     private volatile static AppManager instance;
 
-    private AppManager() {
-
-    }
     /**
      * 单一实例
      */
     public static AppManager getAppManager() {
         if (instance == null) {
-            synchronized (AppManager.class){
-                if(instance==null){
+            synchronized (AppManager.class) {
+                if (instance == null) {
                     instance = new AppManager();
                     instance.activityStack = new Stack();
                 }
@@ -37,7 +38,7 @@ public class AppManager {
      */
     public void addActivity(Activity activity) {
         if (activityStack == null) {
-            activityStack = new Stack<Activity>();
+            activityStack = new Stack<>();
         }
         activityStack.add(activity);
     }
@@ -47,10 +48,8 @@ public class AppManager {
      */
     public Activity currentActivity() {
         try {
-            Activity activity = activityStack.lastElement();
-            return activity;
+            return activityStack.lastElement();
         } catch (Exception e) {
-//            e.printStackTrace();
             return null;
         }
     }
@@ -63,8 +62,7 @@ public class AppManager {
         if (index < 0) {
             return null;
         }
-        Activity activity = activityStack.get(index);
-        return activity;
+        return activityStack.get(index);
     }
 
     /**
@@ -82,7 +80,6 @@ public class AppManager {
         if (activity != null) {
             activityStack.remove(activity);
             activity.finish();
-            activity = null;
         }
     }
 
@@ -90,10 +87,7 @@ public class AppManager {
      * 移除指定的Activity
      */
     public void removeActivity(Activity activity) {
-        if (activity != null) {
-            activityStack.remove(activity);
-            activity = null;
-        }
+        activityStack.remove(activity);
     }
 
     /**
@@ -112,7 +106,7 @@ public class AppManager {
 
     }
 
-    public boolean isCheckActivity(Class<?> cls){
+    public boolean isCheckActivity(Class<?> cls) {
         for (Activity activity : activityStack) {
             if (activity.getClass().equals(cls)) {
                 return true;
@@ -124,7 +118,7 @@ public class AppManager {
     /**
      * 结束所有Activity
      */
-    public void finishAllActivity() {
+    private void finishAllActivity() {
         for (int i = 0, size = activityStack.size(); i < size; i++) {
             if (null != activityStack.get(i)) {
                 activityStack.get(i).finish();
@@ -136,7 +130,7 @@ public class AppManager {
     /**
      * 返回到指定的activity
      *
-     * @param cls
+     * @param cls activity
      */
     public void returnToActivity(Class<?> cls) {
         while (activityStack.size() != 0)
@@ -150,11 +144,12 @@ public class AppManager {
 
     /**
      * 是否已经打开指定的activity
-     * @param cls
-     * @return
+     *
+     * @param cls activity
+     * @return 是否打开
      */
     public boolean isOpenActivity(Class<?> cls) {
-        if (activityStack!=null){
+        if (activityStack != null) {
             for (int i = 0, size = activityStack.size(); i < size; i++) {
                 if (cls == activityStack.peek().getClass()) {
                     return true;
@@ -176,7 +171,7 @@ public class AppManager {
             ActivityManager activityMgr = (ActivityManager) context
                     .getSystemService(Context.ACTIVITY_SERVICE);
             activityMgr.restartPackage(context.getPackageName());
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         } finally {
             // 注意，如果您有后台程序运行，请不要支持此句子

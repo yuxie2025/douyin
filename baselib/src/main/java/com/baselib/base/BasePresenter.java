@@ -7,7 +7,7 @@ import com.baselib.baserx.RxManager;
 /**
  * Created by llk on 2017/9/5.
  */
-
+@SuppressWarnings("unused")
 public abstract class BasePresenter<T, E> {
     private Context mContext;
     private E mModel;

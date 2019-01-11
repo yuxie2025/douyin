@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by admin on 2017/3/21.
  */
-
+@SuppressWarnings("unused")
 public class UpDownViewSwitcher extends ViewSwitcher {
 
     private boolean isUpToDown;
@@ -27,6 +27,7 @@ public class UpDownViewSwitcher extends ViewSwitcher {
     private int resourse;
     private AutoPlayTask mAutoPlayTask;
     private SwitchNextViewListener listener;
+
     public UpDownViewSwitcher(Context context) {
         this(context, null);
     }
@@ -43,8 +44,8 @@ public class UpDownViewSwitcher extends ViewSwitcher {
             isUpToDown = typedArray.getBoolean(R.styleable.UpDownViewSwitcher_up_to_down, true);
             animator_duration = typedArray.getInteger(R.styleable.UpDownViewSwitcher_animator_duration, 300);
             switch_duration = typedArray.getInteger(R.styleable.UpDownViewSwitcher_switch_duration, 3000);
-            animator_translate_distance = typedArray.getDimension(R.styleable.UpDownViewSwitcher_animator_translate_distance,40);
-        }else{
+            animator_translate_distance = typedArray.getDimension(R.styleable.UpDownViewSwitcher_animator_translate_distance, 40);
+        } else {
             isUpToDown = true;
             animator_duration = 400;
             switch_duration = 3000;
@@ -52,8 +53,8 @@ public class UpDownViewSwitcher extends ViewSwitcher {
         }
     }
 
-    public void setContentLayout(@LayoutRes int resourse){
-        if (this.resourse == 0){
+    public void setContentLayout(@LayoutRes int resourse) {
+        if (this.resourse == 0) {
             this.resourse = resourse;
             setFactory();
         }
@@ -64,14 +65,9 @@ public class UpDownViewSwitcher extends ViewSwitcher {
         initAnimation();
     }
 
-    public void setFactory(){
-        if(resourse != 0){
-            super.setFactory(new ViewFactory() {
-                @Override
-                public View makeView() {
-                    return View.inflate(getContext(),resourse,null);
-                }
-            });
+    public void setFactory() {
+        if (resourse != 0) {
+            super.setFactory(() -> View.inflate(getContext(), resourse, null));
             switchToNextView();
             startAutoPlay();
         }
@@ -79,7 +75,7 @@ public class UpDownViewSwitcher extends ViewSwitcher {
 
 
     private void initAnimation() {
-        if(isUpToDown){
+        if (isUpToDown) {
             //设置切入动画
             TranslateAnimation animationTop = new TranslateAnimation(0, 0, -animator_translate_distance, 0);
             animationTop.setDuration(animator_duration);
@@ -88,7 +84,7 @@ public class UpDownViewSwitcher extends ViewSwitcher {
             TranslateAnimation animationBottom = new TranslateAnimation(0, 0, 0, animator_translate_distance);
             animationBottom.setDuration(animator_duration);
             setOutAnimation(animationBottom);
-        }else{
+        } else {
             //设置切入动画
             TranslateAnimation animationTop = new TranslateAnimation(0, 0, animator_translate_distance, 0);
             animationTop.setDuration(animator_duration);
@@ -101,16 +97,16 @@ public class UpDownViewSwitcher extends ViewSwitcher {
 
     }
 
-    public void switchToNextView(){
-        if(listener != null){
-            listener.switchTONextView(this.getNextView(),index);
+    public void switchToNextView() {
+        if (listener != null) {
+            listener.switchTONextView(this.getNextView(), index);
             this.showNext();
             index++;
         }
     }
 
     public void startAutoPlay() {
-        postDelayed(mAutoPlayTask,switch_duration);
+        postDelayed(mAutoPlayTask, switch_duration);
 
     }
 
@@ -142,9 +138,8 @@ public class UpDownViewSwitcher extends ViewSwitcher {
         void switchTONextView(View nextView, int index);
     }
 
-    public void setSwitcheNextViewListener(SwitchNextViewListener listener){
+    public void setSwitcheNextViewListener(SwitchNextViewListener listener) {
         this.listener = listener;
     }
-
 
 }

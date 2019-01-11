@@ -8,12 +8,13 @@ import android.view.View.OnClickListener;
 /**
  * 防双击监听
  */
+@SuppressWarnings("unused")
 public abstract class NoDoubleClickListener implements OnClickListener {
 
     /**
      * 最近间隔时间
      */
-    public static final int MIN_CLICK_DELAY_TIME = 1000;
+    private static final int MIN_CLICK_DELAY_TIME = 1000;
     /**
      * 上次点击时间
      */
@@ -29,5 +30,5 @@ public abstract class NoDoubleClickListener implements OnClickListener {
         }
     }
 
-    public abstract void onNoDoubleClick(View v);
+    abstract void onNoDoubleClick(View v);
 }

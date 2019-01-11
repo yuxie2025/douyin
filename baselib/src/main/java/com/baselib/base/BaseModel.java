@@ -1,8 +1,8 @@
 package com.baselib.base;
 
 /**
- * Created by llk on 2017/9/5.
+ * desc:model接口
+ * Created by Lankun on 2018/10/29/029
  */
-
 public interface BaseModel {
 }

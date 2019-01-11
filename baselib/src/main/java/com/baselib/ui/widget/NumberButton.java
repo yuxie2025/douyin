@@ -17,11 +17,10 @@ import com.baselib.R;
 
 
 /**
- * Description
- * Roken
- * Date 2017/5/11 0011 上午 11:13.
+ * 加减购买控件
+ * Created by Lankun on 2018/10/29/029
  */
-
+@SuppressWarnings("unused")
 public class NumberButton extends LinearLayout implements View.OnClickListener, TextWatcher {
     //库存
     private int mInventory = Integer.MAX_VALUE;
@@ -42,20 +41,16 @@ public class NumberButton extends LinearLayout implements View.OnClickListener, 
         init(context, attrs);
 
     }
-//
-//    public NumberButton(Context context, AttributeSet attrs, int defStyleAttr) {
-//        super(context, attrs, defStyleAttr);
-//    }
 
     private void init(Context context, AttributeSet attrs) {
         LayoutInflater.from(context).inflate(R.layout.view_number_button, this);
 
-        TextView addButton = (TextView) findViewById(R.id.button_add);
+        TextView addButton = findViewById(R.id.button_add);
         addButton.setOnClickListener(this);
-        TextView subButton = (TextView) findViewById(R.id.button_sub);
+        TextView subButton = findViewById(R.id.button_sub);
         subButton.setOnClickListener(this);
 
-        mCount = ((EditText) findViewById(R.id.text_count));
+        mCount = findViewById(R.id.text_count);
         mCount.addTextChangedListener(this);
         mCount.setOnClickListener(this);
 
@@ -90,18 +85,18 @@ public class NumberButton extends LinearLayout implements View.OnClickListener, 
     public int getNumber() {
         try {
             return Integer.parseInt(mCount.getText().toString());
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ignored) {
         }
         mCount.setText("1");
         return 1;
     }
 
-    public EditText setText(String s){
+    public EditText setText(String s) {
         mCount.setText(s);
         return mCount;
     }
 
-    public void setClickable(boolean bool){
+    public void setClickable(boolean bool) {
         mCount.setEnabled(bool);
     }
 
@@ -113,17 +108,21 @@ public class NumberButton extends LinearLayout implements View.OnClickListener, 
 
             if (count > 1) {
                 //正常减
-                mCount.setText("" + (count - 1));
-                if(changeListener != null){
-                    changeListener.onUpdateNum(count - 1);
+                count = count - 1;
+                String countStr = String.valueOf(count);
+                mCount.setText(countStr);
+                if (changeListener != null) {
+                    changeListener.onUpdateNum(count);
                 }
             }
         } else if (id == R.id.button_add) {
             if (count < Math.min(mBuyMax, mInventory)) {
                 //正常添加
-                mCount.setText("" + (count + 1));
-                if(changeListener != null){
-                    changeListener.onUpdateNum(count + 1);
+                count = count + 1;
+                String countStr = String.valueOf(count);
+                mCount.setText(countStr);
+                if (changeListener != null) {
+                    changeListener.onUpdateNum(count);
                 }
             } else if (mInventory < mBuyMax) {
                 //库存不足
@@ -162,7 +161,7 @@ public class NumberButton extends LinearLayout implements View.OnClickListener, 
         int limit = Math.min(mBuyMax, mInventory);
         if (count > limit) {
             //超过了数量
-            mCount.setText(limit + "");
+            mCount.setText(String.valueOf(limit));
             if (mInventory < mBuyMax) {
                 //库存不足
                 warningForInventory();
@@ -203,7 +202,8 @@ public class NumberButton extends LinearLayout implements View.OnClickListener, 
 
     public NumberButton setCurrentNumber(int currentNumber) {
         if (currentNumber < 1) mCount.setText("1");
-        mCount.setText(""+Math.min(Math.min(mBuyMax, mInventory), currentNumber));
+        int number = Math.min(Math.min(mBuyMax, mInventory), currentNumber);
+        mCount.setText(String.valueOf(number));
         return this;
     }
 

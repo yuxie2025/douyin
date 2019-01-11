@@ -9,15 +9,14 @@ import java.math.BigDecimal;
 /**
  * Created by luo on 2018/3/29.
  */
-
+@SuppressWarnings("unused")
 public class DataCleanManager {
 
     /**
      * 获取缓存大小
      *
-     * @param context
-     * @return
-     * @throws Exception
+     * @param context 上下文
+     * @return 缓存大小
      */
     public static String getTotalCacheSize(Context context) {
         try {
@@ -35,7 +34,7 @@ public class DataCleanManager {
     /**
      * 清除缓存
      *
-     * @param context
+     * @param context 上下文
      */
     public static void clearAllCache(Context context) {
         deleteDir(context.getCacheDir());
@@ -45,13 +44,16 @@ public class DataCleanManager {
     }
 
     private static boolean deleteDir(File dir) {
-        if (dir != null && dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
+
+        if (dir == null || !dir.isDirectory()) {
+            return false;
+        }
+
+        String[] children = dir.list();
+        for (int i = 0; i < children.length; i++) {
+            boolean success = deleteDir(new File(dir, children[i]));
+            if (!success) {
+                return false;
             }
         }
         return dir.delete();
@@ -81,8 +83,8 @@ public class DataCleanManager {
     /**
      * 格式化单位
      *
-     * @param size
-     * @return
+     * @param size 文件大小
+     * @return 对应单位大小
      */
     public static String getFormatSize(double size) {
         double kiloByte = size / 1024;

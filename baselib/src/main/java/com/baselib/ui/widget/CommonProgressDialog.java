@@ -14,13 +14,14 @@ import android.widget.TextView;
 
 import com.baselib.R;
 
+import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
 
 /**
  * 作者: llk on 2017/11/9.
  * 自定义进度条
  */
-
+@SuppressWarnings("unused")
 public class CommonProgressDialog extends AlertDialog {
     private ProgressBar mProgress;
     private TextView mProgressNumber;
@@ -37,55 +38,60 @@ public class CommonProgressDialog extends AlertDialog {
 
     public CommonProgressDialog(Context context) {
         super(context);
-        // TODO Auto-generated constructor stub
         initFormats();
+    }
+
+    public static class MyHandler extends Handler {
+
+        WeakReference<CommonProgressDialog> reference;
+
+        public MyHandler(CommonProgressDialog dialog) {
+            reference = new WeakReference<>(dialog);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            CommonProgressDialog dialog = reference.get();
+
+            if (dialog == null) return;
+
+            int progress = dialog.mProgress.getProgress();
+            int max = dialog.mProgress.getMax();
+            double dProgress = (double) progress / (double) (1024 * 1024);
+            double dMax = (double) max / (double) (1024 * 1024);
+            if (dialog.mProgressNumberFormat != null) {
+                String format = dialog.mProgressNumberFormat;
+                dialog.mProgressNumber.setText(String.format(format, dProgress,
+                        dMax));
+            } else {
+                dialog.mProgressNumber.setText("");
+            }
+            if (dialog.mProgressPercentFormat != null) {
+                double percent = (double) progress / (double) max;
+                SpannableString tmp = new SpannableString(
+                        dialog.mProgressPercentFormat.format(percent));
+                tmp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD),
+                        0, tmp.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                dialog.mProgressPercent.setText(tmp);
+            } else {
+                dialog.mProgressPercent.setText("");
+            }
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.common_progress_dialog);
-        mProgress = (ProgressBar) findViewById(R.id.progress);
-        mProgressNumber = (TextView) findViewById(R.id.progress_number);
-        mProgressPercent = (TextView) findViewById(R.id.progress_percent);
-        mProgressMessage = (TextView) findViewById(R.id.progress_message);
+        mProgress = findViewById(R.id.progress);
+        mProgressNumber = findViewById(R.id.progress_number);
+        mProgressPercent = findViewById(R.id.progress_percent);
+        mProgressMessage = findViewById(R.id.progress_message);
         // LayoutInflater inflater = LayoutInflater.from(getContext());
-        mViewUpdateHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                // TODO Auto-generated method stub
-                super.handleMessage(msg);
-                int progress = mProgress.getProgress();
-                int max = mProgress.getMax();
-                double dProgress = (double) progress / (double) (1024 * 1024);
-                double dMax = (double) max / (double) (1024 * 1024);
-                if (mProgressNumberFormat != null) {
-                    String format = mProgressNumberFormat;
-                    mProgressNumber.setText(String.format(format, dProgress,
-                            dMax));
-                } else {
-                    mProgressNumber.setText("");
-                }
-                if (mProgressPercentFormat != null) {
-                    double percent = (double) progress / (double) max;
-                    SpannableString tmp = new SpannableString(
-                            mProgressPercentFormat.format(percent));
-                    tmp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD),
-                            0, tmp.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    mProgressPercent.setText(tmp);
-                } else {
-                    mProgressPercent.setText("");
-                }
-            }
-        };
-        // View view = inflater.inflate(R.layout.common_progress_dialog, null);
-        // mProgress = (ProgressBar) view.findViewById(R.id.progress);
-        // mProgressNumber = (TextView) view.findViewById(R.id.progress_number);
-        // mProgressPercent = (TextView)
-        // view.findViewById(R.id.progress_percent);
-        // setView(view);
-        // mProgress.setMax(100);
+        mViewUpdateHandler = new MyHandler(this);
+
         onProgressChanged();
         if (mMessage != null) {
             setMessage(mMessage);
@@ -106,10 +112,6 @@ public class CommonProgressDialog extends AlertDialog {
 
     private void onProgressChanged() {
         mViewUpdateHandler.sendEmptyMessage(0);
-    }
-
-    public void setProgressStyle(int style) {
-        // mProgressStyle = style;
     }
 
     public int getMax() {
@@ -148,7 +150,6 @@ public class CommonProgressDialog extends AlertDialog {
 
     @Override
     public void setMessage(CharSequence message) {
-        // TODO Auto-generated method stub
         // super.setMessage(message);
         if (mProgressMessage != null) {
             mProgressMessage.setText(message);
@@ -159,16 +160,15 @@ public class CommonProgressDialog extends AlertDialog {
 
     @Override
     protected void onStart() {
-        // TODO Auto-generated method stub
         super.onStart();
         mHasStarted = true;
     }
 
     @Override
     protected void onStop() {
-        // TODO Auto-generated method stub
         super.onStop();
         mHasStarted = false;
     }
+
 
 }

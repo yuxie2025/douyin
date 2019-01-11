@@ -1,9 +1,11 @@
 package com.baselib.uitls;
 
+import java.util.Locale;
+
 /**
  * Created by luo on 2018/1/19.
  */
-
+@SuppressWarnings("unused")
 public class GPSUtil {
 
     public static double pi = 3.1415926535897932384626;
@@ -48,19 +50,21 @@ public class GPSUtil {
     }
 
     public static boolean outOfChina(double lat, double lon) {
-        if (lon < 72.004 || lon > 137.8347)
+        if (lon < 72.004 || lon > 137.8347) {
             return true;
-        if (lat < 0.8293 || lat > 55.8271)
+        }
+        if (lat < 0.8293 || lat > 55.8271) {
             return true;
+        }
         return false;
     }
 
     /**
      * 84 to 火星坐标系 (GCJ-02) World Geodetic System ==> Mars Geodetic System
      *
-     * @param lat
-     * @param lon
-     * @return
+     * @param lat 经度
+     * @param lon 纬度
+     * @return 火星坐标系
      */
     public static double[] gps84_To_Gcj02(double lat, double lon) {
         if (outOfChina(lat, lon)) {
@@ -91,9 +95,6 @@ public class GPSUtil {
 
     /**
      * 火星坐标系 (GCJ-02) 与百度坐标系 (BD-09) 的转换算法 将 GCJ-02 坐标转换成 BD-09 坐标
-     *
-     * @param lat
-     * @param lon
      */
     public static double[] gcj02_To_Bd09(double lat, double lon) {
         double x = lon, y = lat;
@@ -107,7 +108,7 @@ public class GPSUtil {
 
     /**
      * * 火星坐标系 (GCJ-02) 与百度坐标系 (BD-09) 的转换算法 * * 将 BD-09 坐标转换成GCJ-02 坐标 * * @param
-     * bd_lat * @param bd_lon * @return
+     * bd_lat
      */
     public static double[] bd09_To_Gcj02(double lat, double lon) {
         double x = lon - 0.0065, y = lat - 0.006;
@@ -121,10 +122,6 @@ public class GPSUtil {
 
     /**
      * 将gps84转为bd09
-     *
-     * @param lat
-     * @param lon
-     * @return
      */
     public static double[] gps84_To_bd09(double lat, double lon) {
         double[] gcj02 = gps84_To_Gcj02(lat, lon);
@@ -143,12 +140,9 @@ public class GPSUtil {
 
     /**
      * 保留小数点后六位
-     *
-     * @param num
-     * @return
      */
     private static double retain6(double num) {
-        String result = String.format("%.6f", num);
+        String result = String.format(Locale.getDefault(), "%.6f", num);
         return Double.valueOf(result);
     }
 

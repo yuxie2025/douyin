@@ -2,8 +2,8 @@ ext {
 
     //android
     android = [
-            compileSdkVersion : 26,
-            buildToolsVersion : "27.0.2",
+            compileSdkVersion : 28,
+            buildToolsVersion : "28.0.3",
             applicationId     : "com.yuxie.demo",
             minSdkVersion     : 18,
             targetSdkVersion  : 23,
@@ -12,70 +12,28 @@ ext {
     ]
 
     //Libraries variable
-    supportv_Verion = '27.0.2'
+    supportv_Verion = '27.1.0'
 
+    debug_host = "\"http://10.10.10.224:8090/\""
+    release_host = "\"http://10.10.10.13:18420/\""
+    item = "\"#\""
 
+    //图片加载
+    glide_Verion = '4.5.0'
 
-    rxjava_Version = '1.1.9'
-    rxandroid_Version = '1.2.1'
-    rxbinding_Version = '2.0.0'
-    retrofit_Version = '2.3.0'
-    retrofit_adapter_rxjava_Version = '2.3.0'
-    retrofit_converter_gson_Version = '2.3.0'
-
-//    okhttp_Version          = '3.9.0'
-    butterknife_Version     = '7.0.1'
-    eventbus_Version        = '3.0.0-beta1'
-    ormlite_core_Version    = '4.48'
-    ormlite_android_Version = '4.48'
-    autolayout_Version      = '1.4.3'
-    imageloader_Version     = '1.9.5'
-    glide_Version           = '3.7.0'
-    bgarefreshlayout_Version = '1.1.4'
-    multiStateView_Version  = '1.1.1'
-    picasso_Version         = '2.5.2'
-    taggroup_Version        = '1.4@aar'
-    photoview_Version       = '1.2.3'
-    android_utils_Version   = '1.0.0'
-    convenientbanner_Version = '2.0.5'
-    swiperecyclerview_Version = '1.0.4'
     dependencieslib = [
-            appcompatv7                 : "com.android.support:appcompat-v7:${supportv_Verion}",
-            supportv4                   : "com.android.support:support-v4:${supportv_Verion}",
-            supportv7                   : "com.android.support:support-v7:${supportv_Verion}",
-            design                      : "com.android.support:design:${supportv_Verion}",
-            gridlayout                  : "com.android.support:gridlayout-v7:${supportv_Verion}",
-            recyclerview                : "com.android.support:recyclerview-v7:${supportv_Verion}",
-            cardview                    : "com.android.support:cardview-v7:${supportv_Verion}",
-            annotations                 : "com.android.support:support-annotations:${supportv_Verion}",
-            rxjava                      : "io.reactivex:rxjava:${rxjava_Version}",
-            rxandroid                   : "io.reactivex:rxandroid:${rxandroid_Version}",
-            rxbinding                   : "com.jakewharton.rxbinding2:rxbinding:${rxbinding_Version}",
-            retrofit_converter_gson     : "com.squareup.retrofit2:converter-gson:${retrofit_converter_gson_Version}",
-            retrofit_adapter_rxjava     : "com.squareup.retrofit2:adapter-rxjava:${retrofit_adapter_rxjava_Version}",
-            retrofit                    : "com.squareup.retrofit2:retrofit:${retrofit_Version}",
-//            okhttp            :   "com.squareup.okhttp3:okhttp:${okhttp_Version}",
-            butterknife                 : "com.jakewharton:butterknife:${butterknife_Version}",
-            eventbus                    : "de.greenrobot:eventbus:${eventbus_Version}",
-            ormlite_core                : "com.j256.ormlite:ormlite-core:${ormlite_core_Version}",
-            ormlite_android             : "com.j256.ormlite:ormlite-android:${ormlite_android_Version}",
-            autolayout                  : "com.zhy:autolayout:${autolayout_Version}",
-            imageloader                 : "com.nostra13.universalimageloader:universal-image-loader:${imageloader_Version}",
-            glide                       : "com.github.bumptech.glide:glide:${glide_Version}",
-            picasso                     : "com.squareup.picasso:picasso:${picasso_Version}",
-            bgarefreshlayout            : "cn.bingoogolapple:bga-refreshlayout:${bgarefreshlayout_Version}",
-            multistateview              : "com.github.Kennyc1012:MultiStateView:${multiStateView_Version}",
-            taggroup                    : "me.gujun.android.taggroup:library:${taggroup_Version}",
-            photoview                   : "com.mcxiaoke.photoview:library:${photoview_Version}",//点击放大图片集合
-            android_utils               : "com.github.kibotu:android-utils:${android_utils_Version}",
-            //轮播图
-            convenientbanner            : "com.bigkoo:convenientbanner:${convenientbanner_Version}",
-            bga_banner                  : "cn.bingoogolapple:bga-banner:2.1.7@aar",
-            baserecycleviewadapterhelper: "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30",
-            asyncexpandablelist         : "com.ericliu.asyncexpandablelist:asyncexpandablelist:1.1.0",
-            swiperecyclerview           : "com.yanzhenjie:recyclerview-swipe:${swiperecyclerview_Version}",
-            switchbutton                : "com.kyleduo.switchbutton:library:1.4.5",
-            apkupdate                   : "com.xs.versionupdate:apkupdate:1.0.0"
+            appcompatv7  : "com.android.support:appcompat-v7:${supportv_Verion}",
+            supportv4    : "com.android.support:support-v4:${supportv_Verion}",
+            supportv7    : "com.android.support:support-v7:${supportv_Verion}",
+            design       : "com.android.support:design:${supportv_Verion}",
+            gridlayout   : "com.android.support:gridlayout-v7:${supportv_Verion}",
+            recyclerview : "com.android.support:recyclerview-v7:${supportv_Verion}",
+            cardview     : "com.android.support:cardview-v7:${supportv_Verion}",
+            annotations  : "com.android.support:support-annotations:${supportv_Verion}",
+
+            glide        : "com.github.bumptech.glide:glide:${glide_Verion}",
+            glideCompiler: "com.github.bumptech.glide:compiler:${glide_Verion}",
+
     ]
 
 }

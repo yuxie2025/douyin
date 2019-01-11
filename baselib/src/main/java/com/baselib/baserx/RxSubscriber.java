@@ -6,11 +6,11 @@ import android.text.TextUtils;
 
 import com.baselib.R;
 import com.baselib.baseapp.BaseApplication;
-import com.baselib.basebean.StudentEvent;
-import com.baselib.commonutils.LogUtils;
+import com.baselib.basebean.BaseMsgEvent;
 import com.baselib.commonutils.NetWorkUtils;
-import com.baselib.enums.StudentEnum;
+import com.baselib.enums.BaseMsgEnum;
 import com.baselib.ui.widget.LoadingDialog;
+import com.blankj.utilcode.util.LogUtils;
 
 import java.net.SocketTimeoutException;
 
@@ -20,7 +20,7 @@ import rx.Subscriber;
  * 作者: llk on 2017/9/8.
  * 订阅封装
  */
-
+@SuppressWarnings("unused")
 public abstract class RxSubscriber<T> extends Subscriber<T> {
 
     private Context mContext;
@@ -76,7 +76,7 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
         if (showDialog) {
             LoadingDialog.cancelDialogForLoading();
         }
-        LogUtils.loge(t.toString());
+        LogUtils.d(t.toString());
         _onNext(t);
     }
 
@@ -105,7 +105,7 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
 
             if (err.isErrCode()) {
                 if ("400003".equals(err.getErrMsg())) {
-                    RxBus.getInstance().post(new StudentEvent<>(StudentEnum.TOKEN, "400003"));
+                    RxBus.getInstance().post(new BaseMsgEvent<>(BaseMsgEnum.TOKEN, "400003"));
                 } else {
                     _onError(err.getErrMsg());
                 }
@@ -114,8 +114,9 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
             }
         } else { //其它
             _onError("网络访问错误,请稍后再试!");
-            if (e != null)
-                LogUtils.logi("其它错误:" + e.getMessage());
+            if (e != null) {
+                LogUtils.d("其它错误:" + e.getMessage());
+            }
         }
     }
 
