@@ -26,6 +26,7 @@ import com.yuxie.demo.dq.DqActivity;
 import com.yuxie.demo.music.MusicActivity;
 import com.yuxie.demo.mvvp.MvvpActivity;
 import com.yuxie.demo.net.NetActivity;
+import com.yuxie.demo.novel.SearchNovelActivity;
 import com.yuxie.demo.sms.SmsApiActivity;
 import com.yuxie.demo.txt.TxtActivity;
 import com.yuxie.demo.video.VideoListActivity;
@@ -143,7 +144,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
         Map<String, Object> map10 = new HashMap<>();
         map10.put("testName", "Txt阅读");
-        alist.add(TxtActivity.class);
+        alist.add(SearchNovelActivity.class);
         data.add(map10);
 
         Map<String, Object> map0 = new HashMap<>();

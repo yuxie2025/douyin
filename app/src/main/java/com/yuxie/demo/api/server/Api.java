@@ -28,9 +28,9 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class Api<T> {
     //读超时长，单位：毫秒
-    public static final int READ_TIME_OUT = 8000;
+    public static final int READ_TIME_OUT = 60*1000;
     //连接时长，单位：毫秒
-    public static final int CONNECT_TIME_OUT = 8000;
+    public static final int CONNECT_TIME_OUT = 60*1000;
 
     /*************************缓存设置*********************/
 /*

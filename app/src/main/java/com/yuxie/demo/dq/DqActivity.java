@@ -13,12 +13,14 @@ import com.baselib.uitls.CommonUtils;
 import com.blankj.utilcode.util.FileIOUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.google.gson.Gson;
 import com.yuxie.demo.R;
 import com.yuxie.demo.greendao.LikeReBeanDao;
 import com.yuxie.demo.greendao.UserBeanDao;
 import com.yuxie.demo.utils.db.EntityManager;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +45,10 @@ public class DqActivity extends BaseActivity {
 
     List<String> urls = new ArrayList<>();
 
+    private static final String KEY_VOIDE_ID = "VOIDE_ID";
+
+    private static final String KEY_NUMBER = "NUMBER";
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_dq;
@@ -50,6 +56,9 @@ public class DqActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
+        videoId.setText(SPUtils.getInstance().getString(KEY_VOIDE_ID));
+        number.setText(SPUtils.getInstance().getString(KEY_NUMBER));
 
         setTitle("多奇视频");
 
@@ -81,6 +90,8 @@ public class DqActivity extends BaseActivity {
             showToast("请输入url");
             return;
         }
+
+        SPUtils.getInstance().put(KEY_VOIDE_ID, videoIdStr);
 
         //http://mz.qiaosong.net:8080/sheding/shareVideo?videoId=901770&userId=4bf4e573e0064f2d9c1642c5bf8a20cd&from=singlemessage
         if (videoIdStr.contains("videoId=")) {
@@ -169,6 +180,8 @@ public class DqActivity extends BaseActivity {
     private void exeTask() {
 
         String numberStr = CommonUtils.getViewContent(number);
+
+        SPUtils.getInstance().put(KEY_NUMBER, numberStr);
 
         if (urls.size() == 0) {
             showToast("请先添加视频url");

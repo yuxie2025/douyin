@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/MM.BaseLlVertical">
 
     <include layout="@layout/navigation_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_txt_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/btn_serach"
+            android:text="大主宰" />
+
+        <Button
+            android:id="@+id/btn_serach"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:text="搜索" />
+
+    </RelativeLayout>
+
+    <include layout="@layout/line_view" />
 
     <include layout="@layout/recyclerview_layout" />
 

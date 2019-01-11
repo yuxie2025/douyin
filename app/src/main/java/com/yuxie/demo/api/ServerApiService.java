@@ -1,7 +1,10 @@
 package com.yuxie.demo.api;
 
 import com.baselib.basebean.BaseRespose;
+import com.yuxie.demo.txt.Txt;
+import com.yuxie.demo.txt.TxtDir;
 
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.adapter.rxjava.Result;
@@ -73,6 +76,23 @@ public interface ServerApiService {
     @FormUrlEncoded
     Observable<BaseRespose>
     sendPic(@Field("imgData") String imgData);
+
+
+    @POST("read/search")
+    @FormUrlEncoded
+    Observable<BaseRespose<List<Txt>>>
+    search(@Field("key") String key);
+
+    @POST("read/dir")
+    @FormUrlEncoded
+    Observable<BaseRespose<List<TxtDir>>>
+    dir(@Field("url") String url);
+
+
+    @POST("read/getContent")
+    @FormUrlEncoded
+    Observable<BaseRespose<String>>
+    getContent(@Field("url") String url);
 
 
 }

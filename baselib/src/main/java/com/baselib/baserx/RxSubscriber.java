@@ -76,7 +76,7 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
         if (showDialog) {
             LoadingDialog.cancelDialogForLoading();
         }
-        LogUtils.d(t.toString());
+//        LogUtils.d(t.toString());
         _onNext(t);
     }
 

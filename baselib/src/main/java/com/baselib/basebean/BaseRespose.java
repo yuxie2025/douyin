@@ -59,7 +59,7 @@ public class BaseRespose<T> implements Serializable {
     }
 
     public boolean success() {
-        return "0".equals(error_code);
+        return "666666".equals(error_code);
     }
 
 
