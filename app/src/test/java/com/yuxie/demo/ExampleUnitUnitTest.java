@@ -1,15 +1,12 @@
 package com.yuxie.demo;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.yuxie.demo.sy.Sy;
 
 import org.junit.Test;
 
 import java.io.File;
-import java.security.SecureRandom;
-import java.util.HashMap;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -23,21 +20,23 @@ public class ExampleUnitUnitTest {
 
 //        ios2android();
 
-        android();
+//        android();
 
 //        SecureRandom sr2 = SecureRandom.getInstance("SHA1PRNG");
 
 //        System.out.println("sr2:"+sr2.toString());
 
-        HashMap<String, String> map = new HashMap<>();
-        map.put("test","123");
-        map.put("test5","123");
-        map.put("test1","1234");
+//        HashMap<String, String> map = new HashMap<>();
+//        map.put("test","123");
+//        map.put("test5","123");
+//        map.put("test1","1234");
+//
+//        System.out.print("map:"+map.toString());
+//
+//        map.remove("test","123");
+//        System.out.print("map11:"+map.toString());
 
-        System.out.print("map:"+map.toString());
-
-        map.remove("test","123");
-        System.out.print("map11:"+map.toString());
+        Sy.main();
 
     }
 

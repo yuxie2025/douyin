@@ -4,6 +4,8 @@ package com.yuxie.demo.api.server;
 import com.baselib.baseapp.BaseApplication;
 import com.baselib.baserx.GsonDConverterFactory;
 import com.baselib.commonutils.NetWorkUtils;
+import com.yuxie.demo.sy.Constant;
+import com.yuxie.demo.sy.f;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,9 +30,9 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class Api<T> {
     //读超时长，单位：毫秒
-    public static final int READ_TIME_OUT = 60*1000;
+    public static final int READ_TIME_OUT = 60 * 1000;
     //连接时长，单位：毫秒
-    public static final int CONNECT_TIME_OUT = 60*1000;
+    public static final int CONNECT_TIME_OUT = 60 * 1000;
 
     /*************************缓存设置*********************/
 /*
@@ -92,6 +94,8 @@ public class Api<T> {
                 .addInterceptor(mRewriteCacheControlInterceptor)
                 .addNetworkInterceptor(mRewriteCacheControlInterceptor)
                 .addInterceptor(headerInterceptor)
+                .addInterceptor(new f(BaseApplication.getAppContext(), Constant.b))
+//                .proxy(Proxy.NO_PROXY)
                 .addInterceptor(logInterceptor)//日志
                 .cache(cache)
                 .build();

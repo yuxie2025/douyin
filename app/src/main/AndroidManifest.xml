@@ -114,7 +114,8 @@
         <activity android:name=".dq.DqActivity" />
         <activity android:name=".novel.SearchNovelActivity" />
         <activity android:name=".novel.NovelDirActivity" />
-        <activity android:name=".novel.ReadNovelActivity"></activity>
+        <activity android:name=".novel.ReadNovelActivity" />
+        <activity android:name=".sy.SyActivity"></activity>
     </application>
 
 </manifest>

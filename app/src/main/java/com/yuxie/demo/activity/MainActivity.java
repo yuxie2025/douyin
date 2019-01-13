@@ -19,6 +19,7 @@ import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
 import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.yuxie.demo.R;
 import com.yuxie.demo.api.server.ServerApi;
 import com.yuxie.demo.controlpc.RemoteControlActivity;
@@ -28,9 +29,12 @@ import com.yuxie.demo.mvvp.MvvpActivity;
 import com.yuxie.demo.net.NetActivity;
 import com.yuxie.demo.novel.SearchNovelActivity;
 import com.yuxie.demo.sms.SmsApiActivity;
+import com.yuxie.demo.sy.SyActivity;
 import com.yuxie.demo.txt.TxtActivity;
 import com.yuxie.demo.video.VideoListActivity;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -179,6 +183,11 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         alist.add(DqActivity.class);
         data.add(map16);
 
+        Map<String, Object> map17 = new HashMap<>();
+        map17.put("testName", "三言");
+        alist.add(SyActivity.class);
+        data.add(map17);
+
 
         return data;
     }
@@ -227,4 +236,31 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                     }
                 });
     }
+
+
+//    public void info() {
+//
+//        String imei = "866174010882153";
+//        String token = "4d570255ffc544163b32f68c8edfbfe0";
+//        String content_id = "510827";
+//        String content = "不管了走吧.";
+//
+//        SPUtils.getInstance().put("imei", imei);
+//        SPUtils.getInstance().put("token", token);
+//
+//        ServerApi.getInstance().comments(content_id, content, "")
+//                .compose(RxSchedulers.io_main())
+//                .subscribe(new RxSubscriber<BaseRespose>(mContext, false) {
+//                    @Override
+//                    protected void _onNext(BaseRespose baseRespose) {
+//                        LogUtils.d("baseRespose:" + baseRespose);
+//                    }
+//
+//                    @Override
+//                    protected void _onError(String message) {
+//                        LogUtils.d("message:" + message);
+//                    }
+//                });
+//    }
+
 }

@@ -14,4 +14,9 @@ public class RxSchedulers {
         return observable -> observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    public static <T> Observable.Transformer<T, T> io_io() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io());
+    }
 }

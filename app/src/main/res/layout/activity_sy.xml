@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MM.BaseLlVertical">
+
+    <include layout="@layout/navigation_bar" />
+
+    <com.baselib.ui.widget.ClearableEditTextWithIcon
+        android:id="@+id/videoId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="任务url"
+        android:singleLine="true" />
+
+    <com.baselib.ui.widget.ClearableEditTextWithIcon
+        android:id="@+id/number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="点赞数量"
+        android:inputType="number"
+        android:singleLine="true"
+        android:text="500"
+        android:visibility="gone" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/bigDayTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="大号每日任务" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/smallDayTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="小号每日任务" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/readTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="阅读任务" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/readTaskOne"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="阅读任务(指定文章)" />
+
+
+</LinearLayout>

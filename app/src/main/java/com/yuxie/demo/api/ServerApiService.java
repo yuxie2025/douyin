@@ -94,5 +94,20 @@ public interface ServerApiService {
     Observable<BaseRespose<String>>
     getContent(@Field("url") String url);
 
+    @POST("read/like")
+    @FormUrlEncoded
+    Observable<BaseRespose>
+    like(@Field("status") String status,
+         @Field("imei") String imei);
+
+
+    @POST("v1/comments")
+    @FormUrlEncoded
+    Observable<String>
+    comments(
+            @Field("content_id") String content_id,
+            @Field("content") String content,
+            @Field("quote_id") String quote_id);
+
 
 }
