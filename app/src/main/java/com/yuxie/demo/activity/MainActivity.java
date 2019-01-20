@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
         init();
 
-        info();
+//        info();
 
     }
 

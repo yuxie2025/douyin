@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.FileIOUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.yuxie.demo.api.server.HostType;
 import com.yuxie.demo.api.server.ServerApi;
+import com.yuxie.demo.sy.Sy;
 
 
 /**
@@ -131,22 +132,34 @@ public class UnitTest {
 //                });
 
 
-        String picPath = Environment.getExternalStorageDirectory() + "/1.png";
-        String imgData = Base64.encodeToString(FileIOUtils.readFile2BytesByStream(picPath), Base64.DEFAULT).toString();
+//        String picPath = Environment.getExternalStorageDirectory() + "/1.png";
+//        String imgData = Base64.encodeToString(FileIOUtils.readFile2BytesByStream(picPath), Base64.DEFAULT).toString();
+//
+//        ServerApi.getInstance().sendPic(imgData)
+//                .compose(RxSchedulers.io_main())
+//                .subscribe(new RxSubscriber<BaseRespose>(context) {
+//                    @Override
+//                    protected void _onNext(BaseRespose baseRespose) {
+//                        LogUtils.d("baseRespose:" + baseRespose);
+//                    }
+//
+//                    @Override
+//                    protected void _onError(String message) {
+//                        LogUtils.d("message:" + message);
+//                    }
+//                });
 
-        ServerApi.getInstance().sendPic(imgData)
-                .compose(RxSchedulers.io_main())
-                .subscribe(new RxSubscriber<BaseRespose>(context) {
-                    @Override
-                    protected void _onNext(BaseRespose baseRespose) {
-                        LogUtils.d("baseRespose:" + baseRespose);
-                    }
+        new Thread(() -> {
 
-                    @Override
-                    protected void _onError(String message) {
-                        LogUtils.d("message:" + message);
-                    }
-                });
+            String url = "http://v.douyin.com/N3sFhq/";
+            String token = "e18b28dd109134b23fec5b7c4367cbac";
+            Sy.sendVideo(url, token);
+//            622647
+//            Sy.sendNewsContents("622870", token);
+
+//            Sy.missionsClick(token);
+
+        }).start();
 
 
     }

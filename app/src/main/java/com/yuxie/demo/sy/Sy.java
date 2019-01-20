@@ -3,21 +3,25 @@ package com.yuxie.demo.sy;
 import android.content.Context;
 import android.os.Environment;
 
-import com.baselib.basebean.BaseRespose;
 import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
 import com.blankj.utilcode.util.FileIOUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.yuxie.demo.api.server.ServerApi;
 import com.yuxie.demo.sy.NewsListBean.DataBean;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class Sy {
+
+    private static Gson gson = new Gson();
 
     public static final String likesUrl = "https://lfront.soubiji.com/v1/likes/contents/";
     public static final String newsUrl = "https://lfront.soubiji.com/v1/contents";
@@ -44,6 +48,19 @@ public class Sy {
     public static final String wechatSessionsUrl = "https://lfront.soubiji.com/v1/wechat_sessions";
 
     // public static final String giftsUrl ="https://lfront.soubiji.com/v1/gifts";
+
+    //解析文章
+    public static final String contentCrawlersUrl = "https://lfront.soubiji.com/v1/content_crawlers";
+
+    //预发布文章
+    public static final String sendContentsUrl = "https://lfront.soubiji.com/v1/contents";
+
+    //点击广告
+    public static final String missionsClickUrl = "https://lfront.soubiji.com/v2/missions/click";
+
+    //视频解析
+    public static final String videoCrawlersUrl = "https://lfront.ttookk.com/v1/video_crawlers";
+
 
     public static final String BASE_PATH = Environment.getExternalStorageDirectory() + "/sy/";
 
@@ -80,6 +97,56 @@ public class Sy {
         }
     }
 
+    /**
+     * 发布新闻
+     *
+     * @param url
+     * @param token
+     * @return
+     */
+    public static boolean sendNews(String url, String token) {
+        boolean backResult = false;
+
+        BaseSyBean<NewsContentBean> bean = contentCrawlers(url, token);
+        if (bean.isSucceed()) {
+            String sourceUrl = url;
+            String title = bean.getData().getTitle() + ".";
+            String content = bean.getData().getContent();
+            BaseSyBean<SendContentsBean> re = sendContents(sourceUrl, title, content, token);
+            if (re.isSucceed()) {
+                BaseSyBean result = sendNewsContents(re.getData().getId(), token);
+                if (result.isSucceed()) {
+                    backResult = true;
+                }
+            }
+        }
+        return backResult;
+    }
+
+    /**
+     * 发布视频
+     *
+     * @param url
+     * @param token
+     * @return
+     */
+    public static boolean sendVideo(String url, String token) {
+        boolean backResult = false;
+
+        BaseSyBean<VideoCrawlersBean> bean = videoCrawlers(url, token);
+        if (bean.isSucceed()) {
+            String sourceUrl = url;
+            String title = bean.getData().getTitle() + ".";
+            String content = bean.getData().getVideo();
+            String cover = bean.getData().getCover();
+            BaseSyBean<SendContentsBean> re = sendVideo(sourceUrl, title, cover, content, token);
+            if (re.isSucceed()) {
+                backResult = true;
+            }
+        }
+        return backResult;
+    }
+
 
     public static void read() {
 
@@ -105,7 +172,6 @@ public class Sy {
     }
 
     // 每日任务
-    @SuppressWarnings("unused")
     public static void dayTask(Context context, String token, boolean isBig) {
 
         List<DataBean> news = newsList(token);
@@ -115,6 +181,7 @@ public class Sy {
         int likeNumber = 0;
         int sharedNumber = 0;
         int commentsNumber = 0;
+        int clickAdNumber = 0;
 
         for (int i = 0; i < news.size(); i++) {
             String newsId = news.get(i).getId();
@@ -134,6 +201,12 @@ public class Sy {
                 sharedNumber++;
                 // 分享新闻
                 shared(newsId, token);
+                CommonUtils.random(1, 2);
+            }
+            if (clickAdNumber <= 2) {
+                clickAdNumber++;
+                // 分享新闻
+                missionsClick(token);
                 CommonUtils.random(1, 2);
             }
 
@@ -354,6 +427,127 @@ public class Sy {
 
     }
 
+    public static BaseSyBean<NewsContentBean> contentCrawlers(String url, String token) {
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("content_type", "text");
+        hashMap.put("url", url);
+        hashMap.put("token", token);
+        String params = getParams(hashMap);
+
+        String reString = Utils.post(contentCrawlersUrl, params);
+
+        Type type = new TypeToken<BaseSyBean<NewsContentBean>>() {
+        }.getType();
+        BaseSyBean<NewsContentBean> bean = new Gson().fromJson(reString, type);
+        System.out.println("userPendingCashes--reString:" + reString);
+        return bean;
+    }
+
+    public static BaseSyBean<VideoCrawlersBean> videoCrawlers(String url, String token) {
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("sd", "1");
+        hashMap.put("url", url);
+        hashMap.put("token", token);
+        String params = getParams(hashMap);
+
+        String reString = Utils.post(videoCrawlersUrl, params);
+
+        Type type = new TypeToken<BaseSyBean<VideoCrawlersBean>>() {
+        }.getType();
+        BaseSyBean<VideoCrawlersBean> bean = new Gson().fromJson(reString, type);
+        System.out.println("videoCrawlers--reString:" + reString);
+        return bean;
+    }
+
+    public static BaseSyBean<SendContentsBean> sendVideo(String sourceUrl, String title, String covers, String content, String token) {
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("content_type", "video");
+        hashMap.put("status", "1");
+        hashMap.put("covers", covers);
+        hashMap.put("title", title);
+        hashMap.put("content", content);
+        hashMap.put("source_url", sourceUrl);
+        hashMap.put("spider_type", "0");
+        hashMap.put("sd", "1");
+        hashMap.put("token", token);
+        String params = getParams(hashMap);
+
+        String url = "https://lfront.ttookk.com/v1/contents";
+
+        String reString = Utils.post(url, params);
+
+        Type type = new TypeToken<BaseSyBean<SendContentsBean>>() {
+        }.getType();
+        BaseSyBean<SendContentsBean> bean = new Gson().fromJson(reString, type);
+
+        System.out.println("sendVideo--reString:" + reString);
+        return bean;
+
+    }
+
+    public static BaseSyBean<SendContentsBean> sendContents(String sourceUrl, String title, String content, String token) {
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("content_type", "text");
+        hashMap.put("status", "0");
+        hashMap.put("title", title);
+        hashMap.put("content", content);
+        hashMap.put("source_url", sourceUrl);
+        hashMap.put("spider_type", "0");
+        hashMap.put("token", token);
+        String params = getParams(hashMap);
+
+        String url = "https://lfront.ttookk.com/v1/contents";
+
+        String reString = Utils.post(url, params);
+
+        Type type = new TypeToken<BaseSyBean<SendContentsBean>>() {
+        }.getType();
+        BaseSyBean<SendContentsBean> bean = new Gson().fromJson(reString, type);
+
+        System.out.println("sendContents--reString:" + reString);
+        return bean;
+
+    }
+
+    public static BaseSyBean sendNewsContents(String newsId, String token) {
+        HashMap hashMap = new HashMap();
+        hashMap.put("content_type", "text");
+        hashMap.put("status", "1");
+        hashMap.put("spider_type", "0");
+        hashMap.put("token", token);
+        String params = getParams(hashMap);
+
+        String baseUrl = "https://lfront.ttookk.com/v1/contents/";
+
+        String url = baseUrl + newsId + "?" + params;
+
+        String reString = Utils.putDataNet(url);
+        BaseSyBean bean = new Gson().fromJson(reString, BaseSyBean.class);
+        System.out.println("sendNewsContents--reString:" + reString);
+        return bean;
+    }
+
+    public static BaseSyBean missionsClick(String token) {
+        HashMap hashMap = new HashMap();
+        hashMap.put("os", "android");
+        hashMap.put("version", "1.1.0");
+        hashMap.put("channel", "home");
+        hashMap.put("id", "12");
+        hashMap.put("token", token);
+
+        String params = gson.toJson(hashMap);
+
+        String reString = Utils.post(missionsClickUrl, params, true);
+        BaseSyBean bean = new Gson().fromJson(reString, BaseSyBean.class);
+        System.out.println("missionsClick--params:" + params);
+        System.out.println("missionsClick--reString:" + reString);
+        return bean;
+    }
+
     /**
      * 获取新闻列表
      *
@@ -427,7 +621,7 @@ public class Sy {
         List<User> users = new ArrayList<>();
 
         List<String> datas = FileIOUtils.readFile2List(filePath, "UTF-8");
-        if (datas.size() == 0) {
+        if (datas == null && datas.size() == 0) {
             return users;
         }
         String data = "";
@@ -450,7 +644,8 @@ public class Sy {
     private static String getParams(HashMap hashMap) {
         hashMap.put("app_channel", "home");
         hashMap.put("app_os", "android");
-        hashMap.put("app_version", "1.0.7");
+        hashMap.put("app_version", "1.1.0");
+        hashMap.put("imei", "866174010882153");
         hashMap.put("secret", "andy888");
         hashMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
         String str = Sign.toString(hashMap);
