@@ -1,6 +1,7 @@
 package com.yuxie.demo.api;
 
 import com.baselib.basebean.BaseRespose;
+import com.yuxie.demo.entity.UrlLibBean;
 import com.yuxie.demo.txt.Txt;
 import com.yuxie.demo.txt.TxtDir;
 
@@ -100,6 +101,10 @@ public interface ServerApiService {
     like(@Field("status") String status,
          @Field("imei") String imei);
 
+    @POST("read/getUrlLib")
+    Observable<BaseRespose<List<UrlLibBean>>>
+    getUrlLib();
+
 
     @POST("v1/comments")
     @FormUrlEncoded
@@ -108,6 +113,26 @@ public interface ServerApiService {
             @Field("content_id") String content_id,
             @Field("content") String content,
             @Field("quote_id") String quote_id);
+
+
+    //    grant_type=client_credentials&client_id=Va5yQRHlA4Fq5eR3LT0vuXV4&client_secret=0rDSjzQ20XUj5itV6WRtznPQSzr5pVw2
+    @POST("oauth/2.0/token")
+    @FormUrlEncoded
+    Observable<String>
+    getToken(@Field("grant_type") String grantType,
+             @Field("client_id") String contentId,
+             @Field("client_secret") String clientSecret);
+
+
+//    https://aip.baidubce.com/rest/2.0/face/v2/detect
+
+    @POST("rest/2.0/face/v3/detect")
+    @FormUrlEncoded
+    Observable<String>
+    detect(@Field("image") String image,
+           @Field("access_token") String access_token,
+           @Field("max_face_num") String max_face_num,
+           @Field("client_secret") String face_fields);
 
 
 }

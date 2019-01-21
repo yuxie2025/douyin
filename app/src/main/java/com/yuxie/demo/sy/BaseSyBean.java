@@ -1,8 +1,11 @@
 package com.yuxie.demo.sy;
 
+import com.google.gson.annotations.SerializedName;
+
 public class BaseSyBean<T> {
 
     private int code;
+    @SerializedName("msg")
     private String message;
 
     private T data;

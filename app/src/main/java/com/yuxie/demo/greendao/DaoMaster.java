@@ -24,6 +24,7 @@ public class DaoMaster extends AbstractDaoMaster {
         LikeReBeanDao.createTable(db, ifNotExists);
         UserBeanDao.createTable(db, ifNotExists);
         SmsApiDao.createTable(db, ifNotExists);
+        UrlLibraryBeanDao.createTable(db, ifNotExists);
         UserDao.createTable(db, ifNotExists);
     }
 
@@ -32,6 +33,7 @@ public class DaoMaster extends AbstractDaoMaster {
         LikeReBeanDao.dropTable(db, ifExists);
         UserBeanDao.dropTable(db, ifExists);
         SmsApiDao.dropTable(db, ifExists);
+        UrlLibraryBeanDao.dropTable(db, ifExists);
         UserDao.dropTable(db, ifExists);
     }
 
@@ -54,6 +56,7 @@ public class DaoMaster extends AbstractDaoMaster {
         registerDaoClass(LikeReBeanDao.class);
         registerDaoClass(UserBeanDao.class);
         registerDaoClass(SmsApiDao.class);
+        registerDaoClass(UrlLibraryBeanDao.class);
         registerDaoClass(UserDao.class);
     }
 

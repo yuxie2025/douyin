@@ -104,8 +104,8 @@ public class Sy {
      * @param token
      * @return
      */
-    public static boolean sendNews(String url, String token) {
-        boolean backResult = false;
+    public static String sendNews(String url, String token) {
+        String backResult = "失败";
 
         BaseSyBean<NewsContentBean> bean = contentCrawlers(url, token);
         if (bean.isSucceed()) {
@@ -113,10 +113,12 @@ public class Sy {
             String title = bean.getData().getTitle() + ".";
             String content = bean.getData().getContent();
             BaseSyBean<SendContentsBean> re = sendContents(sourceUrl, title, content, token);
-            if (re.isSucceed()) {
+            if (re != null && re.isSucceed()) {
                 BaseSyBean result = sendNewsContents(re.getData().getId(), token);
                 if (result.isSucceed()) {
-                    backResult = true;
+                    backResult = "成功";
+                } else {
+                    backResult = result.getMessage();
                 }
             }
         }
@@ -440,7 +442,7 @@ public class Sy {
         Type type = new TypeToken<BaseSyBean<NewsContentBean>>() {
         }.getType();
         BaseSyBean<NewsContentBean> bean = new Gson().fromJson(reString, type);
-        System.out.println("userPendingCashes--reString:" + reString);
+        System.out.println("contentCrawlers--reString:" + reString);
         return bean;
     }
 
