@@ -70,6 +70,22 @@
         <activity android:name=".sms.SmsApiActivity" />
         <activity android:name=".sms.UpdateSmsApiActivity" />
 
+
+        <!-- 辅助服务 -->
+        <service
+            android:name=".service.RedPacketAccessibilityService"
+            android:description="@string/test_accessibility"
+            android:label="抢红包插件"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/wx_accessibility" />
+        </service>
+
         <!-- &lt;!&ndash; 微信支付 &ndash;&gt; -->
         <!-- <activity -->
         <!-- android:name=".wxapi.WXPayEntryActivity" -->
