@@ -3,16 +3,19 @@ package com.yuxie.demo.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
-import android.util.Base64;
 
+import com.baidu.aip.face.AipFace;
 import com.baselib.basebean.BaseRespose;
 import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
-import com.blankj.utilcode.util.FileIOUtils;
-import com.blankj.utilcode.util.LogUtils;
 import com.yuxie.demo.api.server.HostType;
 import com.yuxie.demo.api.server.ServerApi;
 import com.yuxie.demo.sy.Sy;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 
 /**
@@ -58,6 +61,46 @@ public class UnitTest {
 //        update();
 
 //        testWxPay();
+
+        testAipFace();
+
+
+    }
+
+    private static void testAipFace() {
+
+        String APP_ID = "15427448";
+        String API_KEY = "4GWAkGu9wnsoZV4eOFwK2EcO";
+        String SECRET_KEY = "ZcECb0eG9tsUpgryQgHol2M1aULmK5H9";
+
+        // 初始化一个AipFace
+        AipFace client = new AipFace(APP_ID, API_KEY, SECRET_KEY);
+
+        // 可选：设置网络连接参数
+        client.setConnectionTimeoutInMillis(2000);
+        client.setSocketTimeoutInMillis(60000);
+
+        // 可选：设置代理服务器地址, http和socket二选一，或者均不设置
+//        client.setHttpProxy("proxy_host", proxy_port);  // 设置http代理
+//        client.setSocketProxy("proxy_host", proxy_port);  // 设置socket代理
+
+        // 可选：设置log4j日志输出格式，若不设置，则使用默认配置
+        // 也可以直接通过jvm启动参数设置此环境变量
+//        System.setProperty("aip.log4j.conf", "path/to/your/log4j.properties");
+
+        // 调用接口
+        String path = Environment.getExternalStorageDirectory() + "/" + "1.jpg";
+//        String path = "test.jpg";
+
+        new Thread(() -> {
+            try {
+                JSONObject res = client.detect(path, "BASE64", new HashMap<String, String>());
+                System.out.println(res.toString(2));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
     }
 
 //    private static class InnerHandler extends Handler{
@@ -151,9 +194,9 @@ public class UnitTest {
 
         new Thread(() -> {
 
-            String url = "http://v.douyin.com/N3sFhq/";
-            String token = "e18b28dd109134b23fec5b7c4367cbac";
-            Sy.sendVideo(url, token);
+            String url = "https://www.jianshu.com/p/0160ba4d1b70";
+            String token = "9ec50e9dc69b8652bf2480f8f19cc9cc";
+            Sy.contentCrawlers(url, token);
 //            622647
 //            Sy.sendNewsContents("622870", token);
 

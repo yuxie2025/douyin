@@ -62,6 +62,10 @@ public class BaseRespose<T> implements Serializable {
         return "666666".equals(error_code);
     }
 
+    public boolean isSuccess() {
+        return "666666".equals(error_code);
+    }
+
 
     @Override
     public String toString() {

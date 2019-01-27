@@ -169,4 +169,6 @@ android {
 
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:+'
+    implementation files('libs/aip-java-sdk-4.3.2.jar')
+    implementation files('libs/log4j-1.2.17.jar')
 }

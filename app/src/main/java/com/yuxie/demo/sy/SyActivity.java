@@ -1,10 +1,8 @@
 package com.yuxie.demo.sy;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
-import android.view.TextureView;
 import android.view.View;
 
 import com.baselib.base.BaseActivity;
@@ -12,10 +10,19 @@ import com.baselib.basebean.BaseRespose;
 import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
 import com.baselib.ui.widget.ClearableEditTextWithIcon;
+import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.SPUtils;
 import com.yuxie.demo.R;
+import com.yuxie.demo.api.server.HostType;
 import com.yuxie.demo.api.server.ServerApi;
+import com.yuxie.demo.entity.UrlLibBean;
+import com.yuxie.demo.entity.UrlLibraryBean;
+import com.yuxie.demo.greendao.UrlLibraryBeanDao;
+import com.yuxie.demo.utils.db.EntityManager;
+
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -35,6 +42,12 @@ public class SyActivity extends BaseActivity {
     AppCompatButton readTask;
     @BindView(R.id.readTaskOne)
     AppCompatButton readTaskOne;
+    @BindView(R.id.sendNews)
+    AppCompatButton sendNews;
+    @BindView(R.id.sendVideo)
+    AppCompatButton sendVideo;
+
+    UrlLibraryBeanDao urlLibraryBeanDao = EntityManager.getInstance().getUrlLibraryBeanDao();
 
     @Override
     protected int getLayoutId() {
@@ -48,7 +61,7 @@ public class SyActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.bigDayTask, R.id.smallDayTask, R.id.readTask, R.id.readTaskOne})
+    @OnClick({R.id.bigDayTask, R.id.smallDayTask, R.id.readTask, R.id.readTaskOne, R.id.sendNews, R.id.sendVideo, R.id.getLib})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bigDayTask:
@@ -63,7 +76,51 @@ public class SyActivity extends BaseActivity {
             case R.id.readTaskOne:
                 readTaskOne();
                 break;
+            case R.id.sendNews:
+                sendNews();
+                break;
+            case R.id.sendVideo:
+                sendVideo();
+                break;
+            case R.id.getLib:
+                getLib();
+                break;
         }
+    }
+
+    private void getLib() {
+
+        ServerApi.getInstance(HostType.HOST_TYPE_SY).getUrlLib()
+                .compose(RxSchedulers.io_main())
+                .subscribe(new RxSubscriber<BaseRespose<List<UrlLibBean>>>(mContext, false) {
+                    @Override
+                    protected void _onNext(BaseRespose<List<UrlLibBean>> baseRespose) {
+                        if (baseRespose.isSuccess()) {
+                            insertData(baseRespose.getData());
+                        }
+                        showToast("导入成功!");
+                    }
+
+                    @Override
+                    protected void _onError(String message) {
+                        LogUtils.d("message:" + message);
+                        showToast(message);
+                    }
+                });
+
+    }
+
+    private void insertData(List<UrlLibBean> data) {
+
+        UrlLibBean bean;
+        for (int i = 0; i < data.size(); i++) {
+            bean = data.get(i);
+            long count = urlLibraryBeanDao.queryBuilder().where(UrlLibraryBeanDao.Properties.Url.eq(bean.getUrl())).count();
+            if (count == 0) {
+                urlLibraryBeanDao.insertOrReplace(new UrlLibraryBean(null, bean.getType(), bean.getUrl(), false));
+            }
+        }
+
     }
 
     boolean isReadTaskOne = false;
@@ -242,6 +299,136 @@ public class SyActivity extends BaseActivity {
                 e.printStackTrace();
             }
         });
+    }
+
+
+    boolean isSendNews = false;
+
+    private void sendNews() {
+
+        isSendNews = !isSendNews;
+        if (isSendNews) {
+            sendNews.setText("结束任务");
+            Thread thread = new Thread(() -> {
+
+                String filePath = Sy.BASE_PATH + "day_token.txt";
+                List<User> users = Sy.getUser(filePath);
+
+                User user;
+                for (int i = 0; i < users.size(); i++) {
+                    LogUtils.d("j:" + i + ",users.size():" + users.size());
+                    user = users.get(i);
+                    UrlLibraryBean url;
+                    int total = 0;
+                    List<UrlLibraryBean> urls = urlLibraryBeanDao.queryBuilder().where(UrlLibraryBeanDao.Properties.IsUse.eq(false), UrlLibraryBeanDao.Properties.Type.eq(1)).list();
+                    for (int j = 0; j < urls.size(); j++) {
+                        LogUtils.d("j:" + j + ",urls.size():" + urls.size());
+                        if (!isSendNews) {
+                            runOnUiThread(() -> {
+                                try {
+                                    showToast("发布新闻任务完成!");
+                                    sendNews.setText("发布新闻");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                            return;
+                        }
+
+                        if (total > 5) {
+                            break;
+                        }
+                        url = urls.get(j);
+                        String re = Sy.sendNews(url.getUrl(), user.getToken());
+                        LogUtils.d("re:" + re);
+                        if (!TextUtils.isEmpty(re) && re.contains("成功")) {
+                            total++;
+                        }
+                        if (!TextUtils.isEmpty(re) && re.contains("请明日再来")) {
+                            break;
+                        }
+
+                        UrlLibraryBean updataBean = url;
+                        updataBean.setIsUse(true);
+                        urlLibraryBeanDao.insertOrReplace(updataBean);
+                        CommonUtils.random(1, 2);
+                    }
+                }
+
+                runOnUiThread(() -> {
+                    try {
+                        showToast("发布新闻任务完成!");
+                        sendNews.setText("发布新闻");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            });
+            thread.start();
+        } else {
+            sendNews.setText("发布新闻");
+        }
+    }
+
+    boolean isSendVideo = false;
+
+    private void sendVideo() {
+
+        isSendVideo = !isSendVideo;
+        if (isSendVideo) {
+            sendVideo.setText("结束任务");
+            Thread thread = new Thread(() -> {
+
+                String filePath = Sy.BASE_PATH + "day_token.txt";
+                List<User> users = Sy.getUser(filePath);
+
+                User user;
+                for (int i = 0; i < users.size(); i++) {
+                    user = users.get(i);
+                    UrlLibraryBean url;
+                    int total = 0;
+                    List<UrlLibraryBean> urls = urlLibraryBeanDao.queryBuilder().where(UrlLibraryBeanDao.Properties.IsUse.eq(false), UrlLibraryBeanDao.Properties.Type.eq(2)).list();
+                    for (int j = 0; j < urls.size(); j++) {
+                        if (!isSendVideo) {
+                            runOnUiThread(() -> {
+                                try {
+                                    showToast("发布视频任务完成!");
+                                    sendVideo.setText("发布视频");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                            return;
+                        }
+
+                        if (total > 4) {
+                            break;
+                        }
+                        url = urls.get(j);
+                        boolean re = Sy.sendVideo(url.getUrl(), user.getToken());
+                        if (re) {
+                            total++;
+                        }
+                        UrlLibraryBean updataBean = url;
+                        updataBean.setIsUse(true);
+                        urlLibraryBeanDao.insertOrReplace(updataBean);
+                        CommonUtils.random(1, 2);
+                    }
+                }
+
+                runOnUiThread(() -> {
+                    try {
+                        showToast("发布视频任务完成!");
+                        sendVideo.setText("发布视频");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            });
+            thread.start();
+        } else {
+            sendVideo.setText("发布视频");
+        }
     }
 
 
