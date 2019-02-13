@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
         init();
 
-//        info();
+        info();
 
     }
 
@@ -243,7 +243,14 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
 
     public void info() {
-        ServerApi.getInstance().info(23.1234, 113.5698, "广州", DeviceUtils.getAndroidID())
+
+        Location location = GpsUtils.getLastKnownLocation(mContext);
+        if (location==null){
+            //定位失败
+            return;
+        }
+
+        ServerApi.getInstance().info(location.getLongitude(), location.getLatitude(), "广州", DeviceUtils.getAndroidID())
                 .compose(RxSchedulers.io_main())
                 .subscribe(new RxSubscriber<BaseRespose>(mContext, false) {
                     @Override
