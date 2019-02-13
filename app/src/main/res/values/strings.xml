@@ -1,5 +1,7 @@
 <resources>
 
+    <string name="test_accessibility">为了程序正常运行请打开此服务</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="app_name">Demo</string>

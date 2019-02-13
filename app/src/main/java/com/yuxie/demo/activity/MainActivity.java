@@ -33,6 +33,7 @@ import com.yuxie.demo.novel.SearchNovelActivity;
 import com.yuxie.demo.sms.SmsApiActivity;
 import com.yuxie.demo.sy.SyActivity;
 import com.yuxie.demo.txt.TxtActivity;
+import com.yuxie.demo.utils.AccessibilityUtils;
 import com.yuxie.demo.utils.GpsUtils;
 import com.yuxie.demo.video.VideoListActivity;
 
@@ -75,7 +76,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
         init();
 
-        info();
+//        info();
 
     }
 
@@ -148,6 +149,10 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         map100.put("testName", "------test方法------");
         alist.add(MvvpActivity.class);
         data.add(map100);
+        Map<String, Object> map101 = new HashMap<>();
+        map101.put("testName", "开启抢红包");
+        alist.add(MvvpActivity.class);
+        data.add(map101);
 
         Map<String, Object> map10 = new HashMap<>();
         map10.put("testName", "Txt阅读");
@@ -202,9 +207,22 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             test();
             return;
         }
+        if ("开启抢红包".equals(data.get(i).get("testName"))) {
+            openRedPacket();
+            return;
+        }
+
         //跳转需要测试的页面
         Intent intent = new Intent(this, alist.get(i));
         startActivity(intent);
+    }
+
+    private void openRedPacket() {
+        if (AccessibilityUtils.isServiceOpening(this)) {
+            showToast("辅助模式已开启");
+        } else {
+            AccessibilityUtils.openService(MainActivity.this);
+        }
     }
 
 
@@ -225,15 +243,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
 
     public void info() {
-
-        Location location = GpsUtils.getLastKnownLocation(mContext);
-        if (location==null){
-            //定位失败
-            LogUtils.d("定位失败!");
-            return;
-        }
-
-        ServerApi.getInstance().info(location.getLongitude(), location.getLatitude(), "广州", DeviceUtils.getAndroidID())
+        ServerApi.getInstance().info(23.1234, 113.5698, "广州", DeviceUtils.getAndroidID())
                 .compose(RxSchedulers.io_main())
                 .subscribe(new RxSubscriber<BaseRespose>(mContext, false) {
                     @Override

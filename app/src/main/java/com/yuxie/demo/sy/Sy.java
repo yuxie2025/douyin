@@ -536,9 +536,9 @@ public class Sy {
     public static BaseSyBean missionsClick(String token) {
         HashMap hashMap = new HashMap();
         hashMap.put("os", "android");
-        hashMap.put("version", "1.1.0");
+        hashMap.put("version", "2.4.0");
         hashMap.put("channel", "home");
-        hashMap.put("id", "12");
+        hashMap.put("id", "21");
         hashMap.put("token", token);
 
         String params = gson.toJson(hashMap);
@@ -584,7 +584,7 @@ public class Sy {
                 .subscribe(new RxSubscriber<String>(context, false) {
                     @Override
                     protected void _onNext(String str) {
-                        LogUtils.d("str:" + str);
+//                        LogUtils.d("str:" + str);
                     }
 
                     @Override
@@ -646,7 +646,7 @@ public class Sy {
     private static String getParams(HashMap hashMap) {
         hashMap.put("app_channel", "home");
         hashMap.put("app_os", "android");
-        hashMap.put("app_version", "1.1.0");
+        hashMap.put("app_version", "2.4.0");
         hashMap.put("imei", "866174010882153");
         hashMap.put("secret", "andy888");
         hashMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
