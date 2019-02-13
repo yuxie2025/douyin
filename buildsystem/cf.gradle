@@ -6,7 +6,7 @@ ext {
             buildToolsVersion : "28.0.3",
             applicationId     : "com.yuxie.demo",
             minSdkVersion     : 18,
-            targetSdkVersion  : 23,
+            targetSdkVersion  : 22,
             versionCode       : 2,
             versionName       : "1.2"
     ]

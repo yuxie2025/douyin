@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -31,6 +33,7 @@ import com.yuxie.demo.novel.SearchNovelActivity;
 import com.yuxie.demo.sms.SmsApiActivity;
 import com.yuxie.demo.sy.SyActivity;
 import com.yuxie.demo.txt.TxtActivity;
+import com.yuxie.demo.utils.GpsUtils;
 import com.yuxie.demo.video.VideoListActivity;
 
 import java.io.UnsupportedEncodingException;
@@ -72,7 +75,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
         init();
 
-//        info();
+        info();
 
     }
 
@@ -222,7 +225,15 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
 
     public void info() {
-        ServerApi.getInstance().info(23.1234, 113.5698, "广州", DeviceUtils.getAndroidID())
+
+        Location location = GpsUtils.getLastKnownLocation(mContext);
+        if (location==null){
+            //定位失败
+            LogUtils.d("定位失败!");
+            return;
+        }
+
+        ServerApi.getInstance().info(location.getLongitude(), location.getLatitude(), "广州", DeviceUtils.getAndroidID())
                 .compose(RxSchedulers.io_main())
                 .subscribe(new RxSubscriber<BaseRespose>(mContext, false) {
                     @Override
