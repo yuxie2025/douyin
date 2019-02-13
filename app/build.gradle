@@ -125,7 +125,7 @@ android {
         api 'com.alibaba:fastjson:1.2.23'
         api 'httpcomponents-httpcore:httpcore:4.0-alpha6'
 
-        api project(path: ':baselib')
+//        api project(path: ':baselib')
 //        compile project(path: ':alipay_lib')
 //        compile project(path: ':amap_lib')
 //        compile project(path: ':apkupdate_lib')
@@ -134,6 +134,8 @@ android {
 //        compile project(path: ':wechat_pay_lib')
         api project(path: ':audio_lib')
         api project(path: ':greendao_lib')
+
+        api 'com.rl.baselib:baselib:1.0.0'
 
         //base64架包
         api files('libs/sun.misc.BASE64Decoder.jar')

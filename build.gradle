@@ -16,6 +16,7 @@ buildscript {
         jcenter()
         mavenCentral() // add repository
         maven { url "https://jitpack.io" }
+        maven { url "https://raw.githubusercontent.com/yuxie2025/baselib/master" }
     }
 
 }
@@ -26,6 +27,7 @@ allprojects {
         jcenter()
         mavenCentral() // add repository
         maven { url "https://jitpack.io" }
+        maven { url "https://raw.githubusercontent.com/yuxie2025/baselib/master" }
     }
 }
 
