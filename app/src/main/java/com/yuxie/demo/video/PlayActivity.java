@@ -27,9 +27,10 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.yuxie.demo.R;
+import com.yuxie.demo.base.MyBaseActivity;
 
 
-public class PlayActivity extends Activity {
+public class PlayActivity extends MyBaseActivity {
 
     private WebView web;
     private ProgressBar pbLoadUrl;//进度条
@@ -71,16 +72,18 @@ public class PlayActivity extends Activity {
         }
     });
 
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_play;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("SetJavaScriptEnabled")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play);
-
+    protected void initView(Bundle savedInstanceState) {
         //初始化webView
         initWebView();
-
     }
 
     //初始化webView

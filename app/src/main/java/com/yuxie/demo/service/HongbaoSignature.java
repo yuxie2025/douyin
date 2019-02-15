@@ -3,9 +3,6 @@ package com.yuxie.demo.service;
 import android.graphics.Rect;
 import android.view.accessibility.AccessibilityNodeInfo;
 
-/**
- * Created by Zhongyi on 1/21/16.
- */
 public class HongbaoSignature {
     public String sender, content, time, contentDescription = "", commentString;
     public boolean others;

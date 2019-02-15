@@ -14,6 +14,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.yuxie.demo.R;
 import com.yuxie.demo.api.UrlUtils;
 import com.yuxie.demo.api.server.ServerApi;
+import com.yuxie.demo.base.MyBaseActivity;
 
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -24,7 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.adapter.rxjava.Result;
 
-public class NetActivity extends BaseActivity {
+public class NetActivity extends MyBaseActivity {
 
     @BindView(R.id.et_url)
     AppCompatEditText etUrl;
@@ -149,14 +150,6 @@ public class NetActivity extends BaseActivity {
                 }
             }
         }));
-    }
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @Override

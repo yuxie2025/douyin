@@ -34,3 +34,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     api files('libs/bdasr_V3_20180320_9066860.jar')
 }
+
+
+apply from:'../maven_build.gradle'

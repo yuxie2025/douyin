@@ -8,13 +8,12 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.baselib.base.BaseActivity;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yuxie.demo.R;
-import com.yuxie.demo.adapter.SmsApiAdapter;
 import com.yuxie.demo.api.ServerApiService;
+import com.yuxie.demo.base.MyBaseActivity;
 import com.yuxie.demo.entity.SmsApi;
 import com.yuxie.demo.greendao.SmsApiDao;
 import com.yuxie.demo.utils.CRequest;
@@ -38,7 +37,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
-public class SmsApiActivity extends BaseActivity {
+public class SmsApiActivity extends MyBaseActivity {
 
     @BindView(R.id.phone_number)
     AppCompatEditText phoneNumber;

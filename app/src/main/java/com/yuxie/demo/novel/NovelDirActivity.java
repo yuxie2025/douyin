@@ -17,8 +17,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
 import com.yuxie.demo.R;
 import com.yuxie.demo.api.server.ServerApi;
-import com.yuxie.demo.txt.Txt;
-import com.yuxie.demo.txt.TxtDir;
+import com.yuxie.demo.base.MyBaseActivity;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class NovelDirActivity extends BaseActivity {
+public class NovelDirActivity extends MyBaseActivity {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;

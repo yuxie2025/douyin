@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yuxie.demo.R;
-import com.yuxie.demo.txt.TxtDir;
 
 import java.util.List;
 

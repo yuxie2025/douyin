@@ -1,0 +1,37 @@
+apply plugin: 'maven'
+
+ext {
+    // 这个路径是从Github上Clone的本地路径
+//    GITHUB_REPO_PATH = "../mylibrary/aar"
+//    // 在用到的代码上依赖的代码compile 'com.andrjhf.storage:encrypt:1.0.0'
+//    PUBLISH_GROUP_ID = 'com.rl.mylibrary'
+//    PUBLISH_ARTIFACT_ID = 'mylibrary'
+//    PUBLISH_VERSION = '1.0.0'
+    // 这个路径是从Github上Clone的本地路径
+    GITHUB_REPO_PATH = "../audio_lib/aar"
+    // 在用到的代码上依赖的代码compile 'com.andrjhf.storage:encrypt:1.0.0'
+    PUBLISH_GROUP_ID = 'com.rl'
+    PUBLISH_ARTIFACT_ID = 'audio_lib'
+    PUBLISH_VERSION = '1.0.0'
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        def deployPath = file(project.GITHUB_REPO_PATH)
+        repository(url: "file://${deployPath.absolutePath}")
+        pom.project {
+            groupId project.PUBLISH_GROUP_ID
+            artifactId project.PUBLISH_ARTIFACT_ID
+            version project.PUBLISH_VERSION
+        }
+    }
+}
+
+// 源代码一起打包(不需要打包源代码的不要添加这几行)
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.sourceFiles
+}
+artifacts {
+    archives androidSourcesJar
+}

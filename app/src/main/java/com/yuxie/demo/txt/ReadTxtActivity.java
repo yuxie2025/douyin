@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.baselib.base.BaseActivity;
 import com.yuxie.demo.R;
+import com.yuxie.demo.base.MyBaseActivity;
 import com.yuxie.demo.utils.Utils;
 
 import butterknife.BindView;
@@ -21,7 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class ReadTxtActivity extends BaseActivity {
+public class ReadTxtActivity extends MyBaseActivity {
 
     @BindView(R.id.title)
     TextView title;

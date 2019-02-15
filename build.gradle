@@ -5,10 +5,9 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath 'com.antfortune.freeline:gradle:0.8.8'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin
         classpath "com.jakewharton:butterknife-gradle-plugin:8.8.1"
-        classpath 'com.qihoo360.replugin:replugin-plugin-gradle:2.2.4'
+        classpath 'com.qihoo360.replugin:replugin-plugin-gradle:2.3.1'
     }
 
     repositories {
@@ -17,6 +16,7 @@ buildscript {
         mavenCentral() // add repository
         maven { url "https://jitpack.io" }
         maven { url "https://raw.githubusercontent.com/yuxie2025/baselib/master" }
+        maven { url "https://raw.githubusercontent.com/yuxie2025/audio_lib/master" }
     }
 
 }
@@ -28,6 +28,7 @@ allprojects {
         mavenCentral() // add repository
         maven { url "https://jitpack.io" }
         maven { url "https://raw.githubusercontent.com/yuxie2025/baselib/master" }
+        maven { url "https://raw.githubusercontent.com/yuxie2025/audio_lib/master" }
     }
 }
 

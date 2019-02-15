@@ -7,27 +7,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.yuxie.demo.R;
+import com.yuxie.demo.base.MyBaseActivity;
 import com.yuxie.demo.login.contract.LoginContract;
 import com.yuxie.demo.login.presenter.LoginPresenter;
 
 
-public class LoginActivity extends AppCompatActivity implements LoginContract.View {
+public class LoginActivity extends MyBaseActivity implements LoginContract.View {
 
     private EditText etUsername;//用户名
     private EditText etPassword;//密码
 
     private LoginPresenter mloginPresenter;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-        mloginPresenter = new LoginPresenter(this);
-
-        etUsername = (EditText) findViewById(R.id.et_username);
-        etPassword = (EditText) findViewById(R.id.et_password);
-    }
 
     public void btn_login(View view) {
         mloginPresenter.login();
@@ -36,6 +26,20 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     @Override
     public void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState) {
+
+        mloginPresenter = new LoginPresenter(this);
+
+        etUsername = (EditText) findViewById(R.id.et_username);
+        etPassword = (EditText) findViewById(R.id.et_password);
     }
 
     @Override

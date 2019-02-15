@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.baselib.base.BaseActivity;
 import com.yuxie.demo.R;
+import com.yuxie.demo.base.MyBaseActivity;
 import com.yuxie.demo.controlpc.ControlActivity;
 
 import java.net.DatagramSocket;
@@ -21,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RemoteControlActivity extends BaseActivity {
+public class RemoteControlActivity extends MyBaseActivity {
 
     @BindView(R.id.et_socket)
     EditText et_socket;

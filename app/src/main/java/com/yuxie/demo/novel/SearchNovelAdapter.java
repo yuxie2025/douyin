@@ -1,18 +1,11 @@
 package com.yuxie.demo.novel;
 
-import android.support.annotation.Nullable;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import com.baselib.uitls.GlideUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yuxie.demo.R;
-import com.yuxie.demo.txt.Txt;
-import com.yuxie.demo.txt.TxtDirActivity;
-
-import java.util.List;
 
 /**
  * Created by Lankun on 2019/01/11

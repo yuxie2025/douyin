@@ -41,14 +41,14 @@
             </intent-filter>
         </activity>
         <!-- webview使用 -->
-        <activity android:name=".activity.WebViewJsActivity" />
+        <activity android:name=".other.WebViewJsActivity" />
         <!-- okhttp3使用 -->
-        <activity android:name=".activity.Okhttp3Activity" />
-        <activity android:name=".activity.GlideAndPicassoActivity" />
-        <activity android:name=".activity.ViewActivity" />
+        <activity android:name=".other.Okhttp3Activity" />
+        <activity android:name=".other.GlideAndPicassoActivity" />
+        <activity android:name=".myview.ViewActivity" />
         <activity android:name=".mvp.view.UserActivity" />
         <activity android:name=".login.view.LoginActivity" />
-        <activity android:name=".activity.RxjavaActivity" />
+        <activity android:name=".other.RxjavaActivity" />
         <activity android:name=".mvvp.MvvpActivity" />
         <activity android:name=".video.VideoListActivity" />
         <activity
@@ -126,7 +126,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".net.NetActivity" />
-        <activity android:name=".activity.TestActivity" />
         <activity android:name=".dq.DqActivity" />
         <activity android:name=".novel.SearchNovelActivity" />
         <activity android:name=".novel.NovelDirActivity" />

@@ -6,23 +6,17 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.baselib.base.BaseActivity;
 import com.baselib.basebean.BaseRespose;
 import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
-import com.baselib.uitls.CommonUtils;
 import com.baselib.uitls.NoBugLinearLayoutManager;
 import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kennyc.view.MultiStateView;
 import com.yuxie.demo.R;
-import com.yuxie.demo.api.ServerApiService;
 import com.yuxie.demo.api.server.ServerApi;
-import com.yuxie.demo.txt.Txt;
-import com.yuxie.demo.txt.TxtActivity;
-import com.yuxie.demo.txt.TxtDirActivity;
+import com.yuxie.demo.base.MyBaseActivity;
 
 import java.util.List;
 
@@ -30,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SearchNovelActivity extends BaseActivity {
+public class SearchNovelActivity extends MyBaseActivity {
 
     @BindView(R.id.et_txt_name)
     EditText etTxtName;

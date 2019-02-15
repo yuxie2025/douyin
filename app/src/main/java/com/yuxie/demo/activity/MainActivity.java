@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -15,15 +14,14 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.baselib.base.BaseActivity;
 import com.baselib.basebean.BaseRespose;
 import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
 import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.SPUtils;
 import com.yuxie.demo.R;
 import com.yuxie.demo.api.server.ServerApi;
+import com.yuxie.demo.base.MyBaseActivity;
 import com.yuxie.demo.controlpc.RemoteControlActivity;
 import com.yuxie.demo.dq.DqActivity;
 import com.yuxie.demo.music.MusicActivity;
@@ -32,13 +30,11 @@ import com.yuxie.demo.net.NetActivity;
 import com.yuxie.demo.novel.SearchNovelActivity;
 import com.yuxie.demo.sms.SmsApiActivity;
 import com.yuxie.demo.sy.SyActivity;
-import com.yuxie.demo.txt.TxtActivity;
+import com.yuxie.demo.test.UnitTest;
 import com.yuxie.demo.utils.AccessibilityUtils;
 import com.yuxie.demo.utils.GpsUtils;
 import com.yuxie.demo.video.VideoListActivity;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +46,7 @@ import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends MyBaseActivity implements AdapterView.OnItemClickListener {
 
     ListView lv_test;
     Context mContext;
@@ -245,7 +241,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     public void info() {
 
         Location location = GpsUtils.getLastKnownLocation(mContext);
-        if (location==null){
+        if (location == null) {
             //定位失败
             return;
         }

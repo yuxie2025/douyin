@@ -18,8 +18,6 @@ import android.widget.Toast;
 import java.util.List;
 
 /**
- * Created by Eren on 2017/6/24.
- * <p/>
  * 辅助服务基类，包含公共的动作
  */
 public class BaseAccessibilityService extends AccessibilityService {

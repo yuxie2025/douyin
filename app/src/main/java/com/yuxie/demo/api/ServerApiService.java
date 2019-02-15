@@ -2,8 +2,8 @@ package com.yuxie.demo.api;
 
 import com.baselib.basebean.BaseRespose;
 import com.yuxie.demo.entity.UrlLibBean;
-import com.yuxie.demo.txt.Txt;
-import com.yuxie.demo.txt.TxtDir;
+import com.yuxie.demo.novel.Txt;
+import com.yuxie.demo.novel.TxtDir;
 
 import java.util.List;
 import java.util.Map;

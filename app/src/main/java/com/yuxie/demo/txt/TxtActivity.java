@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.baselib.base.BaseActivity;
 import com.yuxie.demo.R;
+import com.yuxie.demo.base.MyBaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class TxtActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class TxtActivity extends MyBaseActivity implements AdapterView.OnItemClickListener {
 
     @BindView(R.id.title)
     TextView title;

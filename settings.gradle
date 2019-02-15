@@ -1,1 +1,4 @@
-include ':app', ':audio_lib', ':greendao_lib', ':jsbridge_lib', ':baselib'
+include ':app'
+//, ':audio_lib'
+//, ':greendao_lib'
+//, ':jsbridge_lib', ':baselib'

@@ -5,24 +5,19 @@ import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.baselib.base.BaseActivity;
 import com.baselib.basebean.BaseRespose;
 import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
 import com.baselib.ui.widget.ClearableEditTextWithIcon;
-import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.yuxie.demo.R;
 import com.yuxie.demo.api.server.HostType;
 import com.yuxie.demo.api.server.ServerApi;
+import com.yuxie.demo.base.MyBaseActivity;
 import com.yuxie.demo.entity.UrlLibBean;
 import com.yuxie.demo.entity.UrlLibraryBean;
 import com.yuxie.demo.greendao.UrlLibraryBeanDao;
 import com.yuxie.demo.utils.db.EntityManager;
-
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -30,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SyActivity extends BaseActivity {
+public class SyActivity extends MyBaseActivity {
 
     @BindView(R.id.videoId)
     ClearableEditTextWithIcon videoId;
@@ -95,7 +90,7 @@ public class SyActivity extends BaseActivity {
                 .subscribe(new RxSubscriber<BaseRespose<List<UrlLibBean>>>(mContext, false) {
                     @Override
                     protected void _onNext(BaseRespose<List<UrlLibBean>> baseRespose) {
-                        if (baseRespose.isSuccess()) {
+                        if (baseRespose.success()) {
                             insertData(baseRespose.getData());
                         }
                         showToast("导入成功!");

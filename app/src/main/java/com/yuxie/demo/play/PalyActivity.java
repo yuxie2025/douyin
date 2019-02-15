@@ -12,17 +12,19 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.yuxie.demo.R;
+import com.yuxie.demo.base.MyBaseActivity;
 
 import butterknife.ButterKnife;
 
-public class PalyActivity extends AppCompatActivity {
+public class PalyActivity extends MyBaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_paly);
-        ButterKnife.bind(this);
+    protected int getLayoutId() {
+        return R.layout.activity_paly;
+    }
 
+    @Override
+    protected void initView(Bundle savedInstanceState) {
         initPlay();
     }
 

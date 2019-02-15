@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.baselib.base.BaseActivity;
 import com.yuxie.demo.R;
+import com.yuxie.demo.base.MyBaseActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class VideoListActivity extends BaseActivity {
+public class VideoListActivity extends MyBaseActivity {
 
     @BindView(R.id.title)
     TextView title;

@@ -1,19 +1,16 @@
 package com.yuxie.demo.novel;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.baselib.base.BaseActivity;
 import com.yuxie.demo.R;
-import com.yuxie.demo.txt.ReadTxtActivity;
+import com.yuxie.demo.base.MyBaseActivity;
 
 import butterknife.BindView;
 
-public class ReadNovelActivity extends BaseActivity {
+public class ReadNovelActivity extends MyBaseActivity {
 
     @BindView(R.id.tv_txt_show)
     TextView tvTxtShow;

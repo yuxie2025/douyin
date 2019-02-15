@@ -31,6 +31,7 @@ import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.yuxie.demo.R;
+import com.yuxie.demo.base.MyBaseActivity;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -47,7 +48,7 @@ import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class ControlActivity extends BaseActivity implements IStatus {
+public class ControlActivity extends MyBaseActivity implements IStatus {
 
     private static float mx = 0; // 发送的鼠标移动的差值
     private static float my = 0;

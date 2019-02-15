@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.baselib.base.BaseActivity;
 import com.blankj.utilcode.util.ToastUtils;
 import com.yuxie.demo.R;
+import com.yuxie.demo.base.MyBaseActivity;
 import com.yuxie.demo.entity.SmsApi;
 import com.yuxie.demo.greendao.SmsApiDao;
 import com.yuxie.demo.utils.db.EntityManager;
@@ -18,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UpdateSmsApiActivity extends BaseActivity {
+public class UpdateSmsApiActivity extends MyBaseActivity {
 
     public static final String SMS_API = "smsApi";
     @BindView(R.id.type)
