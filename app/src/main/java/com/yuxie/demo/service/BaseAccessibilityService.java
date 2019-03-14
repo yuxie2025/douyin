@@ -20,6 +20,7 @@ import java.util.List;
 /**
  * 辅助服务基类，包含公共的动作
  */
+@SuppressWarnings("unused")
 public class BaseAccessibilityService extends AccessibilityService {
     public static final String TAG = "test";
     public AccessibilityNodeInfo node = null;
@@ -53,7 +54,7 @@ public class BaseAccessibilityService extends AccessibilityService {
     /**
      * 滑动左到右
      */
-    public void SWIPE_LEFT_AND_RIGHTClick() {
+    public void wipeLeftAndRight() {
         sleepTime(1000);
         performGlobalAction(GESTURE_SWIPE_RIGHT);
     }
@@ -61,7 +62,7 @@ public class BaseAccessibilityService extends AccessibilityService {
     /**
      * 滑动下到上
      */
-    public void SWIPE_DOWN_AND_UPClick() {
+    public void swipeDownAndUp() {
         sleepTime(1000);
         performGlobalAction(GESTURE_SWIPE_UP);
     }
@@ -95,8 +96,7 @@ public class BaseAccessibilityService extends AccessibilityService {
     public AccessibilityNodeInfo findByClassName(String className) {
         // 查找当前窗口中包含“xx”文字的按钮
         AccessibilityNodeInfo nodeInfo = getRootInActiveWindow();
-        AccessibilityNodeInfo targetNode = findByClassName(nodeInfo, className);
-        return targetNode;
+        return findByClassName(nodeInfo, className);
     }
 
     private AccessibilityNodeInfo findByClassName(AccessibilityNodeInfo node, String className) {
@@ -135,12 +135,9 @@ public class BaseAccessibilityService extends AccessibilityService {
         AccessibilityNodeInfo nodeInfo = getRootInActiveWindow();
         AccessibilityNodeInfo targetNode = null;
         node = null;
-        if (node == null) {
-            List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByText(text);
-            return list.get(0).getText().toString();
-            //String text = nodeInfo.getText().toString();
-        }
-        return null;
+        List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByText(text);
+        return list.get(0).getText().toString();
+        //String text = nodeInfo.getText().toString();
     }
 
     /**
@@ -152,14 +149,9 @@ public class BaseAccessibilityService extends AccessibilityService {
 
     public String getTextById(String id) {
         AccessibilityNodeInfo nodeInfo = getRootInActiveWindow();
-        AccessibilityNodeInfo targetNode = null;
         node = null;
-        if (node == null) {
-            List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByViewId("com.tencent.mobileqq:id/" + id);
-            return list.get(0).getText().toString();
-            //String text = nodeInfo.getText().toString();
-        }
-        return "没有群";
+        List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByViewId("com.tencent.mobileqq:id/" + id);
+        return list.get(0).getText().toString();
     }
 
 
@@ -175,12 +167,10 @@ public class BaseAccessibilityService extends AccessibilityService {
         AccessibilityNodeInfo targetNode = null;
 
         node = null;
-        if (node == null) {
-            List<AccessibilityNodeInfo> list = nodeInfo
-                    .findAccessibilityNodeInfosByViewId("com.tencent.mm:id/" + id);
-            if (list.size() > 0) {
-                node = list.get(i);
-            }
+        List<AccessibilityNodeInfo> list = nodeInfo
+                .findAccessibilityNodeInfosByViewId("com.tencent.mm:id/" + id);
+        if (list.size() > 0) {
+            node = list.get(i);
         }
         targetNode = node;
 
@@ -201,13 +191,13 @@ public class BaseAccessibilityService extends AccessibilityService {
         AccessibilityNodeInfo nodeInfo = getRootInActiveWindow();
         AccessibilityNodeInfo targetNode = null;
         node = null;
-        if (node == null) {
-            List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByViewId("com.tencent.mm:id/" + id);
-            if (list.size() > 0) {
-                return true;
-            }
+        List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByViewId("com.tencent.mm:id/" + id);
+        if (list.size() > 0) {
+            return true;
+        } else {
+            return false;
         }
-        return false;
+
     }
 
     /**
@@ -220,11 +210,9 @@ public class BaseAccessibilityService extends AccessibilityService {
         AccessibilityNodeInfo nodeInfo = getRootInActiveWindow();
         AccessibilityNodeInfo targetNode = null;
         node = null;
-        if (node == null) {
-            List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByViewId("com.tencent.mm:id/" + id);
-            if (list.size() > 0) {
-                node = list.get(i);
-            }
+        List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByViewId("com.tencent.mm:id/" + id);
+        if (list.size() > 0) {
+            node = list.get(i);
         }
         targetNode = node;
         if (targetNode != null) {
@@ -280,11 +268,9 @@ public class BaseAccessibilityService extends AccessibilityService {
     public boolean isFindText(String text) {
         AccessibilityNodeInfo nodeInfo = getRootInActiveWindow();
         node = null;
-        if (node == null) {
-            List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByText(text);
-            if (list.size() > 0) {
-                return true;
-            }
+        List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByText(text);
+        if (list.size() > 0) {
+            return true;
         }
         return false;
     }
@@ -375,19 +361,16 @@ public class BaseAccessibilityService extends AccessibilityService {
         AccessibilityNodeInfo targetNode = null;
         node = null;
         try {
-            if (node == null) {
-                List<AccessibilityNodeInfo> list = nodeInfo
-                        .findAccessibilityNodeInfosByViewId("com.tencent.mm:id/" + id);
-                if (list.size() > 0)
-                    node = list.get(i);
-            }
+            List<AccessibilityNodeInfo> list = nodeInfo
+                    .findAccessibilityNodeInfosByViewId("com.tencent.mm:id/" + id);
+            if (list.size() > 0)
+                node = list.get(i);
             targetNode = node;
             if (targetNode != null) {
                 targetNode.performAction(AccessibilityNodeInfo.ACTION_FOCUS);
                 targetNode.performAction(AccessibilityNodeInfo.ACTION_PASTE);
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -398,11 +381,9 @@ public class BaseAccessibilityService extends AccessibilityService {
         AccessibilityNodeInfo nodeInfo = getRootInActiveWindow();
         AccessibilityNodeInfo targetNode = null;
         node = null;
-        if (node == null) {
-            List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByViewId("com.tencent.mm:id/" + id);
-            if (list.size() > 0) {
-                node = list.get(i);
-            }
+        List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByViewId("com.tencent.mm:id/" + id);
+        if (list.size() > 0) {
+            node = list.get(i);
         }
         targetNode = node;
         if (targetNode != null) {
@@ -418,13 +399,11 @@ public class BaseAccessibilityService extends AccessibilityService {
         AccessibilityNodeInfo nodeInfo = getRootInActiveWindow();
         AccessibilityNodeInfo targetNode = null;
         node = null;
-        if (node == null) {
-            List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByViewId("android:id/" + id);
-            Log.i("dialog", list.size() + "");
-            if (list.size() > 0) {
-                node = list.get(i);
-                Log.i("dialog", node + "");
-            }
+        List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByViewId("android:id/" + id);
+        Log.i("dialog", list.size() + "");
+        if (list.size() > 0) {
+            node = list.get(i);
+            Log.i("dialog", node + "");
         }
         targetNode = node;
         if (targetNode != null) {
@@ -448,17 +427,15 @@ public class BaseAccessibilityService extends AccessibilityService {
         AccessibilityNodeInfo targetNode = null;
         AccessibilityNodeInfo targetNode1 = null;
         node = null;
-        if (targetNode == null) {
-            List<AccessibilityNodeInfo> list = nodeInfo
-                    .findAccessibilityNodeInfosByViewId("com.tencent.mm:id/" + id);
+        List<AccessibilityNodeInfo> list = nodeInfo
+                .findAccessibilityNodeInfosByViewId("com.tencent.mm:id/" + id);
 
-            nodeInfo.findAccessibilityNodeInfosByText("");
-            if (list.size() > 0) {
-                targetNode = list.get(i);
-                Log.i("890", targetNode + "node");
-                if (targetNode.getText().equals(text)) {
-                    node = targetNode;
-                }
+        nodeInfo.findAccessibilityNodeInfosByText("");
+        if (list.size() > 0) {
+            targetNode = list.get(i);
+            Log.i("890", targetNode + "node");
+            if (targetNode.getText().equals(text)) {
+                node = targetNode;
             }
         }
         targetNode1 = node;
@@ -493,7 +470,6 @@ public class BaseAccessibilityService extends AccessibilityService {
             getPackageManager().getActivityInfo(componentName, 0);
             currentActivityName = componentName.flattenToShortString();
         } catch (PackageManager.NameNotFoundException e) {
-            currentActivityName = "";
         }
         return currentActivityName;
     }
