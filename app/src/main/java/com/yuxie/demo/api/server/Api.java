@@ -1,16 +1,14 @@
 package com.yuxie.demo.api.server;
 
-
 import com.baselib.baseapp.BaseApplication;
 import com.baselib.baserx.GsonDConverterFactory;
 import com.baselib.commonutils.NetWorkUtils;
-import com.yuxie.demo.sy.Constant;
-import com.yuxie.demo.sy.f;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -94,8 +92,7 @@ public class Api<T> {
                 .addInterceptor(mRewriteCacheControlInterceptor)
                 .addNetworkInterceptor(mRewriteCacheControlInterceptor)
                 .addInterceptor(headerInterceptor)
-                .addInterceptor(new f(BaseApplication.getAppContext(), Constant.b))
-//                .proxy(Proxy.NO_PROXY)
+                .proxy(Proxy.NO_PROXY)
                 .addInterceptor(logInterceptor)//日志
                 .cache(cache)
                 .build();

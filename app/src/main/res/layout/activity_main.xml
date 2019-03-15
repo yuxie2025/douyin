@@ -5,9 +5,12 @@
 
     <include layout="@layout/navigation_bar" />
 
-    <ListView
-        android:id="@+id/lv_test"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/tvExplain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textColor="#333"
+        android:textSize="16sp" />
 
 </LinearLayout>

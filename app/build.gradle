@@ -1,13 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.greenrobot.greendao'
 
 def androidCf = rootProject.ext.android
-
-greendao {
-    schemaVersion 4
-    daoPackage androidCf.applicationId + ".greendao"
-    targetGenDir 'src/main/java'
-}
 
 android {
     compileSdkVersion androidCf.compileSdkVersion
@@ -41,11 +34,6 @@ android {
                 UMENG_CHANNEL           : "Channel ID",//友盟
                 "com.amap.api.v2.apikey": "caa67d9f01219028370158753e1efce0",//设置高德Key
         ]
-
-//        ndk {
-//            // 设置支持的SO库架构
-//            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "mips", "mips64", "x86", "x86_64"
-//        }
 
         ndk {
             //设置支持的SO库架构
@@ -87,7 +75,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.all {
             // 输出apk名称为great_v1.0_wandoujia.apk
-            def fileName = "myapp.apk"
+            def fileName = "抖音无水印.apk"
             outputFileName = fileName
         }
     }
@@ -115,30 +103,7 @@ android {
 
         testImplementation 'junit:junit:4.12'
 
-        /*picasso图片缓存架包*/
-        api 'com.squareup.picasso:picasso:2.5.1'
-
-        //JSOUP 解析html使用
-        api 'org.jsoup:jsoup:1.10.2'
-
-        api 'com.alibaba:fastjson:1.2.23'
-        api 'httpcomponents-httpcore:httpcore:4.0-alpha6'
-
-//        api project(path: ':baselib')
-//        compile project(path: ':alipay_lib')
-//        compile project(path: ':amap_lib')
-//        compile project(path: ':apkupdate_lib')
-//        compile project(path: ':dfu_lib')
-//        compile project(path: ':video_lib')
-//        compile project(path: ':wechat_pay_lib')
-//        api project(path: ':audio_lib')
-//        api project(path: ':greendao_lib')
-
-        implementation 'com.rl:baselib:1.0.07'
-        implementation 'com.audiolib:audiolib:1.0.0'
-
-        //base64架包
-        api files('libs/sun.misc.BASE64Decoder.jar')
+        implementation 'com.rl:baselib:1.0.08'
 
         //将最新的版本改为当前版本号，例如2.3.1(报错就填写固定的版本号)
         api("com.github.hotchemi:permissionsdispatcher:3.2.0") {
@@ -147,30 +112,9 @@ android {
         }
         annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:3.2.0'
 
-        //阿里快速编译
-        debugApi 'com.antfortune.freeline:runtime:0.8.8'
-
         //注解butterknife
         api 'com.jakewharton:butterknife:8.8.1'
         annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-
-        api 'com.lqr.emoji:library:1.0.2'
-
-        // greendao library
-        api 'org.greenrobot:greendao:3.2.2'
-
     }
-
-//    // 这个plugin需要放在android配置之后，因为需要读取android中的配置项
-//    apply plugin: 'replugin-plugin-gradle'
-//    repluginPluginConfig {
-//
-//        //插件名
-//        pluginName = "demo1"
-//        //宿主app的包名
-//        hostApplicationId = "com.qihoo360.replugin.sample.host"
-//        //宿主app的启动activity
-//        hostAppLauncherActivity = "com.qihoo360.replugin.sample.host.MainActivity"
-//    }
 }

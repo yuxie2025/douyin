@@ -4,7 +4,7 @@ ext {
     android = [
             compileSdkVersion : 28,
             buildToolsVersion : "28.0.3",
-            applicationId     : "com.yuxie.demo",
+            applicationId     : "com.yuxie.douyin",
             minSdkVersion     : 18,
             targetSdkVersion  : 22,
             versionCode       : 2,
@@ -14,9 +14,9 @@ ext {
     //Libraries variable
     supportv_Verion = '27.1.0'
 
-    debug_host = "\"http://10.10.10.224:8090/\""
-    release_host = "\"http://10.10.10.13:18420/\""
-    item = "\"#\""
+    debug_host = "\"http://yuxie2025.github.io/\""
+    release_host = "\"http://yuxie2025.github.io/\""
+    item = "\"\""
 
     //图片加载
     glide_Verion = '4.5.0'
