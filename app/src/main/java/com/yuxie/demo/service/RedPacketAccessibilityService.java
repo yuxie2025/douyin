@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
-import com.yuxie.demo.utils.CommonUtils;
+import com.baselib.uitls.CommonUtils;
 
 import java.util.List;
 

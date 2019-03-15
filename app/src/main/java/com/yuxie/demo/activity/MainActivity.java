@@ -20,6 +20,8 @@ import android.widget.TextView;
 import com.baselib.basebean.BaseRespose;
 import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
+import com.baselib.uitls.CommonUtils;
+import com.baselib.uitls.SysDownloadUtil;
 import com.blankj.utilcode.constant.RegexConstants;
 import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
@@ -38,9 +40,7 @@ import com.yuxie.demo.sms.SmsApiActivity;
 import com.yuxie.demo.sy.SyActivity;
 import com.yuxie.demo.test.UnitTest;
 import com.yuxie.demo.utils.AccessibilityUtils;
-import com.yuxie.demo.utils.CommonUtils;
 import com.yuxie.demo.utils.GpsUtils;
-import com.yuxie.demo.utils.SysDownloadUtil;
 import com.yuxie.demo.video.VideoListActivity;
 
 import java.util.ArrayList;

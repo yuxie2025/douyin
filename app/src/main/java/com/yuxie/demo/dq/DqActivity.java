@@ -91,7 +91,7 @@ public class DqActivity extends MyBaseActivity {
 
         //http://mz.qiaosong.net:8080/sheding/shareVideo?videoId=901770&userId=4bf4e573e0064f2d9c1642c5bf8a20cd&from=singlemessage
         if (videoIdStr.contains("videoId=")) {
-            videoIdStr = com.yuxie.demo.utils.CommonUtils.getMatches(videoIdStr, "videoId=(.+?)&");
+            videoIdStr = CommonUtils.getMatches(videoIdStr, "videoId=(.+?)&");
         }
 
         if (!isAdd(videoIdStr)) {

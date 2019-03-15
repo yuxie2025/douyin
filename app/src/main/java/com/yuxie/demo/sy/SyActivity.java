@@ -90,7 +90,7 @@ public class SyActivity extends MyBaseActivity {
                 .subscribe(new RxSubscriber<BaseRespose<List<UrlLibBean>>>(mContext, false) {
                     @Override
                     protected void _onNext(BaseRespose<List<UrlLibBean>> baseRespose) {
-                        if (baseRespose.success()) {
+                        if (baseRespose.isSuccess()) {
                             insertData(baseRespose.getData());
                         }
                         showToast("导入成功!");
