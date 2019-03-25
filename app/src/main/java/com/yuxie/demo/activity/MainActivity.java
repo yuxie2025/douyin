@@ -1,35 +1,24 @@
 package com.yuxie.demo.activity;
 
-import android.Manifest;
 import android.content.ClipboardManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baselib.base.BaseActivity;
-import com.baselib.basebean.BaseRespose;
 import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
 import com.baselib.uitls.CommonUtils;
 import com.baselib.uitls.SysDownloadUtil;
 import com.baselib.uitls.UrlUtils;
 import com.blankj.utilcode.constant.RegexConstants;
-import com.blankj.utilcode.util.DeviceUtils;
-import com.blankj.utilcode.util.LogUtils;
 import com.yuxie.demo.R;
 import com.yuxie.demo.api.server.ServerApi;
-import com.yuxie.demo.utils.GpsUtils;
 
 import butterknife.BindView;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.OnPermissionDenied;
-import permissions.dispatcher.RuntimePermissions;
 
-@RuntimePermissions
 public class MainActivity extends BaseActivity {
 
 
@@ -61,28 +50,6 @@ public class MainActivity extends BaseActivity {
         downloadUtil.setDownloadDir("A_DyVideo");
         registerClipEvents();
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        MainActivityPermissionsDispatcher.storageNeedWithPermissionCheck(this);
-    }
-
-
-    @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
-    void storageNeed() {
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
-
-    @OnPermissionDenied({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
-    void storageDenied() {
-        mustSetting("应用需要存储权限,去设置?");
     }
 
     /**

@@ -75,7 +75,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.all {
             // 输出apk名称为great_v1.0_wandoujia.apk
-            def fileName = "抖音无水印.apk"
+            def fileName = "douyin.apk"
             outputFileName = fileName
         }
     }
@@ -86,9 +86,6 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
-
-    //Android 6.0不再支持 Apache HTTP client 使用许添加
-    useLibrary 'org.apache.http.legacy'
 
     dependencies {
         api fileTree(dir: 'libs', include: ['*.jar'])
@@ -103,7 +100,7 @@ android {
 
         testImplementation 'junit:junit:4.12'
 
-        implementation 'com.rl:baselib:1.0.08'
+        implementation 'com.rl:baselib:1.0.13'
 
         //将最新的版本改为当前版本号，例如2.3.1(报错就填写固定的版本号)
         api("com.github.hotchemi:permissionsdispatcher:3.2.0") {
