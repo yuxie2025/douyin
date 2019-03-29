@@ -47,7 +47,6 @@ public class MainActivity extends BaseActivity {
         tvExplain.setText(explain);
 
         downloadUtil = new SysDownloadUtil();
-        downloadUtil.setDownloadDir("A_DyVideo");
         registerClipEvents();
 
     }
