@@ -8,3 +8,7 @@
 [抖音无水印](https://yuxie2025.github.io/download/douyin.apk) 下载地址:
 
 ![下载链接](https://raw.githubusercontent.com/yuxie2025/douyin/douyin/app/img/download_qr.png)
+
+app截图:
+
+![app主页截图](https://raw.githubusercontent.com/yuxie2025/douyin/douyin/app/img/app_screen.png)
