@@ -4,9 +4,6 @@ import android.util.SparseArray;
 
 import com.yuxie.demo.api.ServerApiService;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 
 /**
  * 作者: llk on 2017/9/8.

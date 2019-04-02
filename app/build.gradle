@@ -97,10 +97,13 @@ android {
 
         def dependenciesCf = rootProject.ext.dependencieslib
         api dependenciesCf.appcompatv7
+        api dependenciesCf.supportv4
 
         testImplementation 'junit:junit:4.12'
 
-        implementation 'com.rl:baselib:1.0.13'
+//        implementation 'com.rl:baselib:1.0.13'
+
+        implementation 'com.rl.commonlib:commonlib:1.0.1'
 
         //将最新的版本改为当前版本号，例如2.3.1(报错就填写固定的版本号)
         api("com.github.hotchemi:permissionsdispatcher:3.2.0") {
@@ -112,6 +115,8 @@ android {
         //注解butterknife
         api 'com.jakewharton:butterknife:8.8.1'
         annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+        api project(path: ':apkupdate_lib')
 
     }
 }

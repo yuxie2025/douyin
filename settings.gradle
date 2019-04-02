@@ -1,4 +1,4 @@
-include ':app'
+include ':app', ':apkupdate_lib'
 //, ':audio_lib'
 //, ':greendao_lib'
 //, ':jsbridge_lib', ':baselib'

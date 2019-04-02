@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.apkupdate.UpdateActivity;
+import com.apkupdate.widget.ApkVersionModel;
 import com.baselib.base.BaseActivity;
 import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
@@ -28,7 +30,6 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tvExplain)
     TextView tvExplain;
 
-
     ClipboardManager mClipboardManager;
     ClipboardManager.OnPrimaryClipChangedListener mOnPrimaryClipChangedListener;
     private SysDownloadUtil downloadUtil;
@@ -40,7 +41,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setTitle("首页");
+        setTitle("抖音无水印");
         rlLeft.setVisibility(View.INVISIBLE);
 
         String explain = "该app用于下载抖音无水印视频.\n\n使用说明:\n打开抖音>分享>复制链接,即可自动下载";
@@ -48,6 +49,8 @@ public class MainActivity extends BaseActivity {
 
         downloadUtil = new SysDownloadUtil();
         registerClipEvents();
+
+        update();
 
     }
 
@@ -112,6 +115,12 @@ public class MainActivity extends BaseActivity {
             mClipboardManager.removePrimaryClipChangedListener(mOnPrimaryClipChangedListener);
         }
         downloadUtil.unregister(this);
+    }
+
+    private void update() {
+        ApkVersionModel apkVersionModel = new ApkVersionModel();
+        apkVersionModel.setUrl("http://yuxie2025.github.io/download/douyin.apk");
+        UpdateActivity.start(mContext, apkVersionModel);
     }
 
 }
