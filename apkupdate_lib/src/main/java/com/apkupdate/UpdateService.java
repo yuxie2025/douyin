@@ -71,7 +71,7 @@ public class UpdateService extends Service {
         if (TextUtils.isEmpty(updateParamSet.getNotifyEndMessage()))
             updateParamSet.setNotifyEndMessage("下载完成");
         if (0 == updateParamSet.getLogoRes())
-            updateParamSet.setLogoRes(R.drawable.ic_default_notify_logo);
+            updateParamSet.setLogoRes(R.drawable.ic_launcher);
 
         return updateParamSet;
 

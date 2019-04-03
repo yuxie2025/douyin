@@ -3,6 +3,8 @@ package com.yuxie.demo.application;
 import android.content.Context;
 
 import com.baselib.baseapp.BaseApplication;
+import com.tencent.bugly.crashreport.CrashReport;
+import com.yuxie.demo.R;
 
 /**
  * Created by Administrator on 2017/7/13.
@@ -15,7 +17,12 @@ public class App extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+        initData();
+    }
 
+    private void initData() {
+        //腾讯Bugly初始化
+        CrashReport.initCrashReport(getApplicationContext(), getString(R.string.bugly_app_id), false);
     }
 
     public static Context getContext() {

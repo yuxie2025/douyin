@@ -1,5 +1,9 @@
 package com.yuxie.demo.api;
 
+import com.apkupdate.ApkUpdateParamSet;
+import com.apkupdate.widget.ApkVersionModel;
+import com.baselib.basebean.BaseRespose;
+
 import java.util.Map;
 
 import retrofit2.adapter.rxjava.Result;
@@ -23,5 +27,12 @@ public interface ServerApiService {
 
     @GET("")
     Observable<String> getUrl(@Url String url);
+
+    /**
+     * 升级app
+     */
+    @GET("/download/updateApp.json")
+    Observable<BaseRespose<ApkVersionModel>>
+    updateApp();
 
 }

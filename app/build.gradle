@@ -92,18 +92,13 @@ android {
         androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
             exclude group: 'com.android.support', module: 'support-annotations'
         })
-
-        api 'com.android.support.constraint:constraint-layout:1.0.2'
+        testImplementation 'junit:junit:4.12'
 
         def dependenciesCf = rootProject.ext.dependencieslib
         api dependenciesCf.appcompatv7
         api dependenciesCf.supportv4
 
-        testImplementation 'junit:junit:4.12'
-
-//        implementation 'com.rl:baselib:1.0.13'
-
-        implementation 'com.rl.commonlib:commonlib:1.0.1'
+        implementation 'com.rl.commonlib:commonlib:1.0.2'
 
         //将最新的版本改为当前版本号，例如2.3.1(报错就填写固定的版本号)
         api("com.github.hotchemi:permissionsdispatcher:3.2.0") {
@@ -115,6 +110,9 @@ android {
         //注解butterknife
         api 'com.jakewharton:butterknife:8.8.1'
         annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+        //---腾讯Bugly
+        api 'com.tencent.bugly:crashreport:2.8.6'
 
         api project(path: ':apkupdate_lib')
 

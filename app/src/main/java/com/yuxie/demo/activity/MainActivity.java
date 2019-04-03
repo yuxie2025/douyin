@@ -1,25 +1,42 @@
 package com.yuxie.demo.activity;
 
 import android.content.ClipboardManager;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.apkupdate.ApkUpdateParamSet;
 import com.apkupdate.UpdateActivity;
+import com.apkupdate.utils.DownloadUtils;
+import com.apkupdate.utils.UpdateUtils;
 import com.apkupdate.widget.ApkVersionModel;
 import com.baselib.base.BaseActivity;
+import com.baselib.basebean.BaseRespose;
 import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
 import com.baselib.uitls.CommonUtils;
 import com.baselib.uitls.SysDownloadUtil;
 import com.baselib.uitls.UrlUtils;
 import com.blankj.utilcode.constant.RegexConstants;
+import com.blankj.utilcode.util.AppUtils;
+import com.jaeger.library.StatusBarUtil;
 import com.yuxie.demo.R;
 import com.yuxie.demo.api.server.ServerApi;
 
+import java.io.File;
+import java.io.IOException;
+
 import butterknife.BindView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class MainActivity extends BaseActivity {
 
@@ -52,6 +69,24 @@ public class MainActivity extends BaseActivity {
 
         update();
 
+    }
+
+    @Override
+    protected void setStatusBarColor() {
+        int mStatusBarColor = ContextCompat.getColor(mContext, R.color.status_bar_color);
+        StatusBarUtil.setColorForSwipeBack(this, mStatusBarColor, 0);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent home = new Intent(Intent.ACTION_MAIN);
+            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            home.addCategory(Intent.CATEGORY_HOME);
+            startActivity(home);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     /**
@@ -118,9 +153,26 @@ public class MainActivity extends BaseActivity {
     }
 
     private void update() {
-        ApkVersionModel apkVersionModel = new ApkVersionModel();
-        apkVersionModel.setUrl("http://yuxie2025.github.io/download/douyin.apk");
-        UpdateActivity.start(mContext, apkVersionModel);
+
+        mRxManager.add(ServerApi.getInstance().updateApp()
+                .compose(RxSchedulers.io_main())
+                .subscribe(new RxSubscriber<BaseRespose<ApkVersionModel>>(mContext, false) {
+                    @Override
+                    protected void _onNext(BaseRespose<ApkVersionModel> baseRespose) {
+
+                        double versionDouble = CommonUtils.string2Double(baseRespose.getData().getAppVersion());
+                        String cVersionStr = AppUtils.getAppVersionName();
+                        double cVersionDouble = CommonUtils.string2Double(cVersionStr);
+                        if (cVersionDouble < versionDouble) {
+                            UpdateActivity.start(mContext, baseRespose.getData());
+                        }
+                    }
+
+                    @Override
+                    protected void _onError(String message) {
+
+                    }
+                }));
     }
 
 }

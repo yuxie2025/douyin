@@ -8,7 +8,7 @@
         <item name="colorAccent">#F94604</item>
         <!--<item name="android:windowTranslucentNavigation">false</item>//适配华为手机的虚拟按键-->
         <!--<item name="android:textColorPrimary">@color/textColorPrimary</item>-->
-        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:windowBackground">@drawable/screen</item>
     </style>
 
     <!-- window 透明的-->
