@@ -36,9 +36,18 @@
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.PlayVideosActivity"
+            android:hardwareAccelerated="true"
+            android:theme="@style/NoTitleFullscreen" />
+        <activity
+            android:name=".activity.NativeVideosActivity"
+            android:hardwareAccelerated="true"
+            android:theme="@style/NoTitleFullscreen" />
     </application>
 
 </manifest>

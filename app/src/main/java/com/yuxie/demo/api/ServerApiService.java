@@ -3,7 +3,9 @@ package com.yuxie.demo.api;
 import com.apkupdate.ApkUpdateParamSet;
 import com.apkupdate.widget.ApkVersionModel;
 import com.baselib.basebean.BaseRespose;
+import com.yuxie.demo.bean.VideoListBean;
 
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.adapter.rxjava.Result;
@@ -34,5 +36,12 @@ public interface ServerApiService {
     @GET("/download/updateApp.json")
     Observable<BaseRespose<ApkVersionModel>>
     updateApp();
+
+    /**
+     * 热门视频 列表
+     */
+    @GET("/api/videoList.json")
+    Observable<BaseRespose<List<VideoListBean>>>
+    videoList();
 
 }

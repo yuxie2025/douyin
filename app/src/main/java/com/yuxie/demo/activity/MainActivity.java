@@ -10,12 +10,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.apkupdate.ApkUpdateParamSet;
 import com.apkupdate.UpdateActivity;
-import com.apkupdate.utils.DownloadUtils;
-import com.apkupdate.utils.UpdateUtils;
 import com.apkupdate.widget.ApkVersionModel;
 import com.baselib.base.BaseActivity;
 import com.baselib.basebean.BaseRespose;
@@ -25,18 +21,20 @@ import com.baselib.uitls.CommonUtils;
 import com.baselib.uitls.SysDownloadUtil;
 import com.baselib.uitls.UrlUtils;
 import com.blankj.utilcode.constant.RegexConstants;
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.FileUtils;
 import com.jaeger.library.StatusBarUtil;
+import com.videolib.PlayVideoActivity;
+import com.videolib.player.VideoModel;
 import com.yuxie.demo.R;
 import com.yuxie.demo.api.server.ServerApi;
 
 import java.io.File;
-import java.io.IOException;
 
 import butterknife.BindView;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
 
@@ -177,4 +175,32 @@ public class MainActivity extends BaseActivity {
                 }));
     }
 
+    @OnClick({R.id.openDy, R.id.hotVideo, R.id.hVideo, R.id.dVideo})
+    public void onViewClicked(View view) {
+        String path;
+        switch (view.getId()) {
+            case R.id.openDy:
+                ActivityUtils.startActivity("com.ss.android.ugc.aweme", "com.ss.android.ugc.aweme.splash.SplashActivity");
+                break;
+            case R.id.hotVideo:
+                startActivity(PlayVideosActivity.class);
+                break;
+            case R.id.hVideo:
+                path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Android/data/com.ss.android.ugc.aweme/cache/cache";
+                if (TextUtils.isEmpty(path) || !FileUtils.isDir(path)) {
+                    showToast("先去抖音,刷刷视频再来吧");
+                    return;
+                }
+                NativeVideosActivity.start(this, path);
+                break;
+            case R.id.dVideo:
+                path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "a_video";
+                if (TextUtils.isEmpty(path) || !FileUtils.isDir(path)) {
+                    showToast("你还没有,下载视频哦");
+                    return;
+                }
+                NativeVideosActivity.start(this, path);
+                break;
+        }
+    }
 }

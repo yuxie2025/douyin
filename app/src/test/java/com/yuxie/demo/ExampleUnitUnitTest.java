@@ -1,7 +1,6 @@
 package com.yuxie.demo;
 
 import com.blankj.utilcode.util.FileUtils;
-import com.yuxie.demo.sy.Sy;
 
 import org.junit.Test;
 
@@ -36,7 +35,9 @@ public class ExampleUnitUnitTest {
 //        map.remove("test","123");
 //        System.out.print("map11:"+map.toString());
 
-        Sy.main();
+//        Sy.main();
+
+        File2Json.file2Json();
 
     }
 

@@ -1,16 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MM.BaseLlVertical">
 
-    <include layout="@layout/navigation_bar" />
+    <LinearLayout style="@style/MM.LlVertical">
 
-    <TextView
-        android:id="@+id/tvExplain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:textColor="#333"
-        android:textSize="16sp" />
+        <include layout="@layout/navigation_bar" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tvExplain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:textColor="#333"
+            android:textSize="16sp" />
+
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+            android:id="@+id/openDy"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/main_color"
+            android:text="打开抖音"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:qmui_backgroundColor="@color/main_color"
+            app:qmui_borderColor="@color/main_color"
+            app:qmui_borderWidth="1dp"
+            app:qmui_radius="5dp" />
+
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+            android:id="@+id/hotVideo"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/main_color"
+            android:text="热门视频"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:qmui_backgroundColor="@color/main_color"
+            app:qmui_borderColor="@color/main_color"
+            app:qmui_borderWidth="1dp"
+            app:qmui_radius="5dp" />
+
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+            android:id="@+id/hVideo"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/main_color"
+            android:text="抖音视频"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:qmui_backgroundColor="@color/main_color"
+            app:qmui_borderColor="@color/main_color"
+            app:qmui_borderWidth="1dp"
+            app:qmui_radius="5dp" />
+
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+            android:id="@+id/dVideo"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/main_color"
+            android:text="下载视频"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:qmui_backgroundColor="@color/main_color"
+            app:qmui_borderColor="@color/main_color"
+            app:qmui_borderWidth="1dp"
+            app:qmui_radius="5dp" />
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

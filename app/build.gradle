@@ -115,6 +115,11 @@ android {
         api 'com.tencent.bugly:crashreport:2.8.6'
 
         api project(path: ':apkupdate_lib')
+        api project(path: ':video_lib')
 
     }
+}
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
 }
