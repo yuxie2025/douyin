@@ -64,9 +64,12 @@ public class PlayVideosActivity extends BaseActivity {
     private void getData() {
 
         mRxManager.add(ServerApi.getInstance().videoList().compose(RxSchedulers.io_main())
-                .subscribe(new RxSubscriber<BaseRespose<List<VideoListBean>>>(mContext) {
+                .subscribe(new RxSubscriber<BaseRespose<List<VideoListBean>>>(mContext, false) {
                     @Override
                     protected void _onNext(BaseRespose<List<VideoListBean>> baseRespose) {
+                        if (swipeRefresh.isRefreshing()) {
+                            swipeRefresh.setRefreshing(false);
+                        }
 
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
                         List<VideoModel> datas = new ArrayList<>();
@@ -82,6 +85,9 @@ public class PlayVideosActivity extends BaseActivity {
 
                     @Override
                     protected void _onError(String message) {
+                        if (swipeRefresh.isRefreshing()) {
+                            swipeRefresh.setRefreshing(false);
+                        }
                         showToast(message);
                     }
                 }));
@@ -91,6 +97,10 @@ public class PlayVideosActivity extends BaseActivity {
     int oldPosition;
 
     private void recyclerViewInit() {
+
+        swipeRefresh.setOnRefreshListener(() -> {
+            getData();
+        });
 
         ViewPagerLayoutManager layoutManager = new ViewPagerLayoutManager(mContext, LinearLayout.VERTICAL);
 
@@ -127,15 +137,23 @@ public class PlayVideosActivity extends BaseActivity {
     }
 
     private void playVideo(int position) {
-        View itemView = recyclerView.getChildAt(0);
-        ViewPageVideo videoView = itemView.findViewById(R.id.video);
-        videoView.startPlayLogic();
+        try {
+            View itemView = recyclerView.getChildAt(0);
+            ViewPageVideo videoView = itemView.findViewById(R.id.video);
+            videoView.startPlayLogic();
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
     }
 
     private void releaseVideo(int index) {
-        View itemView = recyclerView.getChildAt(index);
-        ViewPageVideo videoView = itemView.findViewById(R.id.video);
-        videoView.release();
+        try {
+            View itemView = recyclerView.getChildAt(index);
+            ViewPageVideo videoView = itemView.findViewById(R.id.video);
+            videoView.release();
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
     }
 
 
