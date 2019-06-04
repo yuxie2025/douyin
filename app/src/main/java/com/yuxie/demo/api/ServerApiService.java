@@ -22,7 +22,7 @@ import rx.Observable;
 public interface ServerApiService {
     @FormUrlEncoded
     @POST("")
-    Observable<Result<String>> getSmsApi(@Url String url, @FieldMap Map<String, String> options);
+    Observable<String> getUrl(@Url String url, @FieldMap Map<String, String> options);
 
     @GET("")
     Observable<Result<String>> getSmsApi(@Url String url);

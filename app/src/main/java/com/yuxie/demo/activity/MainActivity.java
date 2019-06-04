@@ -23,6 +23,7 @@ import com.baselib.uitls.UrlUtils;
 import com.blankj.utilcode.constant.RegexConstants;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.FileUtils;
 import com.jaeger.library.StatusBarUtil;
 import com.videolib.PlayVideoActivity;
@@ -30,7 +31,13 @@ import com.videolib.player.VideoModel;
 import com.yuxie.demo.R;
 import com.yuxie.demo.api.server.ServerApi;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +55,8 @@ public class MainActivity extends BaseActivity {
     ClipboardManager mClipboardManager;
     ClipboardManager.OnPrimaryClipChangedListener mOnPrimaryClipChangedListener;
     private SysDownloadUtil downloadUtil;
+
+    boolean isEnd = false;
 
     @Override
     public int getLayoutId() {
@@ -106,9 +115,6 @@ public class MainActivity extends BaseActivity {
                     if (TextUtils.isEmpty(url)) {
                         return;
                     }
-                    if (!url.contains("douyin")) {
-                        return;
-                    }
                     getDownloadUrl(url);
                 }
             }
@@ -116,20 +122,31 @@ public class MainActivity extends BaseActivity {
         mClipboardManager.addPrimaryClipChangedListener(mOnPrimaryClipChangedListener);
     }
 
-    private void getDownloadUrl(String url) {
-
+    private void getDownloadUrl(String downUrl) {
+        String url = "http://www.kaolajiexi.com/ajax/parse.php";
         String[] urls = UrlUtils.string2Url(url);
-        mRxManager.add(ServerApi.getInstance(urls[0]).getUrl(urls[1]).compose(RxSchedulers.io_main()).subscribe(new RxSubscriber<String>(mContext, false) {
-
+        Map<String, String> option = new HashMap<>();
+        option.put("pageUrl", downUrl);
+        mRxManager.add(ServerApi.getInstance(urls[0]).getUrl(urls[1], option).compose(RxSchedulers.io_main()).subscribe(new RxSubscriber<String>(mContext, false) {
             @Override
             protected void _onNext(String stringResult) {
-                String videoId = CommonUtils.getMatches(stringResult, "video_id=(.+)&line=0");
-                if (TextUtils.isEmpty(videoId)) {
-                    showToast("获取下载链接失败!");
+                String url;
+                try {
+                    JSONObject jsonObject = new JSONObject(stringResult);
+                    JSONObject jsonObjectData = jsonObject.getJSONObject("data");
+                    JSONObject jsonObjectDataData = jsonObjectData.getJSONObject("data");
+                    JSONArray videoUrls = jsonObjectDataData.getJSONArray("videoUrls");
+                    url = videoUrls.get(0).toString();
+                } catch (Exception e) {
+                    url = "";
+                }
+
+                if (TextUtils.isEmpty(url)) {
+                    showToast("获取解析地址失败!");
                     return;
                 }
-                String fileName = videoId + ".mp4";
-                String url = "https://aweme.snssdk.com/aweme/v1/play/?video_id=" + videoId;
+
+                String fileName = EncryptUtils.encryptMD5ToString(url) + ".mp4";
                 downloadUtil.download(MainActivity.this, url, fileName);
             }
 
@@ -150,6 +167,9 @@ public class MainActivity extends BaseActivity {
             mClipboardManager.removePrimaryClipChangedListener(mOnPrimaryClipChangedListener);
         }
         downloadUtil.unregister(this);
+        if (!isEnd) {
+            isEnd = true;
+        }
     }
 
     private void update() {
@@ -175,7 +195,7 @@ public class MainActivity extends BaseActivity {
                 }));
     }
 
-    @OnClick({R.id.openDy, R.id.hotVideo, R.id.hVideo, R.id.dVideo})
+    @OnClick({R.id.openDy, R.id.hotVideo, R.id.hVideo, R.id.dVideo, R.id.copyVideo})
     public void onViewClicked(View view) {
         String path;
         switch (view.getId()) {
@@ -192,6 +212,27 @@ public class MainActivity extends BaseActivity {
                     return;
                 }
                 NativeVideosActivity.start(this, path);
+                break;
+            case R.id.copyVideo:
+                String dyPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Android/data/com.ss.android.ugc.aweme/cache/cache";
+                path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "a_video";
+                if (TextUtils.isEmpty(dyPath) || !FileUtils.isDir(dyPath)) {
+                    showToast("先去抖音看看吧");
+                    return;
+                }
+                isEnd = false;
+                showToast("开始获取...");
+                new Thread(() -> {
+                    List<File> dyFiles = FileUtils.listFilesInDir(dyPath);
+                    for (File file : dyFiles) {
+                        if (isEnd) {
+                            return;
+                        }
+                        String filePath = path + File.separator + file.getName() + ".mp4";
+                        FileUtils.copyFile(file.getAbsolutePath(), filePath);
+                    }
+                    showToast("获取抖音视频完成,文件夹路径:a_video");
+                }).start();
                 break;
             case R.id.dVideo:
                 path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "a_video";
