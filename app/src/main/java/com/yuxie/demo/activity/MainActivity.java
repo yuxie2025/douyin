@@ -25,6 +25,7 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.jaeger.library.StatusBarUtil;
 import com.videolib.PlayVideoActivity;
 import com.videolib.player.VideoModel;
@@ -67,9 +68,6 @@ public class MainActivity extends BaseActivity {
     protected void initView(Bundle savedInstanceState) {
         setTitle("抖音无水印");
         rlLeft.setVisibility(View.INVISIBLE);
-
-        String explain = "该app用于下载抖音无水印视频.\n\n使用说明:\n打开抖音>分享>复制链接,即可自动下载";
-        tvExplain.setText(explain);
 
         downloadUtil = new SysDownloadUtil();
         registerClipEvents();
@@ -123,38 +121,37 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getDownloadUrl(String downUrl) {
-        String url = "http://www.kaolajiexi.com/ajax/parse.php";
+        String url = "http://lyfzn.top/api/douyinApi/";
         String[] urls = UrlUtils.string2Url(url);
-        Map<String, String> option = new HashMap<>();
-        option.put("pageUrl", downUrl);
-        mRxManager.add(ServerApi.getInstance(urls[0]).getUrl(urls[1], option).compose(RxSchedulers.io_main()).subscribe(new RxSubscriber<String>(mContext, false) {
-            @Override
-            protected void _onNext(String stringResult) {
-                String url;
-                try {
-                    JSONObject jsonObject = new JSONObject(stringResult);
-                    JSONObject jsonObjectData = jsonObject.getJSONObject("data");
-                    JSONObject jsonObjectDataData = jsonObjectData.getJSONObject("data");
-                    JSONArray videoUrls = jsonObjectDataData.getJSONArray("videoUrls");
-                    url = videoUrls.get(0).toString();
-                } catch (Exception e) {
-                    url = "";
-                }
+        url = url + "?url=" + downUrl;
+        mRxManager.add(ServerApi.getInstance(urls[0]).getUrl(url)
+                .compose(RxSchedulers.io_main())
+                .subscribe(new RxSubscriber<String>(mContext, false) {
+                    @Override
+                    protected void _onNext(String stringResult) {
+                        String url;
+                        try {
+                            JSONObject jsonObject = new JSONObject(stringResult);
+                            JSONArray videoUrls = jsonObject.getJSONArray("urls");
+                            url = videoUrls.get(0).toString();
+                        } catch (Exception e) {
+                            url = "";
+                        }
 
-                if (TextUtils.isEmpty(url)) {
-                    showToast("获取解析地址失败!");
-                    return;
-                }
+                        if (TextUtils.isEmpty(url)) {
+                            showToast("获取解析地址失败!");
+                            return;
+                        }
 
-                String fileName = EncryptUtils.encryptMD5ToString(url) + ".mp4";
-                downloadUtil.download(MainActivity.this, url, fileName);
-            }
+                        String fileName = EncryptUtils.encryptMD5ToString(url) + ".mp4";
+                        downloadUtil.download(MainActivity.this, url, fileName);
+                    }
 
-            @Override
-            protected void _onError(String message) {
-                showToast(message);
-            }
-        }));
+                    @Override
+                    protected void _onError(String message) {
+                        showToast(message);
+                    }
+                }));
     }
 
     /**
@@ -179,6 +176,8 @@ public class MainActivity extends BaseActivity {
                 .subscribe(new RxSubscriber<BaseRespose<ApkVersionModel>>(mContext, false) {
                     @Override
                     protected void _onNext(BaseRespose<ApkVersionModel> baseRespose) {
+
+                        tvExplain.setText(baseRespose.getData().getMsg());
 
                         double versionDouble = CommonUtils.string2Double(baseRespose.getData().getAppVersion());
                         String cVersionStr = AppUtils.getAppVersionName();

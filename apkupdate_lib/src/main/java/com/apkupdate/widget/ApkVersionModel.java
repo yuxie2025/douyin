@@ -28,6 +28,7 @@ public class ApkVersionModel implements Serializable {
     public String url;
     public String forceUpgrade;
     public String remarks;
+    public String msg;
 
     public String getAppVersion() {
         return appVersion;
@@ -91,5 +92,13 @@ public class ApkVersionModel implements Serializable {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }
