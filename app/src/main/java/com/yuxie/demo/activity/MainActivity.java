@@ -36,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
 
+    String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "a_video";
 
     @BindView(R.id.rl_left)
     RelativeLayout rlLeft;
@@ -70,7 +72,7 @@ public class MainActivity extends BaseActivity {
         rlLeft.setVisibility(View.INVISIBLE);
 
         downloadUtil = new SysDownloadUtil();
-        registerClipEvents();
+//        registerClipEvents();
 
         update();
 
@@ -196,7 +198,6 @@ public class MainActivity extends BaseActivity {
 
     @OnClick({R.id.openDy, R.id.hotVideo, R.id.hVideo, R.id.dVideo, R.id.copyVideo})
     public void onViewClicked(View view) {
-        String path;
         switch (view.getId()) {
             case R.id.openDy:
                 ActivityUtils.startActivity("com.ss.android.ugc.aweme", "com.ss.android.ugc.aweme.splash.SplashActivity");
@@ -205,42 +206,62 @@ public class MainActivity extends BaseActivity {
                 startActivity(PlayVideosActivity.class);
                 break;
             case R.id.hVideo:
-                path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Android/data/com.ss.android.ugc.aweme/cache/cache";
-                if (TextUtils.isEmpty(path) || !FileUtils.isDir(path)) {
-                    showToast("先去抖音,刷刷视频再来吧");
-                    return;
-                }
-                NativeVideosActivity.start(this, path);
+                NativeVideosActivity.start(this);
                 break;
             case R.id.copyVideo:
-                String dyPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Android/data/com.ss.android.ugc.aweme/cache/cache";
-                path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "a_video";
-                if (TextUtils.isEmpty(dyPath) || !FileUtils.isDir(dyPath)) {
-                    showToast("先去抖音看看吧");
-                    return;
-                }
-                isEnd = false;
-                showToast("开始获取...");
-                new Thread(() -> {
-                    List<File> dyFiles = FileUtils.listFilesInDir(dyPath);
-                    for (File file : dyFiles) {
-                        if (isEnd) {
-                            return;
-                        }
-                        String filePath = path + File.separator + file.getName() + ".mp4";
-                        FileUtils.copyFile(file.getAbsolutePath(), filePath);
-                    }
-                    showToast("获取抖音视频完成,文件夹路径:a_video");
-                }).start();
+                getDyVideo();
                 break;
             case R.id.dVideo:
-                path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "a_video";
                 if (TextUtils.isEmpty(path) || !FileUtils.isDir(path)) {
                     showToast("你还没有,下载视频哦");
                     return;
                 }
                 NativeVideosActivity.start(this, path);
                 break;
+        }
+    }
+
+    void getDyVideo() {
+
+        isEnd = false;
+        showToast("开始获取...");
+        new Thread(() -> {
+            List<String> paths = getDyPath();
+            if (paths.size() == 0) {
+                showToast("先去抖音看看吧");
+                return;
+            }
+            String dyPath = "";
+            for (int i = 0; i < paths.size(); i++) {
+                dyPath = paths.get(i);
+                copyVideo(dyPath, path);
+            }
+            showToast("获取抖音视频完成,文件夹路径:a_video");
+        }).start();
+    }
+
+    List<String> getDyPath() {
+        String dyPath1 = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Android/data/com.ss.android.ugc.aweme/cache/cache";
+        String dyPath2 = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Android/data/com.ss.android.ugc.aweme/cache/cachev2";
+        List<String> re = new ArrayList<>();
+        re.add(dyPath1);
+        re.add(dyPath2);
+        return re;
+    }
+
+    void copyVideo(String dyPath, String path) {
+        List<File> dyFiles = FileUtils.listFilesInDir(dyPath);
+        for (File file : dyFiles) {
+            if (isEnd) {
+                return;
+            }
+            long fileSize = file.length();
+            if (fileSize <= 1 * 1024) {
+                continue;
+            }
+
+            String filePath = path + File.separator + file.getName() + ".mp4";
+            FileUtils.copyFile(file.getAbsolutePath(), filePath);
         }
     }
 }

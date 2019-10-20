@@ -3,6 +3,7 @@ package com.yuxie.demo.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
@@ -47,6 +48,11 @@ public class NativeVideosActivity extends BaseActivity {
 
     private static final String KEY_DIR_PATH = "dirPath";
 
+
+    public static void start(Activity activity) {
+        start(activity, "");
+    }
+
     public static void start(Activity activity, String dirPath) {
         Intent intent = new Intent(activity, NativeVideosActivity.class);
         intent.putExtra(KEY_DIR_PATH, dirPath);
@@ -76,28 +82,61 @@ public class NativeVideosActivity extends BaseActivity {
         List<VideoModel> datas = new ArrayList<>();
 
         String dirPath = getIntent().getStringExtra(KEY_DIR_PATH);
-        if (TextUtils.isEmpty(dirPath)) {
-            return datas;
+        if (!TextUtils.isEmpty(dirPath)) {
+            List<VideoModel> models = getVideoModes(dirPath);
+            datas.addAll(models);
+        } else {
+            List<String> paths = getDyPath();
+            String dyPath = "";
+            for (int i = 0; i < paths.size(); i++) {
+                dyPath = paths.get(i);
+                List<VideoModel> models = getVideoModes(dyPath);
+                datas.addAll(models);
+            }
         }
+        return datas;
+    }
 
-        FileFilter filter = new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                if (!TextUtils.isEmpty(pathname.getName())) {
-                    return true;
-                }
+    FileFilter filter = new FileFilter() {
+        @Override
+        public boolean accept(File file) {
+            //过虐 小文件
+            long fileSize = file.length();
+            if (fileSize <= 1 * 1024) {
                 return false;
             }
-        };
+
+            if (!TextUtils.isEmpty(file.getName())) {
+                return true;
+            }
+            return false;
+        }
+    };
+
+
+    List<VideoModel> getVideoModes(String dirPath) {
+        List<VideoModel> re = new ArrayList<>();
         List<File> files = FileUtils.listFilesInDirWithFilter(dirPath, filter);
         VideoModel model;
         for (int i = 0; i < files.size(); i++) {
+            if (i == 20) {
+                showToast("文件较多,请耐心等待...");
+            }
             model = new VideoModel();
             model.setUrl(files.get(i).getAbsolutePath());
             model.setThumbImage(VideoThumbnailUtils.getVideoThumbnail(mContext.getApplicationContext(), files.get(i).getAbsolutePath()));
-            datas.add(model);
+            re.add(model);
         }
-        return datas;
+        return re;
+    }
+
+    List<String> getDyPath() {
+        String dyPath1 = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Android/data/com.ss.android.ugc.aweme/cache/cache";
+        String dyPath2 = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Android/data/com.ss.android.ugc.aweme/cache/cachev2";
+        List<String> re = new ArrayList<>();
+        re.add(dyPath1);
+        re.add(dyPath2);
+        return re;
     }
 
     int oldPosition;
@@ -180,16 +219,13 @@ public class NativeVideosActivity extends BaseActivity {
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     void readStorageNeeds() {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
-                List<VideoModel> datas = getData();
-                runOnUiThread(() -> {
-                    adapter.setNewData(datas);
-                    multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-                });
-            }
+        new Thread(() -> {
+            multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+            List<VideoModel> datas = getData();
+            runOnUiThread(() -> {
+                adapter.setNewData(datas);
+                multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+            });
         }).start();
     }
 
