@@ -1,10 +1,14 @@
 package com.yuxie.demo.activity;
 
-import android.content.ClipboardManager;
+import android.Manifest;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,29 +21,25 @@ import com.baselib.base.BaseActivity;
 import com.baselib.basebean.BaseRespose;
 import com.baselib.baserx.RxSchedulers;
 import com.baselib.baserx.RxSubscriber;
+import com.baselib.ui.widget.ClearableEditTextWithIcon;
 import com.baselib.uitls.CommonUtils;
-import com.baselib.uitls.SysDownloadUtil;
-import com.baselib.uitls.UrlUtils;
-import com.blankj.utilcode.constant.RegexConstants;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
-import com.blankj.utilcode.util.EncryptUtils;
+import com.blankj.utilcode.util.ClipboardUtils;
 import com.blankj.utilcode.util.FileUtils;
-import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
+import com.hjq.permissions.OnPermissionCallback;
+import com.hjq.permissions.XXPermissions;
 import com.jaeger.library.StatusBarUtil;
-import com.videolib.PlayVideoActivity;
-import com.videolib.player.VideoModel;
 import com.yuxie.demo.R;
 import com.yuxie.demo.api.server.ServerApi;
+import com.yuxie.demo.utils.douyin.Douyin;
+import com.yuxie.demo.widget.ClearEditText;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,9 +55,8 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tvExplain)
     TextView tvExplain;
 
-    ClipboardManager mClipboardManager;
-    ClipboardManager.OnPrimaryClipChangedListener mOnPrimaryClipChangedListener;
-    private SysDownloadUtil downloadUtil;
+    @BindView(R.id.et_url)
+    ClearEditText etUrl;
 
     boolean isEnd = false;
 
@@ -70,12 +69,36 @@ public class MainActivity extends BaseActivity {
     protected void initView(Bundle savedInstanceState) {
         setTitle("抖音无水印");
         rlLeft.setVisibility(View.INVISIBLE);
-
-        downloadUtil = new SysDownloadUtil();
-//        registerClipEvents();
-
         update();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        XXPermissions.with(this)
+                // 不适配 Android 11 可以这样写
+                //.permission(Permission.Group.STORAGE)
+                // 适配 Android 11 需要这样写，这里无需再写 Permission.Group.STORAGE
+                .permission(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+                .request(new OnPermissionCallback() {
+
+                    @Override
+                    public void onGranted(List<String> permissions, boolean all) {
+                        if (all) {
+                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    registerClipEvents();
+                                }
+                            }, 500);
+                        }
+                    }
+
+                    @Override
+                    public void onDenied(List<String> permissions, boolean never) {
+                        ToastUtils.showShort("获取权限失败！");
+                    }
+                });
     }
 
     @Override
@@ -100,60 +123,36 @@ public class MainActivity extends BaseActivity {
      * 注册剪切板复制、剪切事件监听
      */
     private void registerClipEvents() {
-        mClipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        mOnPrimaryClipChangedListener = new ClipboardManager.OnPrimaryClipChangedListener() {
-            @Override
-            public void onPrimaryClipChanged() {
-                if (mClipboardManager.hasPrimaryClip()
-                        && mClipboardManager.getPrimaryClip().getItemCount() > 0) {
-                    // 获取复制、剪切的文本内容
-                    CharSequence content = mClipboardManager.getPrimaryClip().getItemAt(0).getText();
-                    if (TextUtils.isEmpty(content)) {
-                        return;
-                    }
-                    String url = CommonUtils.getMatches(content.toString(), "(" + RegexConstants.REGEX_URL + ")");
-                    if (TextUtils.isEmpty(url)) {
-                        return;
-                    }
-                    getDownloadUrl(url);
-                }
-            }
-        };
-        mClipboardManager.addPrimaryClipChangedListener(mOnPrimaryClipChangedListener);
-    }
+        CharSequence content = ClipboardUtils.getText();
+        if (!TextUtils.isEmpty(content)) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String fileDir = path;
+                        String msgFromDouYin = content.toString();
 
-    private void getDownloadUrl(String downUrl) {
-        String url = "http://lyfzn.top/api/douyinApi/";
-        String[] urls = UrlUtils.string2Url(url);
-        url = url + "?url=" + downUrl;
-        mRxManager.add(ServerApi.getInstance(urls[0]).getUrl(url)
-                .compose(RxSchedulers.io_main())
-                .subscribe(new RxSubscriber<String>(mContext, false) {
-                    @Override
-                    protected void _onNext(String stringResult) {
-                        String url;
-                        try {
-                            JSONObject jsonObject = new JSONObject(stringResult);
-                            JSONArray videoUrls = jsonObject.getJSONArray("urls");
-                            url = videoUrls.get(0).toString();
-                        } catch (Exception e) {
-                            url = "";
-                        }
-
-                        if (TextUtils.isEmpty(url)) {
-                            showToast("获取解析地址失败!");
+                        if (Douyin.isExists(msgFromDouYin, fileDir)) {
+                            System.out.println("已经下载过！");
+                            //下载过了
                             return;
                         }
 
-                        String fileName = EncryptUtils.encryptMD5ToString(url) + ".mp4";
-                        downloadUtil.download(MainActivity.this, url, fileName);
+                        boolean re = Douyin.downloadVideo(msgFromDouYin, fileDir);
+                        System.out.println("下载结果re:" + re);
+                        if (re) {
+                            String dirName = new File(fileDir).getName();
+                            ToastUtils.showShort("下载成功，文件在" + dirName + "目录下！");
+                        } else {
+                            ToastUtils.showShort("下载失败！");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        ToastUtils.showShort("下载失败！");
                     }
-
-                    @Override
-                    protected void _onError(String message) {
-                        showToast(message);
-                    }
-                }));
+                }
+            }).start();
+        }
     }
 
     /**
@@ -162,10 +161,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mClipboardManager != null && mOnPrimaryClipChangedListener != null) {
-            mClipboardManager.removePrimaryClipChangedListener(mOnPrimaryClipChangedListener);
-        }
-        downloadUtil.unregister(this);
         if (!isEnd) {
             isEnd = true;
         }
@@ -196,11 +191,11 @@ public class MainActivity extends BaseActivity {
                 }));
     }
 
-    @OnClick({R.id.openDy, R.id.hotVideo, R.id.hVideo, R.id.dVideo, R.id.copyVideo})
+    @OnClick({R.id.openDy, R.id.hotVideo, R.id.hVideo, R.id.dVideo, R.id.copyVideo, R.id.download})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.openDy:
-                ActivityUtils.startActivity("com.ss.android.ugc.aweme", "com.ss.android.ugc.aweme.splash.SplashActivity");
+                openDouYinApp();
                 break;
             case R.id.hotVideo:
                 startActivity(PlayVideosActivity.class);
@@ -218,7 +213,60 @@ public class MainActivity extends BaseActivity {
                 }
                 NativeVideosActivity.start(this, path);
                 break;
+            case R.id.download:
+                download();
+                break;
         }
+    }
+
+    private void openDouYinApp() {
+        Intent intent = new Intent();
+        ComponentName comp = new ComponentName("com.ss.android.ugc.aweme", "com.ss.android.ugc.aweme.splash.SplashActivity");
+        intent.setComponent(comp);
+        intent.setAction("android.intent.action.MAIN");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private void download() {
+        String url = etUrl.getText().toString();
+        if (TextUtils.isEmpty(url)) {
+            ToastUtils.showShort("请输入抖音分享链接！");
+            return;
+        }
+
+        if (CommonUtils.isDoubleClick(2000)) {
+            ToastUtils.showShort("请稍后在下载！");
+            return;
+        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String fileDir = path;
+                    String msgFromDouYin = url;
+
+                    if (Douyin.isExists(msgFromDouYin, fileDir)) {
+                        String dirName = new File(fileDir).getName();
+                        ToastUtils.showShort("已经下载过，文件在" + dirName + "目录下！");
+                        return;
+                    }
+
+                    boolean re = Douyin.downloadVideo(msgFromDouYin, fileDir);
+                    System.out.println("下载结果re:" + re);
+                    if (re) {
+                        String dirName = new File(fileDir).getName();
+                        ToastUtils.showShort("下载成功，文件在" + dirName + "目录下！");
+                    } else {
+                        ToastUtils.showShort("下载失败！");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ToastUtils.showShort("下载失败！");
+                }
+            }
+        }).start();
     }
 
     void getDyVideo() {
@@ -251,6 +299,7 @@ public class MainActivity extends BaseActivity {
 
     void copyVideo(String dyPath, String path) {
         List<File> dyFiles = FileUtils.listFilesInDir(dyPath);
+        if (dyFiles == null) return;
         for (File file : dyFiles) {
             if (isEnd) {
                 return;
@@ -261,7 +310,7 @@ public class MainActivity extends BaseActivity {
             }
 
             String filePath = path + File.separator + file.getName() + ".mp4";
-            FileUtils.copyFile(file.getAbsolutePath(), filePath);
+            FileUtils.copy(file.getAbsolutePath(), filePath);
         }
     }
 }

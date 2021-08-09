@@ -46,11 +46,6 @@ android {
         }
     }
 
-    //mvvp需要申明的地方
-    dataBinding {
-        enabled true
-    }
-
     signingConfigs {
         release {
             storeFile file("keystore/project.jks")
@@ -100,6 +95,8 @@ android {
 
         implementation 'com.rl.commonlib:commonlib:1.0.2'
 
+        implementation 'com.blankj:utilcode:1.30.6'
+
         //将最新的版本改为当前版本号，例如2.3.1(报错就填写固定的版本号)
         api("com.github.hotchemi:permissionsdispatcher:3.2.0") {
             // if you don't use android.app.Fragment you can exclude support for them
@@ -117,9 +114,9 @@ android {
         api project(path: ':apkupdate_lib')
         api project(path: ':video_lib')
 
-    }
-}
+        implementation 'org.jsoup:jsoup:1.13.1'
 
-dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:+'
+        implementation 'com.github.getActivity:XXPermissions:11.6'
+
+    }
 }

@@ -3,6 +3,7 @@ package com.yuxie.demo.application;
 import android.content.Context;
 
 import com.baselib.baseapp.BaseApplication;
+import com.hjq.permissions.XXPermissions;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.yuxie.demo.R;
 
@@ -18,6 +19,9 @@ public class App extends BaseApplication {
         super.onCreate();
         mContext = getApplicationContext();
         initData();
+
+        // 当前项目是否已经适配了分区存储的特性
+        XXPermissions.setScopedStorage(true);
     }
 
     private void initData() {

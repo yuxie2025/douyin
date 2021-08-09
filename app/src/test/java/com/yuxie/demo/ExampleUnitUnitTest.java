@@ -1,6 +1,8 @@
 package com.yuxie.demo;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.yuxie.demo.utils.douyin.Douyin;
+import com.yuxie.demo.utils.douyin.bean.ApiResult;
 
 import org.junit.Test;
 
@@ -16,34 +18,12 @@ public class ExampleUnitUnitTest {
 
     @Test
     public void addition_isCorrect() throws Exception {
-
-//        ios2android();
-
-//        android();
-
-//        SecureRandom sr2 = SecureRandom.getInstance("SHA1PRNG");
-
-//        System.out.println("sr2:"+sr2.toString());
-
-//        HashMap<String, String> map = new HashMap<>();
-//        map.put("test","123");
-//        map.put("test5","123");
-//        map.put("test1","1234");
-//
-//        System.out.print("map:"+map.toString());
-//
-//        map.remove("test","123");
-//        System.out.print("map11:"+map.toString());
-
-//        Sy.main();
-
-        File2Json.file2Json();
-
     }
 
     /**
      * ios 2x,3x转android drawable-xhdpi和drawable-xxhdpi
      */
+    @Test
     public void ios2android() {
 
         //源目录
@@ -77,16 +57,12 @@ public class ExampleUnitUnitTest {
             targetFileName = replace(srcFileName);
 
             //复制文件
-            boolean result = FileUtils.copyFile(srcFile.getAbsolutePath(), targetDir, new FileUtils.OnReplaceListener() {
-                @Override
-                public boolean onReplace() {
-                    return true;
-                }
-            });
+            boolean result = FileUtils.copy(new File(srcFile.getAbsolutePath()), new File(targetDir));
             System.out.println("第" + (i + 1) + "个文件  " + FileUtils.getFileName(srcFile) + "  转换后:" + targetFileName + "  转换结果:" + result);
         }
     }
 
+    @Test
     public void android() {
 
         //源目录
@@ -118,12 +94,7 @@ public class ExampleUnitUnitTest {
             String targetDir2 = targetDir + "\\" + targetFileName;
 
             //复制文件
-            boolean result = FileUtils.copyFile(srcFile.getAbsolutePath(), targetDir2, new FileUtils.OnReplaceListener() {
-                @Override
-                public boolean onReplace() {
-                    return true;
-                }
-            });
+            boolean result = FileUtils.copy(srcFile.getAbsolutePath(), targetDir2);
             System.out.println("第" + (i + 1) + "个文件  " + FileUtils.getFileName(srcFile) + "  转换后:" + targetFileName + "  转换结果:" + result);
         }
     }
@@ -155,5 +126,12 @@ public class ExampleUnitUnitTest {
             targetFileName = targetFileName.replace(" ", "");
         }
         return targetFileName;
+    }
+
+    @Test
+    public void testDouYin() throws Exception {
+        String msgFromDouYin = "大家帮我们看看昨天去看的房，两居室的那个房子看中了，就是周边不咋地，有懂的吗？#沪漂 #买房 #宝妈分享  https://v.douyin.com/JbKWX3g/ 复制此链接，打开抖音搜索，直接观看视频！";
+        boolean re = Douyin.downloadVideo(msgFromDouYin, "/Users/apple_mini/Desktop");
+        System.out.println("下载结果re:" + re);
     }
 }

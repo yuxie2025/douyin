@@ -117,6 +117,7 @@ public class NativeVideosActivity extends BaseActivity {
     List<VideoModel> getVideoModes(String dirPath) {
         List<VideoModel> re = new ArrayList<>();
         List<File> files = FileUtils.listFilesInDirWithFilter(dirPath, filter);
+        if (files == null) return re;
         VideoModel model;
         for (int i = 0; i < files.size(); i++) {
             if (i == 20) {

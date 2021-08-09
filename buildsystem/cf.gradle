@@ -2,13 +2,13 @@ ext {
 
     //android
     android = [
-            compileSdkVersion : 28,
-            buildToolsVersion : "28.0.3",
+            compileSdkVersion : 30,
+            buildToolsVersion : "30.0.3",
             applicationId     : "com.yuxie.douyin",
             minSdkVersion     : 18,
-            targetSdkVersion  : 22,
-            versionCode       : 3,
-            versionName       : "1.3"
+            targetSdkVersion  : 30,
+            versionCode       : 4,
+            versionName       : "1.4"
     ]
 
     //Libraries variable

@@ -5,10 +5,10 @@
 
 安装包下载地址:
 
-[抖音无水印](https://yuxie2025.github.io/download/douyin.apk) 下载地址:
+[抖音无水印](https://raw.githubusercontent.com/yuxie2025/douyin/douyin/download/douyin.apk) 下载地址:
 
-![下载链接](https://raw.githubusercontent.com/yuxie2025/douyin/douyin/app/img/download_qr.png)
+![下载链接](https://raw.githubusercontent.com/yuxie2025/douyin/douyin/download/download_qr.png)
 
 app截图:
 
-![app主页截图](https://raw.githubusercontent.com/yuxie2025/douyin/douyin/app/img/app_screen.png)
+![app主页截图](https://raw.githubusercontent.com/yuxie2025/douyin/douyin/download/home.png)
