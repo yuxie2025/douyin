@@ -132,6 +132,12 @@ public class MainActivity extends BaseActivity {
                         String fileDir = path;
                         String msgFromDouYin = content.toString();
 
+                        if (!msgFromDouYin.contains("douyin.com")) {
+                            //链接不正确
+                            System.out.println("链接不正确！");
+                            return;
+                        }
+
                         if (Douyin.isExists(msgFromDouYin, fileDir)) {
                             System.out.println("已经下载过！");
                             //下载过了
@@ -232,6 +238,10 @@ public class MainActivity extends BaseActivity {
         String url = etUrl.getText().toString();
         if (TextUtils.isEmpty(url)) {
             ToastUtils.showShort("请输入抖音分享链接！");
+            return;
+        }
+        if (!url.contains("douyin.com")) {
+            ToastUtils.showShort("请输入正确的抖音分享链接！");
             return;
         }
 

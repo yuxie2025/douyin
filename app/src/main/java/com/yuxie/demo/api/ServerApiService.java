@@ -31,9 +31,9 @@ public interface ServerApiService {
     Observable<String> getUrl(@Url String url);
 
     /**
-     * 升级app
+     * 升级app https://raw.githubusercontent.com/yuxie2025/douyin/douyin/download/updateApp.json
      */
-    @GET("/download/updateApp.json")
+    @GET("/yuxie2025/douyin/douyin/download/updateApp.json")
     Observable<BaseRespose<ApkVersionModel>>
     updateApp();
 

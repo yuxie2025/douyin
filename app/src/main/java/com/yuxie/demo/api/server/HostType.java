@@ -24,7 +24,7 @@ public class HostType {
      */
     public final static String ITEM = "";
     public final static String HOST_TYPE_WEIXIN = "https://api.weixin.qq.com/sns/";
-    public final static String HOST_TYPE_COMMON = "https://yuxie2025.github.io/";//正式环境
+    public final static String HOST_TYPE_COMMON = "https://raw.githubusercontent.com";//正式环境
 
     public static String getHost(int hosttype) {
         switch (hosttype) {
