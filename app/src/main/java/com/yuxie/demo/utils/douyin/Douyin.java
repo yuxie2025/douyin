@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ import java.util.Map;
 public class Douyin {
 
 
-    public static final String UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16D57 Version/12.0 Safari/604.1";
+    public static final String UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0";
     public static final String API = "https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=";
     private static final String TAG = "Douyin";
 
@@ -134,8 +135,13 @@ public class Douyin {
         Result result = fetch(shareInfo);
         if (result != null) {
             Map<String, String> headers = new HashMap<>();
+            try {
+                URL url = new URL(result.videoUrl);
+                //host需要随着变化不然会下载失败
+                headers.put("Host", url.getHost());
+            } catch (MalformedURLException ignored) {
+            }
             headers.put("Connection", "keep-alive");
-            headers.put("Host", "aweme.snssdk.com");
             headers.put("User-Agent", UA);
             InputStream in = get(result.videoUrl, headers);
             if (in == null) {

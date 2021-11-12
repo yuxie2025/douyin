@@ -4,18 +4,16 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.baselib.base.BaseActivity;
 import com.blankj.utilcode.util.FileUtils;
-import com.blankj.utilcode.util.LogUtils;
+import com.hjq.permissions.OnPermissionCallback;
+import com.hjq.permissions.XXPermissions;
 import com.kennyc.view.MultiStateView;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.videolib.player.VideoModel;
@@ -32,11 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.OnPermissionDenied;
-import permissions.dispatcher.RuntimePermissions;
 
-@RuntimePermissions
 public class NativeVideosActivity extends BaseActivity {
 
     @BindView(R.id.recyclerView)
@@ -72,8 +66,32 @@ public class NativeVideosActivity extends BaseActivity {
 
         recyclerViewInit();
 
-        NativeVideosActivityPermissionsDispatcher.readStorageNeedsWithPermissionCheck(this);
+        XXPermissions.with(this)
+                // 不适配 Android 11 可以这样写
+                //.permission(Permission.Group.STORAGE)
+                // 适配 Android 11 需要这样写，这里无需再写 Permission.Group.STORAGE
+                .permission(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+                .request(new OnPermissionCallback() {
 
+                    @Override
+                    public void onGranted(List<String> permissions, boolean all) {
+                        if (all) {
+                            new Thread(() -> {
+                                multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+                                List<VideoModel> datas = getData();
+                                runOnUiThread(() -> {
+                                    adapter.setNewData(datas);
+                                    multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                                });
+                            }).start();
+                        }
+                    }
+
+                    @Override
+                    public void onDenied(List<String> permissions, boolean never) {
+                        suggestSetting("应用需要读取文件权限,去设置?");
+                    }
+                });
     }
 
 
@@ -216,30 +234,5 @@ public class NativeVideosActivity extends BaseActivity {
         super.onDestroy();
         GSYVideoManager.releaseAllVideos();
     }
-
-    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-    void readStorageNeeds() {
-
-        new Thread(() -> {
-            multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
-            List<VideoModel> datas = getData();
-            runOnUiThread(() -> {
-                adapter.setNewData(datas);
-                multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-            });
-        }).start();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        NativeVideosActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
-
-    @OnPermissionDenied(Manifest.permission.READ_EXTERNAL_STORAGE)
-    void readStorageDenied() {
-        suggestSetting("应用需要读取文件权限,去设置?");
-    }
-
 
 }

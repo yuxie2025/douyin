@@ -116,6 +116,7 @@ android {
 
         implementation 'org.jsoup:jsoup:1.13.1'
 
+        // 权限请求框架
         implementation 'com.github.getActivity:XXPermissions:11.6'
 
     }
