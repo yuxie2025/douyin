@@ -1,16 +1,17 @@
-# 抖音无水印下载工具(20230330,测试可以使用)
+# 抖音无水印下载工具(20230330,测试可以使用) 最新方案
 
-# 抖音去水印视频最新方案
-这是一个抖音无水印视频下载工具:
+# 这是一个抖音无水印视频下载工具:
 
-# 安装包下载地址: https://raw.githubusercontent.com/yuxie2025/douyin/douyin/download/douyin.apk
+### 安装包下载地址: https://raw.githubusercontent.com/yuxie2025/douyin/douyin/download/douyin.apk
 
-原理:
+# 原理:
+
 ## 1.webView伪装PC浏览器,UserAgent
 
 ```
 webView.setUserAgentString("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0");
 ```
+
 ## 2.使用webView打开抖音分享链接,setWebViewClient->shouldInterceptRequest拦截无水印视频链接
 
 ```
