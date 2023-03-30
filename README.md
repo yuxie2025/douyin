@@ -3,6 +3,8 @@
 # 抖音去水印视频最新方案
 这是一个抖音无水印视频下载工具:
 
+# 安装包下载地址: https://raw.githubusercontent.com/yuxie2025/douyin/douyin/download/douyin.apk
+
 原理:
 ## 1.webView伪装PC浏览器,UserAgent
 
@@ -28,7 +30,7 @@ mime_type=video_mp4&qs=0&rc=M2Q7ZDg1ZmQ1MzU3ZWQzNUBpamV1a2Y6ZjhyajMzNGkzM0BjMV81
 
 4.下载文件保存在Download目录下
 
-安装包下载地址:
+# 安装包下载地址: https://raw.githubusercontent.com/yuxie2025/douyin/douyin/download/douyin.apk
 
 [抖音无水印](https://raw.githubusercontent.com/yuxie2025/douyin/douyin/download/douyin.apk) 下载地址:
 
