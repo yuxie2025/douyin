@@ -23,13 +23,28 @@ public class DownloadUtils {
     private static final String TAG = "DownloadUtils";
     public static final String UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0";
 
-    public static void download(String url) {
+    public static boolean isDownload = false;
+
+    public static void download(String url, String dyUrl) {
 
 //        链接示例
 //                https://v26-web.douyinvod.com/d9ec5407864eff09d9daef3faca2ef5e/6422a9c1/video/tos/cn/tos-cn-ve-15c001-alinc2/osLh7xvAIIEEBdBZnCQeJoeDUenQu0A9XAb55J/?
 //                a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=3748&bt=3748&cs=0&ds=4&ft=bvTKJbQQqUYqfJEZPo0OW_EklpPiX9A_ZMVJEH28f2vPD-I&
 //                mime_type=video_mp4&qs=0&rc=M2Q7ZDg1ZmQ1MzU3ZWQzNUBpamV1a2Y6ZjhyajMzNGkzM0BjMV81YmJhX2ExL15hNTMwYSNrbjRvcjRvc2RgLS1kLS9zcw%3D%3D
 //                &l=20230328154752918F62A33B161C0D313A&btag=8000&testst=1679989686676
+
+        if (isDownload) {
+            return;
+        }
+
+        String saveToFolder = PathUtils.getExternalDownloadsPath();
+        if (isExists(dyUrl, saveToFolder)) {
+            //下载过了
+            ToastUtils.showLong("下载过了,文件在Download目录下!");
+            isDownload = true;
+            return;
+        }
+
 
         if (!url.contains("&ds=4&")) {
             return;
@@ -42,9 +57,9 @@ public class DownloadUtils {
         Log.i(TAG, "videoUrl:" + url);
 
         new Thread(() -> {
-            boolean re = DownloadUtils.downloadVideo(url,
-                    PathUtils.getExternalDownloadsPath());
+            boolean re = DownloadUtils.downloadVideo(url, PathUtils.getExternalDownloadsPath(), dyUrl);
             if (re) {
+                isDownload = true;
                 ToastUtils.cancel();
                 ToastUtils.showLong("无水印视频下载成功,文件在Download目录下!");
             }
@@ -58,21 +73,19 @@ public class DownloadUtils {
      * @param shareInfo    下载链接
      * @param saveToFolder 下载目录
      */
-    public static boolean downloadVideo(String shareInfo, String saveToFolder) {
+    public static boolean downloadVideo(String shareInfo, String saveToFolder, String dyUrl) {
 
         //创建目录
         FileUtils.createOrExistsDir(saveToFolder);
 
-        String fileUrl = parseItemIdFromUrl(shareInfo);
 
-        if (isExists(fileUrl, saveToFolder)) {
+        if (isExists(dyUrl, saveToFolder)) {
             //下载过了
             return true;
         }
 
-        String shortUrl = shareInfo;
-        File file = new File(saveToFolder + "/" + EncryptUtils.encryptMD5ToString(fileUrl) + ".mp4");
-        File fileTemp = new File(saveToFolder + "/" + EncryptUtils.encryptMD5ToString(fileUrl) + ".temp");
+        File file = new File(saveToFolder + "/" + EncryptUtils.encryptMD5ToString(dyUrl) + ".mp4");
+        File fileTemp = new File(saveToFolder + "/" + EncryptUtils.encryptMD5ToString(dyUrl) + ".temp");
 
 
         Map<String, String> headers = new HashMap<>();

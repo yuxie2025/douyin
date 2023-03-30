@@ -22,6 +22,7 @@ import com.blankj.utilcode.util.ToastUtils;
 
 import com.yuxie.baselib.utils.CommonUtils;
 import com.yuxie.baselib.base.BaseActivity;
+import com.yuxie.baselib.utils.DownloadUtils;
 import com.yuxie.baselib.webView.WebViewActivity;
 import com.yuxie.demo.R;
 import com.yuxie.demo.widget.ClearEditText;
@@ -129,6 +130,7 @@ public class MainActivity extends BaseActivity {
                 .callback(new PermissionUtils.SimpleCallback() {
                     @Override
                     public void onGranted() {
+                        DownloadUtils.isDownload = false;
                         WebViewActivity.open(mContext, finalUrl);
                     }
 

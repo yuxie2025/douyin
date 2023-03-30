@@ -379,7 +379,7 @@ public class WebViewActivity extends Activity {
             public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
                 Log.i("TAG", "webResourceRequest:" + webResourceRequest.getUrl());
                 //抖音视频下载
-                DownloadUtils.download(webResourceRequest.getUrl().toString());
+                DownloadUtils.download(webResourceRequest.getUrl().toString(),url);
 //                webResourceRequest.getRequestHeaders().forEach(new BiConsumer<String, String>() {
 //                    @Override
 //                    public void accept(String s, String s2) {
