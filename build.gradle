@@ -1,11 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-apply from: 'buildsystem/cf.gradle'
 // In your root build.gradle file:
 buildscript {
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath "com.jakewharton:butterknife-gradle-plugin:8.8.1"
+        classpath "com.android.tools.build:gradle:4.2.1"
+        classpath 'com.huawei.agconnect:agcp:1.5.2.300'//华为扫码库必须
     }
 
     repositories {
@@ -13,7 +12,7 @@ buildscript {
         jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
-        maven { url "https://raw.githubusercontent.com/yuxie2025/commonlib/master" }
+        maven { url 'https://developer.huawei.com/repo/' }//华为扫码库必须
     }
 
 }
@@ -24,10 +23,24 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
-        maven { url "https://raw.githubusercontent.com/yuxie2025/commonlib/master" }
+        maven { url 'https://developer.huawei.com/repo/' }//华为扫码库必须
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+
+    compileSdkVersion = 31
+    minSdkVersion = 21
+    targetSdkVersion = 29
+    versionCode = 5
+    versionName = "1.5"
+    applicationId = "com.yuxie.douyin"
+
+    //图片加载
+    glide_Verion = '4.5.0'
+
 }

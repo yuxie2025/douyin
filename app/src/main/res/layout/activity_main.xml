@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/MM.BaseLlVertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-    <LinearLayout style="@style/MM.LlVertical">
-
-        <include layout="@layout/navigation_bar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,23 +30,20 @@
 
         </LinearLayout>
 
-        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+        <Button
             android:id="@+id/download"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_marginBottom="10dp"
             android:background="@color/main_color"
+            android:gravity="center"
             android:text="下载抖音(无水印)视频"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            app:qmui_backgroundColor="@color/main_color"
-            app:qmui_borderColor="@color/main_color"
-            app:qmui_borderWidth="1dp"
-            app:qmui_radius="5dp" />
+            android:textSize="16sp" />
 
-        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+        <Button
             android:id="@+id/openDy"
             android:layout_width="match_parent"
             android:layout_height="45dp"
@@ -51,91 +51,20 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="15dp"
             android:background="@color/main_color"
+            android:gravity="center"
             android:text="打开抖音"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            app:qmui_backgroundColor="@color/main_color"
-            app:qmui_borderColor="@color/main_color"
-            app:qmui_borderWidth="1dp"
-            app:qmui_radius="5dp" />
-
-        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-            android:id="@+id/hotVideo"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="15dp"
-            android:background="@color/main_color"
-            android:text="热门视频"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:visibility="gone"
-            app:qmui_backgroundColor="@color/main_color"
-            app:qmui_borderColor="@color/main_color"
-            app:qmui_borderWidth="1dp"
-            app:qmui_radius="5dp" />
-
-        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-            android:id="@+id/hVideo"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="15dp"
-            android:background="@color/main_color"
-            android:text="抖音视频"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:visibility="gone"
-            app:qmui_backgroundColor="@color/main_color"
-            app:qmui_borderColor="@color/main_color"
-            app:qmui_borderWidth="1dp"
-            app:qmui_radius="5dp" />
-
-        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-            android:id="@+id/copyVideo"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="15dp"
-            android:background="@color/main_color"
-            android:text="获取抖音观看视频"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:visibility="gone"
-            app:qmui_backgroundColor="@color/main_color"
-            app:qmui_borderColor="@color/main_color"
-            app:qmui_borderWidth="1dp"
-            app:qmui_radius="5dp" />
-
-        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-            android:id="@+id/dVideo"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="15dp"
-            android:background="@color/main_color"
-            android:text="观看下载视频"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:qmui_backgroundColor="@color/main_color"
-            app:qmui_borderColor="@color/main_color"
-            app:qmui_borderWidth="1dp"
-            app:qmui_radius="5dp" />
-
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tvExplain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="该app用于下载抖音无水印视频.\n\n使用说明:\n点击获取抖音观看视频,即可"
+            android:text="该app用于下载抖音无水印视频.\n\n使用说明:\n1.输入抖音分享链接->点击下载->跳转webView->等待提示下载无水印视频,成功提示(10-20秒)\n2.下载文件保存在Download目录下"
             android:textColor="#333"
             android:textSize="16sp" />
 
     </LinearLayout>
 
-</android.support.v4.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>

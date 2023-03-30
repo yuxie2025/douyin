@@ -1,14 +1,14 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="@style/QMUI.Compat.NoActionBar">
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <!--<item name="android:windowTranslucentNavigation">false</item>//适配华为手机的虚拟按键-->
         <!--<item name="android:textColorPrimary">@color/textColorPrimary</item>-->
-        <item name="android:windowBackground">@drawable/screen</item>
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
     <!-- window 透明的-->

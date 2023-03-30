@@ -1,0 +1,46 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.huawei.agconnect'//华为扫码库必须
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+
+    //华为扫码库
+    api 'com.huawei.hms:scanplus:2.5.0.300'
+
+    //常用工具
+    api 'com.blankj:utilcodex:1.31.1'
+
+    //json解析
+    api 'com.alibaba:fastjson:1.2.76'
+
+    //js交互工具
+    api project(path: ':jsbridge_lib')
+
+    api group: 'org.apache.commons', name: 'commons-text', version: '1.9'
+
+
+
+}

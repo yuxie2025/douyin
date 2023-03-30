@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">base_lib</string>
+
+    <string name="qr_code_title_scan">扫码</string>
+    <string name="qr_code_tips_scan">将二维码放入框内,即可自动扫描</string>
+
+
+    <string name="web_view_tip_file_permission">你需要开读写文件的权限,去设置?</string>
+    <string name="web_view_tip_camera_storage_permission">你需要开读写文件,摄像头权限,去设置?</string>
+    <string name="web_view_tip_camera_permission">你需要打开摄像头的权限,去设置?</string>
+
+</resources>

@@ -1,8 +1,6 @@
 package com.yuxie.demo;
 
 import com.blankj.utilcode.util.FileUtils;
-import com.yuxie.demo.utils.douyin.Douyin;
-import com.yuxie.demo.utils.douyin.bean.ApiResult;
 
 import org.junit.Test;
 
@@ -102,8 +100,7 @@ public class ExampleUnitUnitTest {
     /**
      * 替换文本
      *
-     * @param srcFileName
-     * @return
+     * @param srcFileName srcFileName
      */
     private String replace(String srcFileName) {
 
@@ -128,10 +125,4 @@ public class ExampleUnitUnitTest {
         return targetFileName;
     }
 
-    @Test
-    public void testDouYin() throws Exception {
-        String msgFromDouYin = "大家帮我们看看昨天去看的房，两居室的那个房子看中了，就是周边不咋地，有懂的吗？#沪漂 #买房 #宝妈分享  https://v.douyin.com/JbKWX3g/ 复制此链接，打开抖音搜索，直接观看视频！";
-        boolean re = Douyin.downloadVideo(msgFromDouYin, "/Users/apple_mini/Desktop");
-        System.out.println("下载结果re:" + re);
-    }
 }

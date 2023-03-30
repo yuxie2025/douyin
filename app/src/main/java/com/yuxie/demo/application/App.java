@@ -2,16 +2,15 @@ package com.yuxie.demo.application;
 
 import android.content.Context;
 
-import com.baselib.baseapp.BaseApplication;
-import com.hjq.permissions.XXPermissions;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.yuxie.baselib.base.BaseApp;
 import com.yuxie.demo.R;
 
 /**
  * Created by Administrator on 2017/7/13.
  */
 
-public class App extends BaseApplication {
+public class App extends BaseApp {
     private static Context mContext;
 
     @Override
@@ -19,9 +18,6 @@ public class App extends BaseApplication {
         super.onCreate();
         mContext = getApplicationContext();
         initData();
-
-        // 当前项目是否已经适配了分区存储的特性
-        XXPermissions.setScopedStorage(true);
     }
 
     private void initData() {

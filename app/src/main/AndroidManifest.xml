@@ -11,21 +11,9 @@
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-    <!-- 访问互联网权限 -->
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-    <!-- begin: baidu speech sdk  权限 -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-    <!-- end: baidu speech sdk  权限 -->
     <application
-        android:name=".application.App"
+        android:name="com.yuxie.demo.application.App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -33,28 +21,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
+        tools:ignore="AllowBackup"
         tools:targetApi="m">
-
-        <!-- 横屏:landscape -->
-        <!-- 竖屏:portrait -->
-        <!-- 横屏：setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); -->
-        <!-- 竖屏：setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); -->
-        <!-- android:configChanges="orientation|keyboardHidden|screenSize">切换横竖屏,不从新执行生命周期,执行onConfigurationChanged 方法 -->
-        <activity android:name=".activity.MainActivity">
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.PlayVideosActivity"
-            android:hardwareAccelerated="true"
-            android:theme="@style/NoTitleFullscreen" />
-        <activity
-            android:name=".activity.NativeVideosActivity"
-            android:hardwareAccelerated="true"
-            android:theme="@style/NoTitleFullscreen" />
     </application>
-
 </manifest>
