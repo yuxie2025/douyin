@@ -241,7 +241,10 @@ public class WebViewActivity extends Activity {
 //        String ua = webView.getSettings().getUserAgentString();
 //        webSettings.setUserAgentString(ua + "; AndroidApp");
 
-        webSettings.setUserAgentString("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0");
+        if (url.contains("douyin.com")) {
+            webSettings.setUserAgentString("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0");
+        }
+
 
         webView.loadUrl(url);
 
@@ -379,7 +382,7 @@ public class WebViewActivity extends Activity {
             public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
                 Log.i("TAG", "webResourceRequest:" + webResourceRequest.getUrl());
                 //抖音视频下载
-                DownloadUtils.download(webResourceRequest.getUrl().toString(),url);
+                DownloadUtils.download(webResourceRequest.getUrl().toString(), url);
 //                webResourceRequest.getRequestHeaders().forEach(new BiConsumer<String, String>() {
 //                    @Override
 //                    public void accept(String s, String s2) {

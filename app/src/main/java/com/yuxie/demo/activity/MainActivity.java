@@ -106,11 +106,7 @@ public class MainActivity extends BaseActivity {
     private void download() {
         String url = etUrl.getText().toString();
         if (TextUtils.isEmpty(url)) {
-            ToastUtils.showShort("请输入抖音分享链接！");
-            return;
-        }
-        if (!url.contains("douyin.com")) {
-            ToastUtils.showShort("请输入正确的抖音分享链接！");
+            ToastUtils.showShort("请输入链接！");
             return;
         }
 

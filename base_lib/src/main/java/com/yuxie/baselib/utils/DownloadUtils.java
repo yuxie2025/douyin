@@ -1,5 +1,6 @@
 package com.yuxie.baselib.utils;
 
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -46,11 +47,7 @@ public class DownloadUtils {
         }
 
 
-        if (!url.contains("&ds=4&")) {
-            return;
-        }
-
-        if (CommonUtils.isDoubleClick(10000)) {
+        if (!url.contains("video/") && !url.contains(".mp4")) {
             return;
         }
 
@@ -130,17 +127,25 @@ public class DownloadUtils {
                 Log.i(TAG, "header_key:" + entry.getKey() + ",value:" + entry.getValue());
             }
             int code = conn.getResponseCode();
+            String type = conn.getContentType();
             Log.i(TAG, "url:" + url);
             Log.i(TAG, "code:" + code);
-            if (code == 200) {
-                InputStream in = conn.getInputStream();
-                return in;
-            }
+            Log.i(TAG, "conn.getContentType():" + conn.getContentType());
+
             if (code == 302) {
                 //如果会重定向，保存302重定向地址，以及Cookies,然后重新发送请求(模拟请求)
                 String locationUrl = conn.getHeaderField("Location");
                 Log.i(TAG, "locationUrl:" + locationUrl);
                 return get(locationUrl, new HashMap<>());
+            }
+
+            if (code == 200) {
+                if (!TextUtils.isEmpty(type) && type.startsWith("video")) {
+                    return conn.getInputStream();
+                }
+                return null;
+            } else {
+                ToastUtils.showLong("请稍后再试，错误码：" + code);
             }
         } catch (Exception e) {
             e.printStackTrace();

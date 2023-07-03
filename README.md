@@ -1,4 +1,5 @@
-# 抖音无水印下载工具(20230330,测试可以使用) 2023年 抖音最新去水印方案
+# 抖音无水印下载工具(20230703,测试可以使用) 2023年 抖音（无水印）最新去水印下载方案
+# 新增支持uc视频（无水印），西瓜视频下载
 
 # 这是一个抖音无水印视频下载工具:
 
@@ -15,6 +16,7 @@ webView.setUserAgentString("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.
 ## 2.使用webView打开抖音分享链接,setWebViewClient->shouldInterceptRequest拦截无水印视频链接
 
 ```
+#链接会过期，请实时获取
 https://v26-web.douyinvod.com/d9ec5407864eff09d9daef3faca2ef5e/6422a9c1/video/tos/cn/tos-cn-ve-15c001-alinc2/osLh7xvAIIEEBdBZnCQeJoeDUenQu0A9XAb55J/?
 a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=3748&bt=3748&cs=0&ds=4&ft=bvTKJbQQqUYqfJEZPo0OW_EklpPiX9A_ZMVJEH28f2vPD-I&
 mime_type=video_mp4&qs=0&rc=M2Q7ZDg1ZmQ1MzU3ZWQzNUBpamV1a2Y6ZjhyajMzNGkzM0BjMV81YmJhX2ExL15hNTMwYSNrbjRvcjRvc2RgLS1kLS9zcw%3D%3D

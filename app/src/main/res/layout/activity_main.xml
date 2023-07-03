@@ -11,6 +11,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/app_name" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#eee" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +33,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:drawableRight="@drawable/delete"
-                android:hint="请输入抖音分享视频地址"
+                android:hint="请输入分享视频地址"
                 android:singleLine="true"
                 android:textSize="14sp"
                 tools:ignore="HardcodedText" />
@@ -39,7 +49,7 @@
             android:layout_marginBottom="10dp"
             android:background="@color/main_color"
             android:gravity="center"
-            android:text="下载抖音(无水印)视频"
+            android:text="下载(无水印)视频"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -61,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="该app用于下载抖音无水印视频.\n\n使用说明:\n1.输入抖音分享链接->点击下载->跳转webView->等待提示下载无水印视频,成功提示(10-20秒)\n2.下载文件保存在Download目录下"
+            android:text="该app用于下载抖音无水印视频.\n\n使用说明:\n1.输入抖音分享链接->点击下载->跳转webView->等待提示下载无水印视频,成功提示(10-20秒)\n2.下载文件保存在Download目录下\n3.新增支持uc视频，西瓜视频下载"
             android:textColor="#333"
             android:textSize="16sp" />
 
