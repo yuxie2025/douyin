@@ -1,15 +1,22 @@
 package com.yuxie.baselib.utils;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.FileIOUtils;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.PathUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.github.lzyzsd.jsbridge.BridgeWebView;
 
 import java.io.File;
 import java.io.InputStream;
@@ -17,48 +24,76 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 public class DownloadUtils {
 
     private static final String TAG = "DownloadUtils";
     public static final String UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0";
 
-    public static boolean isDownload = false;
+    public static LinkedList<String> linkedList = new LinkedList<>();
 
-    public static void download(String url, String dyUrl) {
+    public static void downloadDialog(Context mContext, String url, String shortUrl) {
 
-//        链接示例
-//                https://v26-web.douyinvod.com/d9ec5407864eff09d9daef3faca2ef5e/6422a9c1/video/tos/cn/tos-cn-ve-15c001-alinc2/osLh7xvAIIEEBdBZnCQeJoeDUenQu0A9XAb55J/?
-//                a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=3748&bt=3748&cs=0&ds=4&ft=bvTKJbQQqUYqfJEZPo0OW_EklpPiX9A_ZMVJEH28f2vPD-I&
-//                mime_type=video_mp4&qs=0&rc=M2Q7ZDg1ZmQ1MzU3ZWQzNUBpamV1a2Y6ZjhyajMzNGkzM0BjMV81YmJhX2ExL15hNTMwYSNrbjRvcjRvc2RgLS1kLS9zcw%3D%3D
-//                &l=20230328154752918F62A33B161C0D313A&btag=8000&testst=1679989686676
-
-        if (isDownload) {
-            return;
+        if (TextUtils.isEmpty(shortUrl) && !TextUtils.isEmpty(url)) {
+            shortUrl = url.split("\\?")[0];
         }
 
-        String saveToFolder = PathUtils.getExternalDownloadsPath();
-        if (isExists(dyUrl, saveToFolder)) {
+        if (isExists(shortUrl)) {
             //下载过了
             ToastUtils.showLong("下载过了,文件在Download目录下!");
-            isDownload = true;
             return;
         }
 
+        if (linkedList.contains(url)) {
+            return;
+        }
+        linkedList.add(url);
 
-        if (!url.contains("video/") && !url.contains(".mp4")) {
+        String finalShortUrl = shortUrl;
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage("是否下载？");
+        builder.setPositiveButton("确定", (dialogInterface, i) -> {
+            //处理下载事件
+            download(url, finalShortUrl);
+        });
+        builder.setNegativeButton("取消", (dialogInterface, i) -> {
+            dialogInterface.dismiss();
+        });
+        builder.setOnDismissListener(dialogInterface -> {
+            linkedList.remove(url);
+        });
+        builder.show();
+    }
+
+    public static void download(String url, String shortUrl) {
+
+//        //链接示例
+//        https://v26-web.douyinvod.com/d9ec5407864eff09d9daef3faca2ef5e/6422a9c1/video/tos/cn/tos-cn-ve-15c001-alinc2/osLh7xvAIIEEBdBZnCQeJoeDUenQu0A9XAb55J/?
+//        a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=3748&bt=3748&cs=0&ds=4&ft=bvTKJbQQqUYqfJEZPo0OW_EklpPiX9A_ZMVJEH28f2vPD-I&
+//        mime_type=video_mp4&qs=0&rc=M2Q7ZDg1ZmQ1MzU3ZWQzNUBpamV1a2Y6ZjhyajMzNGkzM0BjMV81YmJhX2ExL15hNTMwYSNrbjRvcjRvc2RgLS1kLS9zcw%3D%3D
+//        &l=20230328154752918F62A33B161C0D313A&btag=8000&testst=1679989686676
+
+        if (TextUtils.isEmpty(shortUrl) && !TextUtils.isEmpty(url)) {
+            shortUrl = url.split("\\?")[0];
+        }
+
+        if (isExists(shortUrl)) {
+            //下载过了
+            ToastUtils.showLong("下载过了,文件在Download目录下!");
             return;
         }
 
-        Log.i(TAG, "videoUrl:" + url);
+        Log.i(TAG, "download_videoUrl:" + url);
 
+        String finalShortUrl = shortUrl;
         new Thread(() -> {
-            boolean re = DownloadUtils.downloadVideo(url, PathUtils.getExternalDownloadsPath(), dyUrl);
+            boolean re = DownloadUtils.downloadVideo(url, PathUtils.getExternalDownloadsPath(), finalShortUrl);
             if (re) {
-                isDownload = true;
                 ToastUtils.cancel();
-                ToastUtils.showLong("无水印视频下载成功,文件在Download目录下!");
+                ToastUtils.showLong("下载成功,文件在Download目录下!");
             }
         }).start();
 
@@ -70,19 +105,18 @@ public class DownloadUtils {
      * @param shareInfo    下载链接
      * @param saveToFolder 下载目录
      */
-    public static boolean downloadVideo(String shareInfo, String saveToFolder, String dyUrl) {
+    public static boolean downloadVideo(String shareInfo, String saveToFolder, String shortUrl) {
 
         //创建目录
         FileUtils.createOrExistsDir(saveToFolder);
 
-
-        if (isExists(dyUrl, saveToFolder)) {
+        if (isExists(shortUrl)) {
             //下载过了
             return true;
         }
 
-        File file = new File(saveToFolder + "/" + EncryptUtils.encryptMD5ToString(dyUrl) + ".mp4");
-        File fileTemp = new File(saveToFolder + "/" + EncryptUtils.encryptMD5ToString(dyUrl) + ".temp");
+        File file = new File(saveToFolder + "/" + EncryptUtils.encryptMD5ToString(shortUrl) + ".mp4");
+        File fileTemp = new File(saveToFolder + "/" + EncryptUtils.encryptMD5ToString(shortUrl) + ".temp");
 
 
         Map<String, String> headers = new HashMap<>();
@@ -140,10 +174,7 @@ public class DownloadUtils {
             }
 
             if (code == 200) {
-                if (!TextUtils.isEmpty(type) && type.startsWith("video")) {
-                    return conn.getInputStream();
-                }
-                return null;
+                return conn.getInputStream();
             } else {
                 ToastUtils.showLong("请稍后再试，错误码：" + code);
             }
@@ -153,8 +184,39 @@ public class DownloadUtils {
         return null;
     }
 
-    public static boolean isExists(String shareInfo, String saveToFolder) {
-        String shortUrl = shareInfo;
+    public static String getContentType(String url) {
+        Map<String, String> headers = new HashMap<>();
+        try {
+            URL mUrl = new URL(url);
+            //host需要随着变化不然会下载失败
+            headers.put("Host", mUrl.getHost());
+        } catch (MalformedURLException ignored) {
+        }
+        headers.put("User-Agent", UA);
+        try {
+            URL serverUrl = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) serverUrl.openConnection();
+            conn.setConnectTimeout(10000);
+            conn.setReadTimeout(10000);
+            conn.setDoInput(true);
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                conn.setRequestProperty(entry.getKey(), entry.getValue());
+            }
+            int code = conn.getResponseCode();
+            String type = conn.getContentType();
+            Log.i(TAG, "url:" + url);
+            Log.i(TAG, "code:" + code);
+            Log.i(TAG, "conn.getContentType():" + type);
+            return type;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static boolean isExists(String shortUrl) {
+        String saveToFolder = PathUtils.getExternalDownloadsPath();
+//        Log.i(TAG, "isExists:" + shortUrl);
         if (StringUtils.isEmpty(shortUrl)) {
             //下载链接为空
             return false;

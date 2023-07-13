@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -17,6 +19,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -34,6 +37,7 @@ import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.github.lzyzsd.jsbridge.BridgeWebViewClient;
 import com.tencent.smtt.export.external.extension.proxy.ProxyWebChromeClientExtension;
 import com.tencent.smtt.export.external.interfaces.ConsoleMessage;
+import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
 import com.tencent.smtt.export.external.interfaces.WebResourceError;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
@@ -41,6 +45,7 @@ import com.tencent.smtt.sdk.ValueCallback;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
+import com.yuxie.baselib.base.BaseActivity;
 import com.yuxie.baselib.utils.DownloadUtils;
 import com.yuxie.baselib.R;
 import com.yuxie.baselib.qrCode.CaptureActivity;
@@ -52,7 +57,7 @@ import java.io.File;
  * h5入口
  */
 @SuppressLint("SetJavaScriptEnabled")
-public class WebViewActivity extends Activity {
+public class WebViewActivity extends BaseActivity {
 
     private static final String TAG = WebViewActivity.class.getSimpleName();
 
@@ -77,6 +82,10 @@ public class WebViewActivity extends Activity {
 
     public Context mContext;
 
+    private FrameLayout mLayout;    // 用来显示视频的布局
+    private View mCustomView;    //用于全屏渲染视频的View
+    private IX5WebChromeClient.CustomViewCallback mCustomViewCallback;
+
 
     public static void open(Context mContext, String url) {
         Intent intent = new Intent(mContext, WebViewActivity.class);
@@ -96,13 +105,21 @@ public class WebViewActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        //全面屏，全屏代码
+//        WindowManager.LayoutParams lp = this.getWindow().getAttributes();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+//            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+//        }
+//        getWindow().setAttributes(lp);
+//        getWindow().getDecorView().setSystemUiVisibility(
+//                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//        );
         setContentView(R.layout.webview_activity_main_h5);
 
         WebViewCommonUtils.setStatusBarColor(this, Color.parseColor("#ffffff"));
         BarUtils.setStatusBarLightMode(this, true);
 
         mContext = this;
-
         isError = false;
         isFirst = true;
 
@@ -151,12 +168,7 @@ public class WebViewActivity extends Activity {
 
             String url = webView.getUrl();
             //拦截首页的页面,以免返回到登录页面
-            if (!TextUtils.isEmpty(url) && (url.endsWith("/pagesPerson/sdkH5Login/sdkH5Home")
-                    || url.endsWith("pagesPerson/sdkH5Login/sdkH5Login"))) {
-                //过滤首页页面登录提示退出登录
-                finish();
-                return;
-            }
+
 
             if (webView.canGoBack()) {
                 webView.goBack();
@@ -169,6 +181,8 @@ public class WebViewActivity extends Activity {
         ivRefresh.setOnClickListener(v -> webView.reload());
 
         hideErrorPage();
+
+        mLayout = findViewById(R.id.fl_video);
     }
 
     @Override
@@ -190,12 +204,7 @@ public class WebViewActivity extends Activity {
     public void onBackPressed() {
         String url = webView.getUrl();
         //拦截首页的页面,以免返回到登录页面
-        if (!TextUtils.isEmpty(url) && (url.endsWith("/pagesPerson/sdkH5Login/sdkH5Home")
-                || url.endsWith("pagesPerson/sdkH5Login/sdkH5Login"))) {
-            //过滤首页页面登录提示退出登录
-            finish();
-            return;
-        }
+
         if (webView.canGoBack()) {
             webView.goBack();
             return;
@@ -234,7 +243,7 @@ public class WebViewActivity extends Activity {
         String cachePath = getApplicationContext().getCacheDir().getPath();
         webSettings.setAppCachePath(cachePath);
         webSettings.setAppCacheMaxSize(50 * 1024 * 1024);
-        webSettings.setDisplayZoomControls(false);
+        webSettings.setDisplayZoomControls(true);
         webView.setHorizontalScrollBarEnabled(true);//滚动条水平是否显示
         webView.setVerticalScrollBarEnabled(true); //滚动条垂直是否显示
 
@@ -300,6 +309,48 @@ public class WebViewActivity extends Activity {
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
                 Log.i(TAG, "consoleMessage:" + consoleMessage.message());
                 return super.onConsoleMessage(consoleMessage);
+            }
+
+            @Override
+            public void onShowCustomView(View view, IX5WebChromeClient.CustomViewCallback callback) {
+                super.onShowCustomView(view, callback);
+                Log.i(TAG, "onShowCustomView()");
+                //如果view 已经存在，则隐藏
+                if (mCustomView != null) {
+                    callback.onCustomViewHidden();
+                    return;
+                }
+
+                mCustomView = view;
+                mCustomView.setVisibility(View.VISIBLE);
+                mCustomViewCallback = callback;
+                mLayout.addView(mCustomView);
+                mLayout.setVisibility(View.VISIBLE);
+                mLayout.bringToFront();
+
+                //设置横屏
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+            }
+
+            @Override
+            public void onHideCustomView() {
+                super.onHideCustomView();
+                Log.i(TAG, "onHideCustomView()");
+
+                if (mCustomView == null) {
+                    return;
+                }
+                mCustomView.setVisibility(View.GONE);
+                mLayout.removeView(mCustomView);
+                mCustomView = null;
+                mLayout.setVisibility(View.GONE);
+                try {
+                    mCustomViewCallback.onCustomViewHidden();
+                } catch (Exception ignored) {
+                }
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
+
             }
         });
         //1.注意需要设置BridgeWebViewClient不然js交互无效，
@@ -380,15 +431,21 @@ public class WebViewActivity extends Activity {
 
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
-                Log.i("TAG", "webResourceRequest:" + webResourceRequest.getUrl());
-                //抖音视频下载
-                DownloadUtils.download(webResourceRequest.getUrl().toString(), url);
-//                webResourceRequest.getRequestHeaders().forEach(new BiConsumer<String, String>() {
-//                    @Override
-//                    public void accept(String s, String s2) {
-//                        Log.i("TAG", "s:" + s + ",s2:" + s2);
-//                    }
-//                });
+                String requestUrl = webResourceRequest.getUrl().toString();
+//                Log.i("TAG", "webResourceRequest:" + requestUrl);
+                //视频下载
+                if (requestUrl.contains("video/") || requestUrl.contains(".mp4")) {
+                    String type = DownloadUtils.getContentType(requestUrl);
+                    if (type.startsWith("video")) {
+                        Log.i("TAG", "webResourceRequest_video:" + requestUrl);
+                        String shortUrl = "";
+                        if (url.contains("douyin.com") || url.contains("ixigua.com")) {
+                            shortUrl = url;
+                        }
+                        String finalShortUrl = shortUrl;
+                        runOnUiThread(() -> DownloadUtils.downloadDialog(mContext, requestUrl, finalShortUrl));
+                    }
+                }
                 return super.shouldInterceptRequest(webView, webResourceRequest);
             }
         });
@@ -409,7 +466,7 @@ public class WebViewActivity extends Activity {
         });
 
         //跳转系统浏览器下载文件
-        WebViewUtils.setDownloadListener(webView);
+        WebViewUtils.setDownloadListener(mContext, webView);
 
         //h5交互
         webView.registerHandler("writeLocalStorage", (data, function) -> {
@@ -633,6 +690,24 @@ public class WebViewActivity extends Activity {
             }
             Log.i(TAG, "h5_version:" + version);
         });
+    }
+
+    /**
+     * 横竖屏切换监听
+     */
+    @Override
+    public void onConfigurationChanged(Configuration config) {
+        super.onConfigurationChanged(config);
+        switch (config.orientation) {
+            case Configuration.ORIENTATION_LANDSCAPE:
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                break;
+            case Configuration.ORIENTATION_PORTRAIT:
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+                break;
+        }
     }
 
 }

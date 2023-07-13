@@ -58,9 +58,13 @@ public class MainActivity extends BaseActivity {
         });
 
         //调试使用
-        if (AppUtils.isAppDebug()) {
-            etUrl.setText("https://v.douyin.com/ArBxFg5/");
-        }
+//        if (AppUtils.isAppDebug()) {
+//            etUrl.setText("https://v.douyin.com/ArBxFg5/");
+//            etUrl.setText("http://192.168.31.79:8080/#/pages/model/gift/gift");
+//            etUrl.setText("https://www.baidu.com");
+//        }
+
+        etUrl.setText("https://v.douyin.com/ArBxFg5/");
     }
 
     @Override
@@ -126,7 +130,6 @@ public class MainActivity extends BaseActivity {
                 .callback(new PermissionUtils.SimpleCallback() {
                     @Override
                     public void onGranted() {
-                        DownloadUtils.isDownload = false;
                         WebViewActivity.open(mContext, finalUrl);
                     }
 

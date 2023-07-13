@@ -23,7 +23,7 @@ android {
 
 dependencies {
     // x5内核
-    api 'com.tencent.tbs:tbssdk:44181'
+    api 'com.tencent.tbs:tbssdk:44286'
 }
 
 
