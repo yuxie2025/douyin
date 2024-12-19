@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -17,6 +18,8 @@ import com.blankj.utilcode.util.PathUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
+import com.tencent.smtt.sdk.WebView;
 
 import java.io.File;
 import java.io.InputStream;
@@ -35,7 +38,33 @@ public class DownloadUtils {
 
     public static LinkedList<String> linkedList = new LinkedList<>();
 
-    public static void downloadDialog(Context mContext, String url, String shortUrl) {
+    public static void shouldInterceptRequest(Context mContext, WebView webView, WebResourceRequest webResourceRequest, String url) {
+        String requestUrl = webResourceRequest.getUrl().toString();
+
+        if (requestUrl.endsWith("previous_page=app_code_link") ||
+                requestUrl.startsWith("https://sp0.baidu.com") ||
+                requestUrl.startsWith("https://helpdesk.bytedance.com")) {
+            return;
+        }
+
+        //视频下载
+        if (requestUrl.contains("video/") || requestUrl.contains(".mp4")) {
+//            Log.i(TAG, "webResourceRequest:" + requestUrl);
+            String type = DownloadUtils.getContentType(requestUrl, webResourceRequest);
+            if (type.startsWith("video")) {
+                Log.i(TAG, "webResourceRequest_video:" + requestUrl);
+                String shortUrl = "";
+                if (url.contains("douyin.com") || url.contains("ixigua.com")) {
+                    shortUrl = url;
+                }
+                String finalShortUrl = shortUrl;
+                new Handler(Looper.getMainLooper()).post(() -> DownloadUtils.downloadDialog(mContext, requestUrl, finalShortUrl, webResourceRequest));
+            }
+        }
+    }
+
+
+    public static void downloadDialog(Context mContext, String url, String shortUrl, WebResourceRequest webResourceRequest) {
 
         if (TextUtils.isEmpty(shortUrl) && !TextUtils.isEmpty(url)) {
             shortUrl = url.split("\\?")[0];
@@ -57,7 +86,7 @@ public class DownloadUtils {
         builder.setMessage("是否下载？");
         builder.setPositiveButton("确定", (dialogInterface, i) -> {
             //处理下载事件
-            download(url, finalShortUrl);
+            download(url, finalShortUrl, webResourceRequest);
         });
         builder.setNegativeButton("取消", (dialogInterface, i) -> {
             dialogInterface.dismiss();
@@ -68,7 +97,7 @@ public class DownloadUtils {
         builder.show();
     }
 
-    public static void download(String url, String shortUrl) {
+    public static void download(String url, String shortUrl, WebResourceRequest webResourceRequest) {
 
 //        //链接示例
 //        https://v26-web.douyinvod.com/d9ec5407864eff09d9daef3faca2ef5e/6422a9c1/video/tos/cn/tos-cn-ve-15c001-alinc2/osLh7xvAIIEEBdBZnCQeJoeDUenQu0A9XAb55J/?
@@ -90,7 +119,7 @@ public class DownloadUtils {
 
         String finalShortUrl = shortUrl;
         new Thread(() -> {
-            boolean re = DownloadUtils.downloadVideo(url, PathUtils.getExternalDownloadsPath(), finalShortUrl);
+            boolean re = DownloadUtils.downloadVideo(url, PathUtils.getExternalDownloadsPath(), finalShortUrl, webResourceRequest);
             if (re) {
                 ToastUtils.cancel();
                 ToastUtils.showLong("下载成功,文件在Download目录下!");
@@ -105,7 +134,7 @@ public class DownloadUtils {
      * @param shareInfo    下载链接
      * @param saveToFolder 下载目录
      */
-    public static boolean downloadVideo(String shareInfo, String saveToFolder, String shortUrl) {
+    public static boolean downloadVideo(String shareInfo, String saveToFolder, String shortUrl, WebResourceRequest webResourceRequest) {
 
         //创建目录
         FileUtils.createOrExistsDir(saveToFolder);
@@ -118,16 +147,19 @@ public class DownloadUtils {
         File file = new File(saveToFolder + "/" + EncryptUtils.encryptMD5ToString(shortUrl) + ".mp4");
         File fileTemp = new File(saveToFolder + "/" + EncryptUtils.encryptMD5ToString(shortUrl) + ".temp");
 
-
         Map<String, String> headers = new HashMap<>();
-        try {
-            URL url = new URL(shareInfo);
-            //host需要随着变化不然会下载失败
-            headers.put("Host", url.getHost());
-        } catch (MalformedURLException ignored) {
+        if (webResourceRequest != null) {
+            headers = webResourceRequest.getRequestHeaders();
+        } else {
+            try {
+                URL url = new URL(shareInfo);
+                //host需要随着变化不然会下载失败
+                headers.put("Host", url.getHost());
+            } catch (MalformedURLException ignored) {
+            }
+            headers.put("Connection", "keep-alive");
+            headers.put("User-Agent", UA);
         }
-        headers.put("Connection", "keep-alive");
-        headers.put("User-Agent", UA);
         InputStream in = get(shareInfo, headers);
         if (in == null) {
             return false;
@@ -158,13 +190,11 @@ public class DownloadUtils {
             conn.setDoInput(true);
             for (Map.Entry<String, String> entry : headers.entrySet()) {
                 conn.setRequestProperty(entry.getKey(), entry.getValue());
-                Log.i(TAG, "header_key:" + entry.getKey() + ",value:" + entry.getValue());
+//                Log.i(TAG, "header_key:" + entry.getKey() + ",value:" + entry.getValue());
             }
             int code = conn.getResponseCode();
             String type = conn.getContentType();
-            Log.i(TAG, "url:" + url);
-            Log.i(TAG, "code:" + code);
-            Log.i(TAG, "conn.getContentType():" + conn.getContentType());
+            Log.i(TAG, "get:_ContentType:" + type + ",code:" + code + ",url:" + url);
 
             if (code == 302) {
                 //如果会重定向，保存302重定向地址，以及Cookies,然后重新发送请求(模拟请求)
@@ -173,7 +203,7 @@ public class DownloadUtils {
                 return get(locationUrl, new HashMap<>());
             }
 
-            if (code == 200) {
+            if (code == 200 || code == 206) {
                 return conn.getInputStream();
             } else {
                 ToastUtils.showLong("请稍后再试，错误码：" + code);
@@ -184,15 +214,20 @@ public class DownloadUtils {
         return null;
     }
 
-    public static String getContentType(String url) {
+    public static String getContentType(String url, WebResourceRequest webResourceRequest) {
         Map<String, String> headers = new HashMap<>();
-        try {
-            URL mUrl = new URL(url);
-            //host需要随着变化不然会下载失败
-            headers.put("Host", mUrl.getHost());
-        } catch (MalformedURLException ignored) {
+        if (webResourceRequest != null) {
+            headers = webResourceRequest.getRequestHeaders();
+        } else {
+            try {
+                URL mUrl = new URL(url);
+                //host需要随着变化不然会下载失败
+                headers.put("Host", mUrl.getHost());
+            } catch (MalformedURLException ignored) {
+            }
+            headers.put("User-Agent", UA);
         }
-        headers.put("User-Agent", UA);
+
         try {
             URL serverUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) serverUrl.openConnection();
@@ -204,9 +239,7 @@ public class DownloadUtils {
             }
             int code = conn.getResponseCode();
             String type = conn.getContentType();
-            Log.i(TAG, "url:" + url);
-            Log.i(TAG, "code:" + code);
-            Log.i(TAG, "conn.getContentType():" + type);
+            Log.i(TAG, "getContentType:_ContentType:" + type + ",code:" + code + ",url:" + url);
             return type;
         } catch (Exception e) {
             e.printStackTrace();

@@ -431,23 +431,10 @@ public class WebViewActivity extends BaseActivity {
 
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
-                String requestUrl = webResourceRequest.getUrl().toString();
-//                Log.i("TAG", "webResourceRequest:" + requestUrl);
-                //视频下载
-                if (requestUrl.contains("video/") || requestUrl.contains(".mp4")) {
-                    String type = DownloadUtils.getContentType(requestUrl);
-                    if (type.startsWith("video")) {
-                        Log.i("TAG", "webResourceRequest_video:" + requestUrl);
-                        String shortUrl = "";
-                        if (url.contains("douyin.com") || url.contains("ixigua.com")) {
-                            shortUrl = url;
-                        }
-                        String finalShortUrl = shortUrl;
-                        runOnUiThread(() -> DownloadUtils.downloadDialog(mContext, requestUrl, finalShortUrl));
-                    }
-                }
+                DownloadUtils.shouldInterceptRequest(mContext, webView, webResourceRequest, url);
                 return super.shouldInterceptRequest(webView, webResourceRequest);
             }
+
         });
 
         //重写密码保存页面,需要返回true屏蔽弹窗

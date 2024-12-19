@@ -1,5 +1,6 @@
 package com.yuxie.demo.activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -44,6 +45,7 @@ public class MainActivity extends BaseActivity {
         initView();
     }
 
+    @SuppressLint("SetTextI18n")
     protected void initView() {
         setTitle("抖音无水印");
         tvExplain = findViewById(R.id.tvExplain);
@@ -90,8 +92,8 @@ public class MainActivity extends BaseActivity {
      */
     private void registerClipEvents() {
         CharSequence content = ClipboardUtils.getText();
-        Log.i("TAG", "content:" + content);
         if (!TextUtils.isEmpty(content)) {
+            Log.i("TAG", "content:" + content);
             String msgFromDouYin = content.toString();
             String url = CommonUtils.extractUrl(msgFromDouYin);
             etUrl.setText(url);
