@@ -17,9 +17,6 @@
             android:required="false" />
 
         <activity
-            android:name=".qrCode.CaptureActivity"
-            android:exported="true" />
-        <activity
             android:name=".webView.WebViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"

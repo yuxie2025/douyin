@@ -43,6 +43,7 @@ public class DownloadUtils {
 
         if (requestUrl.endsWith("previous_page=app_code_link") ||
                 requestUrl.startsWith("https://sp0.baidu.com") ||
+                requestUrl.startsWith("https://p-pc-weboff.byteimg.com") ||
                 requestUrl.startsWith("https://helpdesk.bytedance.com")) {
             return;
         }

@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.huawei.agconnect'//华为扫码库必须
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -25,10 +24,8 @@ android {
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-
-    //华为扫码库
-    api 'com.huawei.hms:scanplus:2.5.0.300'
+    //noinspection GradleDependency
+    implementation 'androidx.appcompat:appcompat:1.4.1'
 
     //常用工具
     api 'com.blankj:utilcodex:1.31.1'
@@ -40,7 +37,4 @@ dependencies {
     api project(path: ':jsbridge_lib')
 
     api group: 'org.apache.commons', name: 'commons-text', version: '1.9'
-
-
-
 }

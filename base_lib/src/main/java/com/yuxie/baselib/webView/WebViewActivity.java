@@ -48,7 +48,6 @@ import com.tencent.smtt.sdk.WebView;
 import com.yuxie.baselib.base.BaseActivity;
 import com.yuxie.baselib.utils.DownloadUtils;
 import com.yuxie.baselib.R;
-import com.yuxie.baselib.qrCode.CaptureActivity;
 
 import java.io.File;
 
@@ -498,18 +497,18 @@ public class WebViewActivity extends BaseActivity {
      * 扫码登录
      */
     private void scanCode() {
-        PermissionUtils.permissionGroup(PermissionConstants.CAMERA)
-                .callback(new PermissionUtils.SimpleCallback() {
-                    @Override
-                    public void onGranted() {
-                        CaptureActivity.open(mContext);
-                    }
-
-                    @Override
-                    public void onDenied() {
-                        WebViewCommonUtils.showAlertDialog(mContext, getString(R.string.web_view_tip_camera_permission));
-                    }
-                }).request();
+//        PermissionUtils.permissionGroup(PermissionConstants.CAMERA)
+//                .callback(new PermissionUtils.SimpleCallback() {
+//                    @Override
+//                    public void onGranted() {
+//                        CaptureActivity.open(mContext);
+//                    }
+//
+//                    @Override
+//                    public void onDenied() {
+//                        WebViewCommonUtils.showAlertDialog(mContext, getString(R.string.web_view_tip_camera_permission));
+//                    }
+//                }).request();
     }
 
     //----调用系统文件开始----

@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -32,6 +34,7 @@ import com.yuxie.demo.widget.ClearEditText;
 public class MainActivity extends BaseActivity {
 
     TextView tvExplain;
+    TextView tvVersion;
 
     ClearEditText etUrl;
 
@@ -48,8 +51,10 @@ public class MainActivity extends BaseActivity {
     @SuppressLint("SetTextI18n")
     protected void initView() {
         setTitle("抖音无水印");
-        tvExplain = findViewById(R.id.tvExplain);
         etUrl = findViewById(R.id.et_url);
+        tvExplain = findViewById(R.id.tvExplain);
+        tvVersion = findViewById(R.id.tv_version);
+        tvVersion.setText("当前版本: " + AppUtils.getAppVersionName() + "\n最新版下载地址(请复制到自带浏览器下载安装):\nhttps://raw.githubusercontent.com/yuxie2025/douyin/douyin/download/douyin.apk");
 
         findViewById(R.id.openDy).setOnClickListener(v -> {
             openDouYinApp();
@@ -59,20 +64,14 @@ public class MainActivity extends BaseActivity {
             download();
         });
 
-        //调试使用
-//        if (AppUtils.isAppDebug()) {
-//            etUrl.setText("https://v.douyin.com/ArBxFg5/");
-//            etUrl.setText("http://192.168.31.79:8080/#/pages/model/gift/gift");
-//            etUrl.setText("https://www.baidu.com");
-//        }
-
         etUrl.setText("https://v.douyin.com/ArBxFg5/");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        registerClipEvents();
+        new Handler(Looper.getMainLooper())
+                .postDelayed(this::registerClipEvents, 1000);
     }
 
     @Override
@@ -92,12 +91,15 @@ public class MainActivity extends BaseActivity {
      */
     private void registerClipEvents() {
         CharSequence content = ClipboardUtils.getText();
-        if (!TextUtils.isEmpty(content)) {
-            Log.i("TAG", "content:" + content);
-            String msgFromDouYin = content.toString();
-            String url = CommonUtils.extractUrl(msgFromDouYin);
-            etUrl.setText(url);
+        if (TextUtils.isEmpty(content)) {
+            return;
         }
+        String msgFromDouYin = content.toString();
+        String url = CommonUtils.extractUrl(msgFromDouYin);
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
+        etUrl.setText(url);
     }
 
     private void openDouYinApp() {

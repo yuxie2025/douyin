@@ -71,8 +71,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="该app用于下载抖音无水印视频.\n\n使用说明:\n1.输入抖音分享链接->点击下载->跳转webView->等待提示下载无水印视频,成功提示(10-20秒)\n2.下载文件保存在Download目录下\n3.新增支持uc视频，西瓜视频下载"
+            android:text="该app用于下载无水印视频.\n\n使用说明:\n1.输入抖音分享链接->点击下载->跳转webView->等待提示下载无水印视频,成功提示(10-20秒)\n2.下载文件保存在Download目录下\n3.支持抖音，uc视频，西瓜视频下载"
             android:textColor="#333"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:enabled="true"
+            android:focusable="true"
+            android:longClickable="true"
+            android:textColor="#333"
+            android:textIsSelectable="true"
             android:textSize="16sp" />
 
     </LinearLayout>
