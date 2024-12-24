@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
@@ -25,7 +24,6 @@ import com.blankj.utilcode.util.ToastUtils;
 
 import com.yuxie.baselib.utils.CommonUtils;
 import com.yuxie.baselib.base.BaseActivity;
-import com.yuxie.baselib.utils.DownloadUtils;
 import com.yuxie.baselib.webView.WebViewActivity;
 import com.yuxie.demo.R;
 import com.yuxie.demo.widget.ClearEditText;
